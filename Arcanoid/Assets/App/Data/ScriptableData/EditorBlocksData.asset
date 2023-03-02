@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ac99cb82f9fbe4b8fe06b2f9baaa4b, type: 3}
+  m_Name: EditorBlocksData
+  m_EditorClassIdentifier: 
+  editorData:
+  - block: {fileID: 7060855977652088419, guid: c0d202cbde47b3a4690d0245b9cde0d3, type: 3}
+    blockTexture: {fileID: 2800000, guid: 7e73e4be78a578649bd6c28e037ef6fa, type: 3}
+  - block: {fileID: 4465260383658985439, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    blockTexture: {fileID: 2800000, guid: 7e73e4be78a578649bd6c28e037ef6fa, type: 3}
+  - block: {fileID: -2934016601337119458, guid: 462ad31b004f4bf4d9781dbc31c4c701, type: 3}
+    blockTexture: {fileID: 2800000, guid: 7e73e4be78a578649bd6c28e037ef6fa, type: 3}
+  - block: {fileID: -2939520539514125568, guid: 65feadaab73978e44a20e9560605ab70, type: 3}
+    blockTexture: {fileID: 2800000, guid: 2b03a5b3f13dddc4d9e0741665ae4ae8, type: 3}
+  - block: {fileID: -2867094635234753687, guid: bd5a9b6fab235e3439d96524db15e714, type: 3}
+    blockTexture: {fileID: 2800000, guid: 2b03a5b3f13dddc4d9e0741665ae4ae8, type: 3}
+  - block: {fileID: -7707390496429937394, guid: e60638502f2eca6488c859d5a380594a, type: 3}
+    blockTexture: {fileID: 2800000, guid: 7e73e4be78a578649bd6c28e037ef6fa, type: 3}
+  - block: {fileID: 8979595466752844724, guid: 22a67870b71adb64994b95bd78e8ab4b, type: 3}
+    blockTexture: {fileID: 2800000, guid: 458a99bacc6c65340806334f4d449fc7, type: 3}
+  - block: {fileID: 7448811580742439190, guid: adc5e7bdb126b0e4e8bcf7cee719a5a8, type: 3}
+    blockTexture: {fileID: 2800000, guid: e14856af1ef6fc9449b0c62fc9e5ed9b, type: 3}
+  - block: {fileID: 9105757800004382459, guid: 3294f0d1bfadd6f4698574c5cd819472, type: 3}
+    blockTexture: {fileID: 2800000, guid: 7e73e4be78a578649bd6c28e037ef6fa, type: 3}
+  - block: {fileID: -5190147623163899786, guid: ae6a3b94fa5a07448860e085da35b07f, type: 3}
+    blockTexture: {fileID: 2800000, guid: 458a99bacc6c65340806334f4d449fc7, type: 3}
+  - block: {fileID: -5190147623163899786, guid: 44a4c7de21e4bcc499dc00f84dda680a, type: 3}
+    blockTexture: {fileID: 2800000, guid: e14856af1ef6fc9449b0c62fc9e5ed9b, type: 3}
+  - block: {fileID: -8549192880422818047, guid: 9084207df0d15bc4c9f6b4914581e5ab, type: 3}
+    blockTexture: {fileID: 2800000, guid: 458a99bacc6c65340806334f4d449fc7, type: 3}
+  - block: {fileID: 789397561223667417, guid: dadbd2f48c2b68543b786f3226dc1e12, type: 3}
+    blockTexture: {fileID: 2800000, guid: e14856af1ef6fc9449b0c62fc9e5ed9b, type: 3}
+  - block: {fileID: -8861276167272084801, guid: bb2d36eb8e5a50640af8a1dddd88f0d5, type: 3}
+    blockTexture: {fileID: 2800000, guid: 22776c71022b4d343bd992163a6cc6f2, type: 3}
+  - block: {fileID: -6880828489901426342, guid: 913546bafa639d944b63d5e9d94d4a85, type: 3}
+    blockTexture: {fileID: 2800000, guid: 2aec0721a3c2c6b468a4b01b0552cb2a, type: 3}
+  - block: {fileID: -2304823478353323653, guid: ab59a15003e3f15468c2e222d92ad28e, type: 3}
+    blockTexture: {fileID: 2800000, guid: 6f79a6e03e0d0634f95d78a0238ded21, type: 3}
+  - block: {fileID: -5117482956948395912, guid: 1a40a77c90ac9824894e43886a4a6e9a, type: 3}
+    blockTexture: {fileID: 2800000, guid: 70dcd9ca917de414a93b75e917d0c094, type: 3}
+  - block: {fileID: -1247234080109522094, guid: e1efd302dd004d44e98b0fe9fb9906fc, type: 3}
+    blockTexture: {fileID: 2800000, guid: d92ba9b8d3dc06c428b7ad071fad6e50, type: 3}
+  - block: {fileID: 8381743825691691412, guid: 941c4d21976e27a4a913bdf6bc62e887, type: 3}
+    blockTexture: {fileID: 2800000, guid: 2b03a5b3f13dddc4d9e0741665ae4ae8, type: 3}
+  - block: {fileID: 2486361955284216246, guid: 4e398ca5aaa64f147b4522ed0fefafd4, type: 3}
+    blockTexture: {fileID: 2800000, guid: 2b03a5b3f13dddc4d9e0741665ae4ae8, type: 3}

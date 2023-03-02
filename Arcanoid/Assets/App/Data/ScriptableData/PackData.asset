@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08544860f346ea649a09cac5ff7e2013, type: 3}
+  m_Name: PackData
+  m_EditorClassIdentifier: 
+  packsModels:
+  - title: Forest
+    packIndex: 0
+    startLevel: 1
+    finishLevel: 5
+    EndedLevel: 0
+    sprite: {fileID: 21300000, guid: a0035911f209c8845a360a1dafe84e06, type: 3}
+    isOpen: 1
+    isEnded: 0
+  - title: Desert
+    packIndex: 1
+    startLevel: 6
+    finishLevel: 10
+    EndedLevel: 0
+    sprite: {fileID: 21300000, guid: dbb5f54f06a698241a094e928ffe914f, type: 3}
+    isOpen: 0
+    isEnded: 0
+  - title: Savannah
+    packIndex: 2
+    startLevel: 11
+    finishLevel: 15
+    EndedLevel: 0
+    sprite: {fileID: 21300000, guid: ad1b705132d426f49a8269110b59c002, type: 3}
+    isOpen: 0
+    isEnded: 0
+  - title: Arctic
+    packIndex: 3
+    startLevel: 16
+    finishLevel: 20
+    EndedLevel: 0
+    sprite: {fileID: 21300000, guid: 6b375d6acfa87434590720b920fc5e24, type: 3}
+    isOpen: 0
+    isEnded: 0
+  - title: Dungeon
+    packIndex: 4
+    startLevel: 21
+    finishLevel: 25
+    EndedLevel: 0
+    sprite: {fileID: 21300000, guid: 872d89455806af641bb714fa500f948d, type: 3}
+    isOpen: 0
+    isEnded: 0
