@@ -16,10 +16,31 @@ MonoBehaviour:
   - Eng
   - Rus
   words:
-  - key: arcanoid
+  - key: play
     phrases:
     - langName: Eng
-      phrase: Arcanoid
+      phrase: PLAY
     - langName: Rus
-      phrase: "\u0410\u0440\u043A\u0430\u043D\u043E\u0439\u0434"
+      phrase: "\u0418\u0413\u0420\u0410\u0422\u042C"
+    hide: 0
+  - key: settings
+    phrases:
+    - langName: Eng
+      phrase: SETTINGS
+    - langName: Rus
+      phrase: "\u041D\u0410\u0421\u0422\u0420\u041E\u0419\u041A\u0418"
+    hide: 0
+  - key: exit
+    phrases:
+    - langName: Eng
+      phrase: EXIT
+    - langName: Rus
+      phrase: "\u0412\u042B\u0425\u041E\u0414"
+    hide: 0
+  - key: back
+    phrases:
+    - langName: Eng
+      phrase: BACK
+    - langName: Rus
+      phrase: "\u041D\u0410\u0417\u0410\u0414"
     hide: 0

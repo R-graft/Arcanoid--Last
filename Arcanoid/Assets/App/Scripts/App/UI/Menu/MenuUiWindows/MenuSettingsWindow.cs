@@ -8,24 +8,11 @@ public class MenuSettingsWindow : UIWindow<MenuUI>
     private LangSwitcher _langSwitcher;
 
     [SerializeField]
-    private ButtonElement _musicSettings;
-
-    [SerializeField]
-    private ButtonElement _soundSettings;
-
-    [SerializeField]
     private ButtonElement _homeButton;
-
-    [SerializeField]
-    private AudioButtonSettings _audioSettings;
 
     public override void InitWindow(MenuUI uiParent)
     {
         _langSwitcher.Init();
-
-        _musicSettings.SetDownAction(() => _audioSettings.SetMusicEnable(_musicSettings.GetComponent<Image>()), true);
-
-        _soundSettings.SetDownAction(() => _audioSettings.SetSoundsEnable(_soundSettings.GetComponent<Image>()), true);
 
         _homeButton.SetDownAction(HideWindow, true);
     }

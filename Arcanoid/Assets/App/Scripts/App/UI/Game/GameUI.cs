@@ -18,9 +18,6 @@ public class GameUI : MonoBehaviour
     private ButtonElement _pauseButton;
 
     [SerializeField]
-    private List<Sprite> _gameBackgroundsList;
-
-    [SerializeField]
     private Image _backGround;
 
     public Action OnStart;
@@ -39,8 +36,6 @@ public class GameUI : MonoBehaviour
         _pause.InitWindow(this);
 
         _pauseButton.SetDownAction(OnPause, true);
-
-        _backGround.sprite = _gameBackgroundsList[GameProgressController.Instance.PacksController.GetCurrentPack().packIndex];
     }
 
     public void GameUiWin()

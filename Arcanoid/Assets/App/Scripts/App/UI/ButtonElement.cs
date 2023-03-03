@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class ButtonElement : Button ,IAnimatedElement
 
     protected Action OnUpAction;
 
-    protected const float animateDuration = 0.25f;
+    protected const float animateDuration = 0.12f;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
@@ -40,7 +41,7 @@ public class ButtonElement : Button ,IAnimatedElement
 
         DOTween.Sequence().
         AppendCallback(() => OnDownAction.Invoke()).
-        Append(transform.DOShakeRotation(animateDuration, 90)).
+        Append(transform.DOScale(new Vector2(0.8f, 0.8f), animateDuration)).Append(transform.DOScale(Vector2.one, animateDuration)).
         AppendCallback(() => Inputs.Instance.TurnOn(true));
     }
 

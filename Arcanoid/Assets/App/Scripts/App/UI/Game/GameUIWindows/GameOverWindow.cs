@@ -4,8 +4,6 @@ public class GameOverWindow : UIWindow<GameUI>
 {
     [SerializeField] private ButtonElement _continueButton;
 
-    [SerializeField] private ButtonElement _exitButton;
-
     private const int EnergyForContinue = 5;
 
     private const int ExtraLives = 1;
@@ -16,8 +14,6 @@ public class GameOverWindow : UIWindow<GameUI>
         _continueButton.SetDownAction(uiParent.OnReStart, true);
 
         _continueButton.SetDownAction(HideWindow, true);
-
-        _exitButton.SetDownAction(uiParent.OnSceneLoad, true);
     }
 
     public override void ShowWindow()
