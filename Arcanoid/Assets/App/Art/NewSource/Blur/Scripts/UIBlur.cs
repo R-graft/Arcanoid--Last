@@ -18,21 +18,18 @@ public class UIBlur : MonoBehaviour
     public UnityEvent OnEndBlur { get => _onEndBlur; set => _onEndBlur = value; }
     public BlurChangedEvent OnBlurChanged { get => _onBlurChanged; set => _onBlurChanged = value; }
 
-    [SerializeField]
-    private Color _color = Color.white;
-    [SerializeField, Range(0f, 1f)]
-    private float _intensity;
-    [SerializeField, Range(0f, 1f)]
-    private float _multiplier = 0.15f;
-    [SerializeField]
-    private UnityEvent _onBeginBlur;
-    [SerializeField]
-    private UnityEvent _onEndBlur;
-    [SerializeField]
-    private BlurChangedEvent _onBlurChanged;
+    [SerializeField] private Color _color = Color.white;
 
-    [SerializeField]
-    private Material _material;
+    [SerializeField, Range(0f, 1f)] 
+    private float _intensity;
+    [SerializeField, Range(0f, 1f)] private float _multiplier = 0.15f;
+
+    [SerializeField] private UnityEvent _onBeginBlur;
+    [SerializeField] private UnityEvent _onEndBlur;
+    [SerializeField] private BlurChangedEvent _onBlurChanged;
+
+    [SerializeField]  private Material _material;
+
     private int _colorId;
     private int _flipXId;
     private int _flipYId;

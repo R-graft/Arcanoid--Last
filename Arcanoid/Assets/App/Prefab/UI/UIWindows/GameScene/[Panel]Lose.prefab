@@ -151,6 +151,18 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 408
       objectReference: {fileID: 0}
+    - target: {fileID: 8257627766226567445, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257627766226567445, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257627766226567445, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8378509342883754120, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
       propertyPath: m_Color.g
       value: 0.34509805
@@ -165,3 +177,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
+--- !u!1 &2891275397278955455 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7596222675510380093, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
+  m_PrefabInstance: {fileID: 4716654062877225346}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3884512540210101768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2891275397278955455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16d7f94147d80840bc915d86fcc1cb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttonContinue: {fileID: 0}

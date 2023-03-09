@@ -1,24 +1,16 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameUI : MonoBehaviour
+public class GameUI : UIPopUp
 {
-    [SerializeField]
-    private UIWindow<GameUI> _win;
-    [SerializeField]
-    private UIWindow<GameUI> _lose;
-    [SerializeField]
-    private UIWindow<GameUI> _pause;
-    [SerializeField]
-    private UIWindow<GameUI> _gameOver;
+    [SerializeField] private UIPopUp _win;
+    [SerializeField] private UIPopUp _pause;
+    [SerializeField] private UIPopUp _gameOver;
 
-    [SerializeField]
-    private ButtonElement _pauseButton;
+    [SerializeField] private ButtonElement _pauseButton;
 
-    [SerializeField]
-    private Image _backGround;
+    [SerializeField] private Image _backGround;
 
     public Action OnStart;
 
@@ -30,28 +22,29 @@ public class GameUI : MonoBehaviour
 
     public void Init()
     {
-        _win.InitWindow(this);
-        _lose.InitWindow(this);
-        _gameOver.InitWindow(this);
-        _pause.InitWindow(this);
+        //_win.InitWindow(this);
+        //_gameOver.InitWindow(this);
+        //_pause.InitWindow(this);
 
-        _pauseButton.SetDownAction(OnPause, true);
+        //_pauseButton.SetDownAction(OnPause, true);
     }
 
     public void GameUiWin()
     {
-        _win.ShowWindow();
+        //_win.ShowWindow();
     }
-    public void GameUiLose()
-    {
-        _lose.ShowWindow();
-    }
+
     public void GameUiPause()
     {
-        _pause.ShowWindow();
+        //_pause.ShowWindow();
     }
     public void GameUiGameOver()
     {
-        _gameOver.ShowWindow();
+        //_gameOver.ShowWindow();
+    }
+
+    public override void InitPopUp()
+    {
+        throw new NotImplementedException();
     }
 }
