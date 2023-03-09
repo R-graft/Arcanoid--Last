@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ScenesManager : Singleton<ScenesManager>
 {
-    [SerializeField] private GameObject _loadPanelPrefab;
+    [SerializeField] private LoadPanel _loadPanel;
 
     private AsyncOperation _loadingScene;
 
@@ -21,9 +21,7 @@ public class ScenesManager : Singleton<ScenesManager>
     {
         SingleInit();
 
-        _loadPanelPrefab = Instantiate(_loadPanelPrefab, transform);
-
-        _loadPanelPrefab.SetActive(false);
+        _loadPanel.gameObject.SetActive(false);
     }
     public void LoadScene(SCENELIST targetScene)
     {
@@ -36,9 +34,9 @@ public class ScenesManager : Singleton<ScenesManager>
     {
         _minLoadingTime = 0.8f;
 
-        _loadPanelPrefab.SetActive(true);
-
         _loadingScene = SceneManager.LoadSceneAsync(targetScene.ToString());
+
+        _loadPanel.InAnimation();
 
         _loadingScene.allowSceneActivation = false;
 
@@ -56,7 +54,7 @@ public class ScenesManager : Singleton<ScenesManager>
             yield return null;
         }
 
-        _loadPanelPrefab.SetActive(false);
+        _loadPanel.OutAnimation();
 
         OnLoadScene?.Invoke(currentScene);
     }

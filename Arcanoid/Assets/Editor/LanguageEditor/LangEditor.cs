@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.Xml.Serialization;
-using System.IO;
 using UnityEditor.SceneManagement;
 
 public class SaveLang 
@@ -13,7 +11,7 @@ public class SaveLang
 
 public class LangEditor : EditorWindow
 {
-    private LangController _langController;
+    public WordList langTranslates;
 
     public string findWord = "";
 
@@ -21,15 +19,13 @@ public class LangEditor : EditorWindow
 
     public bool setKeyLangWord;
 
-    public WordList langTranslates;
-
     public int tab;
 
     private int oldTap = 0;
 
-    private string saveLoadFileName;
-
     private string saveLoadStatus;
+
+    private readonly string TranslationsDataFile = "/Translates.json";
 
     [MenuItem("Editors/LangsEditor")]
     public static void ShowWindow()
@@ -59,25 +55,20 @@ public class LangEditor : EditorWindow
           
             return;
         }
-        if (_langController == null)
+        if (langTranslates == null)
         {
             GUILayout.Label("Cant find LangController on scene", EditorStyles.boldLabel, GUILayout.Width(position.width));
 
-            _langController = EditorGUILayout.ObjectField("Asset: ", _langController, typeof(LangController), true) as LangController;
+            langTranslates = EditorGUILayout.ObjectField("Asset: ", langTranslates, typeof(WordList), true) as WordList;
 
             return;
         }
 
-        if (_langController.translatesData == null)
+        if (langTranslates == null)
         {
             GUILayout.Label("Set WordList on LangController.assets", EditorStyles.boldLabel, GUILayout.Width(position.width));
 
             return;
-        }
-
-        if (langTranslates != _langController.translatesData)
-        {
-            langTranslates = _langController.translatesData;
         }
 
         tab = GUILayout.Toolbar(tab, new string[] { "Words", "Languages" });
@@ -247,60 +238,31 @@ public class LangEditor : EditorWindow
             }
             if (GUILayout.Button("Save", GUILayout.Width(position.width)))
             {
-                if (saveLoadFileName == "")
-                {
-                    saveLoadStatus = "ENTER FILE NAME";
+                var save = new SaveLang();
+                save.languages = langTranslates.languages;
+                save.words = langTranslates.words;
 
-                    return;
-                }
-                else
-                {
-                    var s = new SaveLang();
-                    s.languages = langTranslates.languages;
-                    s.words = langTranslates.words;
+                DataWriter<SaveLang> currentWriter =
+                    new DataWriter<SaveLang>(save, TranslationsDataFile);
 
-                    XmlSerializer formatter = new XmlSerializer(typeof(SaveLang));
-                    using (FileStream fs = new FileStream(Application.dataPath + $"/App/Resources/Data/Localization/{saveLoadFileName}.xml", FileMode.OpenOrCreate))
-                    {
-                        formatter.Serialize(fs, s);
-                    }
+                currentWriter.SaveFileToSystem();
 
-                    saveLoadFileName = "";
-                    saveLoadStatus = "SUCCES SAVE";
-                    return;
-                }
-                
+                saveLoadStatus = "SUCCES SAVE";
+                return;
             }
 
             if (GUILayout.Button("Load", GUILayout.Width(position.width)))
             {
-                if (saveLoadFileName == "")
-                {
-                    saveLoadStatus = "ENTER FILE NAME";
-                    return;
-                }
-                else
-                {
-                    var l = new SaveLang();
-                    XmlSerializer formatter = new XmlSerializer(typeof(SaveLang));
-                    using (FileStream fs = new FileStream(Application.dataPath + $"/App/Resources/Data/Localization/{saveLoadFileName}.xml", FileMode.OpenOrCreate))
-                    {
-                        l = (SaveLang)formatter.Deserialize(fs);
-                    }
-                    langTranslates.languages = new List<string>();
-                    langTranslates.words = new List<Word>();
-                    langTranslates.languages = l.languages;
-                    langTranslates.words = l.words;
+                var load = new DataReader<SaveLang>(TranslationsDataFile).ReadFileFromSystem();
 
-                    saveLoadFileName = "";
-                    saveLoadStatus = "SUCCES LOAD";
-                    return;
-                }
+                langTranslates.languages = load.languages;
+                langTranslates.words = load.words;
+
+                saveLoadStatus = "SUCCES LOAD";
+                return;
             }
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("File name: ", EditorStyles.boldLabel, GUILayout.Width(100));
-            saveLoadFileName = EditorGUILayout.TextArea(saveLoadFileName, GUILayout.Width((position.width)));
             GUILayout.EndHorizontal();
             GUILayout.Label(saveLoadStatus, EditorStyles.boldLabel);
         }

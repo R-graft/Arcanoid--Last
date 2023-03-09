@@ -102,7 +102,7 @@ public class LevelController : MonoBehaviour
             _GameUI.GameUiGameOver();
 
         else
-            _GameUI.GameUiLose();
+            Restart();
     }
     public void WinLevel()
     {

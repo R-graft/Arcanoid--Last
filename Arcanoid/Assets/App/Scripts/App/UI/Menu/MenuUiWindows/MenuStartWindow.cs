@@ -1,37 +1,55 @@
-using DG.Tweening;
-using TMPro;
+using UnityEditor;
 using UnityEngine;
 
-public class MenuStartWindow : UIWindow<MenuUI>
+public class MenuStartWindow : MonoBehaviour
 {
-    [SerializeField]
-    private ButtonElement _buttonSettingsGame;
+    [SerializeField] private ButtonElement _buttonSettingsGame;
 
-    [SerializeField]
-    private ButtonElement _buttonStartGame;
+    [SerializeField] private ButtonElement _buttonStartGame;
 
-    [SerializeField]
-    private ButtonElement _buttonExitGame;
+    [SerializeField] private ButtonElement _buttonExitGame;
 
-    [SerializeField]
-    private TextMeshProUGUI _energyValue;
+    private UIPopUpController _popUpController;
 
-    [SerializeField]
-    private TextMeshProUGUI _logo;
-
-    public override void InitWindow(MenuUI UIParent)
+    public void Start()
     {
-        _buttonSettingsGame.SetDownAction(UIParent.ShowSettingsWindow, true);
+        _popUpController = UIPopUpController.Instance;
 
-        _buttonStartGame.SetDownAction(UIParent.StartGame, true);
+        _buttonSettingsGame.SetDownAction(()=> _popUpController.ShowPop("settings"), true);
 
-        _buttonExitGame.SetDownAction(UIParent.ExitApplication, true);
+        _buttonStartGame.SetDownAction(()=> StartGame(), true);
 
-        _energyValue.text = GameProgressController.Instance.EnergyCounter.GetEnergy().ToString();
+        _buttonExitGame.SetDownAction(()=> ExitApplication(), true);
     }
 
-    public override void InAnimation()
+    private void StartGame()
     {
+        if (GameProgressController.Instance.GameAccess)
+        {
+            if (PlayerPrefs.HasKey("FirstIn"))
+            {
+                ScenesManager.Instance.LoadScene(SCENELIST.PackScene);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("FirstIn", default);
 
+                ScenesManager.Instance.LoadScene(SCENELIST.GameScene);
+            }
+        }
+
+        return;
+    }
+
+    private void ExitApplication()
+    {
+#if UNITY_EDITOR
+        PlayerPrefs.DeleteKey("FirstIn");
+        EditorApplication.isPlaying = false;
+#endif
+#if PLATFORM_ANDROID
+        PlayerPrefs.DeleteKey("FirstIn");
+        Application.Quit();
+#endif
     }
 }

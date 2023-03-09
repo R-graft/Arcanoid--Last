@@ -4,24 +4,21 @@ using UnityEngine.UI;
 
 public class LoadPanel : MonoBehaviour, IAnimatedElement
 {
-    [SerializeField] private Image _bg;
-    [SerializeField] private Transform _loadIcon;
+    [SerializeField] private UIBlur _blurFont;
+    [SerializeField] private Image _bgFont;
 
-    private void OnEnable()
-    {
-        InAnimation();
-    }
     public void InAnimation()
     {
-        DOTween.Sequence().Append(_bg.DOFade(1, 0.3f)).
-            AppendCallback(() => _loadIcon.gameObject.SetActive(true)).
-            Append(_loadIcon.DORotate(new Vector3(0, 0, -720), 1, RotateMode.WorldAxisAdd));
-            //SetLink(gameObject)) ;
+        gameObject.SetActive(true);
+
+        DOTween.Sequence().Append(_bgFont.DOFade(1, 0.5f)).
+            Insert(0, DOTween.To(() => _blurFont.Multiplier, x => _blurFont.Multiplier = x, 1, 0.5f));
     }  
 
     public void OutAnimation()
     {
-        DOTween.Sequence().AppendCallback(() => _loadIcon.gameObject.SetActive(false)).
-            Append(_bg.DOFade(0, 0.3f)).AppendCallback(()=> gameObject.SetActive(false));
+        DOTween.Sequence().Append(_bgFont.DOFade(0, 0.5f)).
+           Insert(0, DOTween.To(() => _blurFont.Multiplier, x => _blurFont.Multiplier = x, 0, 0.5f)).
+           AppendCallback(()=> gameObject.SetActive(false));
     }
 }
