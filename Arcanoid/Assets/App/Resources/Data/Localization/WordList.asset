@@ -16,12 +16,61 @@ MonoBehaviour:
   - eng
   - rus
   words:
-  - key: 
+  - key: lose
     phrases:
     - langName: eng
-      phrase: 
+      phrase: YOU LOSE!
     - langName: rus
-      phrase: 
+      phrase: "\u0412\u042B \u041F\u0420\u041E\u0418\u0413\u0420\u0410\u041B\u0418!"
+    hide: 0
+  - key: continue
+    phrases:
+    - langName: eng
+      phrase: CONTINUE
+    - langName: rus
+      phrase: "\u041F\u0420\u041E\u0414\u041E\u041B\u0416\u0418\u0422\u042C"
+    hide: 0
+  - key: restart
+    phrases:
+    - langName: eng
+      phrase: RESTART
+    - langName: rus
+      phrase: "\u041D\u0410\u0417\u0410\u0414"
+    hide: 0
+  - key: youwin
+    phrases:
+    - langName: eng
+      phrase: YOU WIN!
+    - langName: rus
+      phrase: "\u0412\u042B \u0412\u042B\u0418\u0413\u0420\u0410\u041B\u0418!"
+    hide: 0
+  - key: menu
+    phrases:
+    - langName: eng
+      phrase: MENU
+    - langName: rus
+      phrase: "\u041C\u0415\u041D\u042E"
+    hide: 0
+  - key: galactic
+    phrases:
+    - langName: eng
+      phrase: GALACTIC
+    - langName: rus
+      phrase: "\u0413\u0410\u041B\u0410\u041A\u0422\u0418\u041A\u0410"
+    hide: 0
+  - key: lang
+    phrases:
+    - langName: eng
+      phrase: LANGUAGE
+    - langName: rus
+      phrase: "\u042F\u0417\u042B\u041A"
+    hide: 0
+  - key: back
+    phrases:
+    - langName: eng
+      phrase: BACK
+    - langName: rus
+      phrase: "\u041D\u0410\u0417\u0410\u0414"
     hide: 0
   - key: play
     phrases:

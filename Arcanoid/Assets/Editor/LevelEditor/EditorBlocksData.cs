@@ -1,5 +1,3 @@
-using Microsoft.Unity.VisualStudio.Editor;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EditorBlocksData", menuName = "Data/newEditorBlocksData")]
@@ -11,9 +9,9 @@ public class EditorBlocksData : ScriptableObject
 [System.Serializable]
 public class EditorBlock
 {
-    public Block block;
+    public string id;
 
-    public Texture2D blockTexture;
+    public Sprite blockTexture;
 }
 
 

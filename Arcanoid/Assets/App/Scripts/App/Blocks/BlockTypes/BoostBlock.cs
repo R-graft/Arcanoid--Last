@@ -5,7 +5,7 @@ public class BoostBlock : Block, IDamageable
     [SerializeField]
     private int health;
 
-   // public override int HealthCount { get; set; }
+    public int HealthCount { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     public override void InDamage(int damageValue)
     {
@@ -29,13 +29,6 @@ public class BoostBlock : Block, IDamageable
         base.InDestroy();
 
         BoostEffect();
-    }
-
-    public override void InAnimation()
-    {
-        base.InAnimation();
-
-        HealthCount = health;
     }
 
     public virtual void BoostEffect()

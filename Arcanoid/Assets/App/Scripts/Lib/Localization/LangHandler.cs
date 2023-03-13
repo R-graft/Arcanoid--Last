@@ -1,54 +1,44 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 public class LangHandler : IService
 {
     private WordList _translatesData;
 
-    private Dictionary<string, string> _translatesDictionary;
-
-    public string CurrentLang { get; private set; }
+    public Dictionary<string, string> TranslatesDictionary { get; private set; }
 
     public List<string> AvaliableLangs { get; private set; }
 
-    private const string DefaultLang = "eng";
+    public string CurrentLang { get; private set; }
 
     private const string LangKey = "CurrentLangKey";
 
-    public Action<string> OnChangeLang;
+    private const string DefaultLang = "eng";
 
-    public LangHandler()
-    {
-        Init();
-    }
+    public Action<Dictionary<string, string>> OnChangeLang;
+
     public void Init()
     {
         LoadLang();
 
         GetTranslatesData();
 
-        _translatesDictionary = new Dictionary<string, string>();
+        SetLangDict();
 
-        SetLangDict(_translatesDictionary);
-
-        AvaliableLangs = new List<string>();
-
-        foreach (var lang in _translatesData.languages)
-        {
-            AvaliableLangs.Add(lang);
-        }
+        SetAvaliableLangs();
     }
 
     private void LoadLang()
     {
-        if (!PlayerPrefs.HasKey(LangKey))
+        if (!PlayerPrefs.HasKey(LangKey) || CurrentLang == "")
         {
             PlayerPrefs.SetString(LangKey, DefaultLang);
         }
 
         CurrentLang = PlayerPrefs.GetString(LangKey);
+
+        SaveLang(CurrentLang);
     }
 
     private void SaveLang(string lang) 
@@ -58,50 +48,61 @@ public class LangHandler : IService
 
     public string GetPhrase(string key)
     {
-        if (_translatesDictionary == null)
+        if (TranslatesDictionary == null)
         {
-            _translatesDictionary = new Dictionary<string, string>();
-
-            SetLangDict(_translatesDictionary);
+            SetLangDict();
         }
 
-        if (!_translatesDictionary.TryGetValue(key, out string phrase))
+        if (!TranslatesDictionary.TryGetValue(key, out string phrase))
         {
             Debug.Log($"Translate key {key} not present in translate dictionary");
         }
 
         return phrase;
     }
-
+    
     public void SetLang(string langName)
     {
         if (langName != CurrentLang)
         {
             if (_translatesData.languages.Contains(langName))
             {
-                _translatesDictionary = new Dictionary<string, string>();
+                CurrentLang = langName;
 
-                SetLangDict(_translatesDictionary);
+                SetLangDict();
+
+                OnChangeLang?.Invoke(TranslatesDictionary);
             }
 
             SaveLang(langName);
         }
     }
 
-    private void SetLangDict(Dictionary<string, string> translateDict)
+    private void SetLangDict()
     {
+        TranslatesDictionary = new Dictionary<string, string>();
+
         foreach (var word in _translatesData.words)
         {
             foreach (var phrase in word.phrases)
             {
                 if (phrase.langName == CurrentLang)
                 {
-                    translateDict.Add(word.key, phrase.phrase);
+                    TranslatesDictionary.Add(word.key, phrase.phrase);
                 }
             }
         }
     }
 
+    private void SetAvaliableLangs()
+    {
+        AvaliableLangs = new List<string>();
+
+        foreach (var lang in _translatesData.languages)
+        {
+            AvaliableLangs.Add(lang);
+        }
+    }
     private void GetTranslatesData()
     {
         if (_translatesData == null)

@@ -10,13 +10,15 @@ public class LevelEditor : EditorWindow
 
     private Transform _editorBlocksParent;
 
-    public EditorBlocksData editorBlocksData;
+    public BlocksData blocksData;
 
     private SceneEditor _sceneEditor;
 
     private EditorGrid _editorGrid;
 
-    public List<Block> currentObjects;
+    public Dictionary<Vector2, string> currentObjects;
+
+    public List<(string id, Sprite sprite)> allObjects;
 
     public int index;
 
@@ -35,22 +37,33 @@ public class LevelEditor : EditorWindow
 
         levelEditor.Show();
     }
+
+    private void SetBlocksDictionary()
+    {
+        allObjects = new List<(string id, Sprite sprite)>();
+
+        foreach (var item in blocksData.simpleTypes)
+        {
+            allObjects.Add((item.type, item.sprite));
+        }
+
+    }
     private void OnGUI()
     {
-        if (_sceneEditor == null)
+        if (_sceneEditor == null )
         {
             _sceneEditor = new SceneEditor();
         }
 
-        if (!editorBlocksData)
+        if (!blocksData)
         {
             GUILayout.Label("EditorBlocksData");
-            editorBlocksData = (EditorBlocksData)EditorGUILayout.ObjectField(editorBlocksData,
-                typeof(EditorBlocksData), true);
+            blocksData = (BlocksData)EditorGUILayout.ObjectField(blocksData,
+                typeof(BlocksData), true);
             return;
         }
 
-        if (editorBlocksData && !_testTile)
+        if (blocksData && !_testTile)
         {
             GUILayout.Label("TestTilePrefab");
             _testTile = (GameObject)EditorGUILayout.ObjectField(_testTile, typeof(GameObject), true);
@@ -59,6 +72,11 @@ public class LevelEditor : EditorWindow
 
         else
         {
+            if (allObjects == null)
+            {
+                SetBlocksDictionary();
+            }
+
             EditorGUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -73,17 +91,18 @@ public class LevelEditor : EditorWindow
             if (GUILayout.Button("<"))
             {
                 index--;
+
                 if (index < 0)
                 {
-                    index = editorBlocksData.editorData.Length - 1;
+                    index = allObjects.Count - 1;
                 }
             }
             GUILayout.FlexibleSpace();
             GUILayout.BeginVertical();
             EditorGUILayout.Space(5);
-            GUILayout.Label(editorBlocksData.editorData[index].block.blockId.ToString(), EditorStyles.boldLabel);
+            GUILayout.Label(allObjects[index].id, EditorStyles.boldLabel);
             EditorGUILayout.Space(5);
-            GUILayout.Label(editorBlocksData.editorData[index].blockTexture, GUILayout.Height(50), GUILayout.Width(100));
+            GUILayout.Label(allObjects[index].sprite.texture, GUILayout.Height(50), GUILayout.Width(100));
 
             EditorGUILayout.Space(5);
             GUILayout.EndVertical();
@@ -92,7 +111,7 @@ public class LevelEditor : EditorWindow
             if (GUILayout.Button(">"))
             {
                 index++;
-                if (index > editorBlocksData.editorData.Length - 1)
+                if (index > allObjects.Count - 1)
                 {
                     index = 0;
                 }
@@ -109,7 +128,7 @@ public class LevelEditor : EditorWindow
 
                 if (_isEditing)
                 {
-                    currentObjects = new List<Block>();
+                    currentObjects = new Dictionary<Vector2, string>();
 
                     SceneView.duringSceneGui += _sceneEditor.OnsceneGui;
 
@@ -127,12 +146,9 @@ public class LevelEditor : EditorWindow
                 {
                     SceneView.duringSceneGui -= _sceneEditor.OnsceneGui;
 
+                    _sceneEditor.Clear();
+                    
                     _editorGrid.ClearGrid();
-
-                    foreach (var block in currentObjects)
-                    {
-                        DestroyImmediate(block.gameObject);
-                    }
 
                     currentObjects.Clear();
                 }
@@ -144,24 +160,20 @@ public class LevelEditor : EditorWindow
 
             if (_isEditing)
             {
+                GUILayout.Space(10);
+
                 if (GUILayout.Button("Undo"))
                 {
-                    if (currentObjects != null && currentObjects.Count != 0)
-                    {
-                        DestroyImmediate(currentObjects[currentObjects.Count - 1].gameObject, false);
+                    _sceneEditor.Undo();
 
-                        currentObjects.RemoveAt(currentObjects.Count - 1);
-                    }
+                    currentObjects.Remove(currentObjects.Keys.Last());
                 }
 
                 GUILayout.Space(10);
 
                 if (GUILayout.Button("Clear"))
                 {
-                    foreach (var block in currentObjects)
-                    {
-                        DestroyImmediate(block.gameObject);
-                    }
+                    _sceneEditor.Clear();
 
                     currentObjects.Clear();
                 }
@@ -173,11 +185,7 @@ public class LevelEditor : EditorWindow
                 {
                     var newData = new LevelData();
 
-                    newData.blockTags = new List<string>();
-
-                    newData.blockIndexX = new List<int>();
-
-                    newData.blockIndexY = new List<int>();
+                    newData.levelBlocks = new List<LevelBlock>();
 
                     if (int.TryParse(_levelNumber, out int currentNumber))
                     {
@@ -185,18 +193,13 @@ public class LevelEditor : EditorWindow
 
                         foreach (var Block in currentObjects)
                         {
-                            newData.blockTags.Add(Block.blockId.ToString());
+                            var newLevelBlock = new LevelBlock();
 
-                            var indexes = Block.name.Split(',');
+                            newLevelBlock.blockTag = Block.Value;
 
-                            newData.blockIndexX.Add(int.Parse(indexes[0]));
+                            newLevelBlock.blockCoordinate = Block.Key;
 
-                            newData.blockIndexY.Add(int.Parse(indexes[1]));
-
-                            if (Block.TryGetComponent(out IDamageable _))
-                            {
-                                newData.blocksCount++;
-                            }
+                            newData.levelBlocks.Add(newLevelBlock);
                         }
 
                         var directory = Application.dataPath + $"/App/Resources/Data/Levels";
@@ -237,50 +240,50 @@ public class LevelEditor : EditorWindow
                 GUILayout.Space(20);
 
 
-                if (GUILayout.Button("Load Level"))
-                {
-                    foreach (var block in currentObjects)
-                    {
-                        DestroyImmediate(block.gameObject);
-                    }
+                //if (GUILayout.Button("Load Level"))
+                //{
+                //    foreach (var block in currentObjects)
+                //    {
+                //        DestroyImmediate(block.Value.gameObject);
+                //    }
 
-                    currentObjects.Clear();
+                //    currentObjects.Clear();
 
 
-                    string levelData;
+                //    string levelData;
 
-                    string dataPath = Application.dataPath + $"/App/Resources/Data/Levels/{_levelNumber}.json";
+                //    string dataPath = Application.dataPath + $"/App/Resources/Data/Levels/{_levelNumber}.json";
 
-                    if (File.Exists(dataPath))
-                    {
-                        levelData = File.ReadAllText(dataPath);
+                //    if (File.Exists(dataPath))
+                //    {
+                //        levelData = File.ReadAllText(dataPath);
 
-                        LevelData loadedLevel = JsonUtility.FromJson<LevelData>(levelData);
+                //        LevelData loadedLevel = JsonUtility.FromJson<LevelData>(levelData);
 
-                        var _indexes = _editorGrid;
+                //        var _indexes = _editorGrid;
 
-                        for (int i = 0; i < loadedLevel.blockTags.Count; i++)
-                        {
-                            var obj = editorBlocksData.editorData.First(o => o.block.blockId.ToString() == loadedLevel.blockTags[i]);
+                //        for (int i = 0; i < loadedLevel.levelBlocks.Count; i++)
+                //        {
+                //            var obj = editorBlocksData.editorData.First(o => o.block.blockId.ToString() == loadedLevel.levelBlocks[i]);
 
-                            var newblock = Instantiate(obj.block);
+                //            var newblock = Instantiate(obj.block);
 
-                            var tilePosition = loadedLevel.blockIndexX[i].ToString() + "," + loadedLevel.blockIndexY[i].ToString();
+                //            var tilePosition = loadedLevel.blockIndexX[i].ToString() + "," + loadedLevel.blockIndexY[i].ToString();
 
-                            GameObject tilePos = _editorGrid._testTiles.First(p => p.name == tilePosition);
+                //            GameObject tilePos = _editorGrid._testTiles.First(p => p.name == tilePosition);
 
-                            newblock.name = tilePosition;
+                //            newblock.name = tilePosition;
 
-                            newblock.transform.position = tilePos.transform.position;
+                //            newblock.transform.position = tilePos.transform.position;
 
-                            currentObjects.Add(newblock);
-                        }
-                    }
-                    else
-                    {
-                        _saveStatus = "level Data incorrect";
-                    }
-                }
+                //            currentObjects.Add(newblock);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        _saveStatus = "level Data incorrect";
+                //    }
+                //}
             }
         }
     }

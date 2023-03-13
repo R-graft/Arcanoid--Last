@@ -2,105 +2,105 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MashineGunBonus : Bonus
+public class MashineGunBonus :MonoBehaviour
 {
-    [Header ("config")]
-    public int bulletsPoolSize = 10;
+//    [Header ("config")]
+//    public int bulletsPoolSize = 10;
 
-    public float offsetX = 0.5f;
+//    public float offsetX = 0.5f;
 
-    public float offsetY = 0.5f;
+//    public float offsetY = 0.5f;
 
-    public float reloadTime = 0.3f;
+//    public float reloadTime = 0.3f;
 
-    public float disableHold = 2f;
+//    public float disableHold = 2f;
 
-    [Header("components")]
-    [SerializeField] private Bullet _prefab;
+//    [Header("components")]
+//    [SerializeField] private Bullet _prefab;
 
-    private ObjectPool<Bullet> _bulletPool;
+//    //private ObjectPool<Bullet> _bulletPool;
 
-    private List<Bullet> _bullets;
+//    private List<Bullet> _bullets;
 
-    public override void Apply()
-    {
-        StartCoroutine(Shooting());
-    }
+//    public override void Apply()
+//    {
+//        StartCoroutine(Shooting());
+//    }
 
-    public override void Remove()
-    {
-        StopAllCoroutines();
+//    public override void Remove()
+//    {
+//        StopAllCoroutines();
 
-        gameObject.SetActive(false);
-    }
+//        gameObject.SetActive(false);
+//    }
 
-    private void OnDestroy()
-    {
-        StopAllCoroutines();
+//    private void OnDestroy()
+//    {
+//        StopAllCoroutines();
 
-        DestroyBullets();
-    }
+//        DestroyBullets();
+//    }
 
-    private void OnEnable()
-    {
-        _bullets = new List<Bullet>();
+//    //private void OnEnable()
+//    //{
+//    //    _bullets = new List<Bullet>();
 
-        _bulletPool = new ObjectPool<Bullet>(() => CreateBullet(),
-            bullet => bullet.gameObject.SetActive(false),
-            bullet => bullet.gameObject.SetActive(true),
-            bullet => bullet.gameObject.SetActive(false));
+//    //    _bulletPool = new ObjectPool<Bullet>(() => CreateBullet(),
+//    //        bullet => bullet.gameObject.SetActive(false),
+//    //        bullet => bullet.gameObject.SetActive(true),
+//    //        bullet => bullet.gameObject.SetActive(false));
 
-        for (int i = 0; i < bulletsPoolSize; i++)
-        {
-            _bulletPool.CreatePoolObject();
-        }
+//    //    for (int i = 0; i < bulletsPoolSize; i++)
+//    //    {
+//    //        _bulletPool.CreatePoolObject();
+//    //    }
 
-        BonusEvents.OnResizePlatform.AddListener(OnSetScale);
-    }
+//    //    BonusEvents.OnResizePlatform.AddListener(OnSetScale);
+//    //}
 
-    private IEnumerator Shooting()
-    {
-        int count = bulletsPoolSize;
+//    private IEnumerator Shooting()
+//    {
+//        int count = bulletsPoolSize;
 
-        while (count > 0)
-        {
-            var position = PlatformController.OnGetTransform.Invoke().position;
+//        while (count > 0)
+//        {
+//            var position = PlatformController.OnGetTransform.Invoke().position;
 
-            var bullet1 = _bulletPool.Get();
+//            var bullet1 = _bulletPool.Get();
 
-            bullet1.transform.position = new Vector2(position.x + offsetX, position.y + offsetY);
+//            bullet1.transform.position = new Vector2(position.x + offsetX, position.y + offsetY);
 
-            var bullet2 = _bulletPool.Get();
+//            var bullet2 = _bulletPool.Get();
 
-            bullet2.transform.position = new Vector2(position.x - offsetX, position.y + offsetY);
+//            bullet2.transform.position = new Vector2(position.x - offsetX, position.y + offsetY);
 
-            count--;
+//            count--;
 
-            yield return new WaitForSecondsRealtime(reloadTime);
-        }
+//            yield return new WaitForSecondsRealtime(reloadTime);
+//        }
 
-        yield return new WaitForSecondsRealtime(disableHold);
-        Remove();
-    }
-    private Bullet CreateBullet()
-    {
-        var newBullet = Instantiate(_prefab, transform);
+//        yield return new WaitForSecondsRealtime(disableHold);
+//        Remove();
+//    }
+//    private Bullet CreateBullet()
+//    {
+//        var newBullet = Instantiate(_prefab, transform);
 
-        newBullet.OnCeateBullet(_bulletPool);
+//        newBullet.OnCeateBullet(_bulletPool);
 
-        _bullets.Add(newBullet);
+//        _bullets.Add(newBullet);
 
-        return newBullet;
-    }
+//        return newBullet;
+//    }
 
-    private void DestroyBullets()
-    {
-        foreach (var item in _bullets)
-            Destroy(item.gameObject);
-    }
+//    private void DestroyBullets()
+//    {
+//        foreach (var item in _bullets)
+//            Destroy(item.gameObject);
+//    }
 
-    private void OnSetScale(float value)
-    {
-        offsetX += value/2;
-    }
+//    private void OnSetScale(float value)
+//    {
+//        offsetX += value/2;
+//    }
 }

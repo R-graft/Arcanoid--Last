@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ScenesManager : Singleton<ScenesManager>
+public class ScenesManager : Singleton<ScenesManager>, IService
 {
     [SerializeField] private LoadPanel _loadPanel;
 

@@ -1,25 +1,28 @@
-
 using UnityEngine;
 
-public class FactoryBlock<T> where T : Block
+public class FactoryBlock<T> : BaseMonoFactory<Block>
 {
-    private T _creatingObject;
+    protected string _type;
 
-    private BlocksSystem _blocksController;
-    public FactoryBlock(T currentBlockType, BlocksSystem controller)
+    protected int _healthCount;
+
+    protected Sprite _sprite;
+
+    public FactoryBlock(Block prefab, Transform container, string type, int healthCount, Sprite sprite) : base(prefab, container)
     {
-        _creatingObject = currentBlockType;
+        _type= type;
 
-        _blocksController = controller;
+        _healthCount= healthCount;
+
+        _sprite= sprite;
     }
 
-    public  T CreateObject()
+    public virtual Block ConstructObject()
     {
-        var creatingBlock = Object.Instantiate(_creatingObject, _blocksController.transform);
+        Block newBlock = CreateObject();
 
-        creatingBlock._blocksSystem = _blocksController;
+        newBlock.Construct(_type, _healthCount, _sprite);
 
-        return creatingBlock;
+        return newBlock;
     }
 }
-    

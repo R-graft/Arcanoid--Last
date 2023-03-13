@@ -1,61 +1,72 @@
-using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class ObjectPool<T> where T : IPoolable
+public abstract class ObjectPool<T> : IPool<T> where T : IPoolObject
 {
-    private Queue<T> _objectsQueue;
+    private readonly IPoolFactory<T> _factory;
+    private readonly Queue<T> _queue;
 
-    private Action<T> OnGet;
-
-    private Action<T> OnCreate;
-
-    private Func<T> OnGetNewObject;
-
-    private Action<T> OnDisableObject;
-
-    public ObjectPool(Func<T> onGetNewObject, Action<T> onCreate, Action<T> onGet, Action<T> OnDisable)
+    protected ObjectPool(IPoolFactory<T> factory)
     {
-        _objectsQueue = new Queue<T>();
-
-        OnGetNewObject = onGetNewObject;
-
-        OnCreate = onCreate;
-
-        OnGet = onGet;
-
-        OnDisableObject = OnDisable;
+        _factory = factory;
+        _queue = new Queue<T>();
+    }
+    public virtual T GetObject()
+    {
+        return _queue.Count > 0 ? _queue.Dequeue() : CreateObject();
     }
 
-    public void CreatePoolObject()
+    public virtual void ReturnObject(T obj)
     {
-        T newObject = OnGetNewObject();
-
-        Add(newObject);
+        _queue.Enqueue(obj);
     }
 
-    public void Add(T addedObject)
+    protected virtual T CreateObject()
     {
-        _objectsQueue.Enqueue(addedObject);
-
-        OnCreate(addedObject);
+        var poolObject = _factory.CreateObject();
+        poolObject.Initialize(this as IPool<IPoolObject>);
+        return poolObject;
     }
-    public T Get()
+}
+
+public class BaseMonoPool<T> : ObjectPool<T> where T : BasePoolObject
+{
+    private readonly Transform _container;
+
+    public BaseMonoPool(IPoolFactory<T> factory, Transform container) : base(factory)
     {
-        if (_objectsQueue.Count == 0)
-        {
-            CreatePoolObject();
-        }
-
-        T spawnObject = _objectsQueue.Dequeue();
-
-        OnGet(spawnObject);
-
-        return spawnObject;
+        _container = container;
     }
-    public void Disable(T disabledObject)
+
+    public override void ReturnObject(T obj)
     {
-        _objectsQueue.Enqueue(disabledObject);
-
-        OnDisableObject(disabledObject);
+        obj.transform.SetParent(_container);
+        base.ReturnObject(obj);
     }
+}
+
+public abstract class BasePoolObject : MonoBehaviour, IPoolObject
+{
+    private IPool<IPoolObject> _pool;
+    public virtual void Initialize(IPool<IPoolObject> pool)
+    {
+        _pool = pool;
+    }
+
+    public virtual void Return()
+    {
+        _pool.ReturnObject(this);
+    }
+}
+
+public interface IPoolObject
+{
+    void Initialize(IPool<IPoolObject> pool);
+    void Return();
+}
+
+public interface IPool<T>
+{
+    T GetObject();
+    void ReturnObject(T obj);
 }

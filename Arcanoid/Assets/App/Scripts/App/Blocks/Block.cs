@@ -2,56 +2,53 @@ using UnityEngine;
 using DG.Tweening;
 
 [System.Serializable]
-public abstract class Block : MonoBehaviour, IPoolable, IAnimatedElement
+public abstract class Block : BasePoolObject
 {
-    [Header("controller")]
-    public int poolSize;
-    [HideInInspector] public (int x, int y) selfGridIndex;
+    [SerializeField] private SpriteRenderer _renderer;
 
-    [Header("model")]
-    public BlocksList blockId;
+    [SerializeField] private Collider2D _collider;
 
-    public Collider2D _collider;
+    public string BlockId { get; private set; }
 
-    public int HealthCount { get; set; }
+    private Vector2 _selfGridIndex;
 
-    [Header("view")]
-    public SpriteRenderer _blockSprite;
+    private int _healthCount;
+    // //////////////////////////
 
-    [SerializeField] private BlockSounds _sound;
+    [HideInInspector] public string blockId;
 
     [HideInInspector] public BlocksSystem _blocksSystem;
+
+    [HideInInspector] public (int x,int y) selfGridIndex;
+    public void Construct(string id, int health, Sprite sprite)
+    {
+        BlockId = id;
+
+        _healthCount = health;
+
+        _renderer.sprite = sprite;
+    }
+    public override void Return()
+    {
+        gameObject.SetActive(false);
+
+        base.Return();
+    }
 
     public void SetStartSize(Vector2 size)
     {
         transform.localScale = size;
     }
-    public virtual void InAnimation()
+
+    public virtual void InDamage(int damage)
     {
-        _sound.GetSoundState();
 
-        _sound.GetAwakeSound();
-
-        DOTween.To(()=> _blockSprite.size, x => _blockSprite.size = x, Vector2.one, 0.2f);
     }
 
-    public virtual void OutAnimation()
+    public virtual void InDestroy()
     {
-        _sound.GetDestroySound();
 
-        DOTween.To(() => _blockSprite.size, x => _blockSprite.size = x, new Vector2(1.2f, 1.4f), 0.3f).OnComplete(()=> gameObject.SetActive(false));
     }
-
-    public virtual void InDamage(int damageValue)
-    {
-        _sound.GetDamageSound();
-
-        DOTween.Sequence().
-        Append(DOTween.To(() => _blockSprite.size, x => _blockSprite.size = x, new Vector2(0.9f, 0.9f), 0.1f))
-        .Append(DOTween.To(() => _blockSprite.size, x => _blockSprite.size = x, new Vector2(1f, 1f), 0.1f)).SetLoops(2);
-    }
-
-    public virtual void InDestroy() => _blocksSystem.BlockRemove(selfGridIndex);
 }
 
 public interface IDamageable

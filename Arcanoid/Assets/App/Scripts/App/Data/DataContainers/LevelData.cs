@@ -1,15 +1,19 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 public class LevelData
 {
     public int levelnumber;
 
-    public int blocksCount;
+    public List<LevelBlock> levelBlocks;
+}
 
-    public List<string> blockTags;
+[System.Serializable]
 
-    public List<int> blockIndexX;
+public class LevelBlock
+{
+   public string blockTag;
 
-    public List<int> blockIndexY;
+   public Vector2 blockCoordinate;
 }
