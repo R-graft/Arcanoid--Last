@@ -10,14 +10,14 @@ public class ButtonElement : Button ,IAnimatedElement
 
     protected Action OnUpAction;
 
+    private Inputs _inputs;
+
     protected const float animateDuration = 0.12f;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
         if (OnDownAction == null)
             return;
-
-        AudioController.Instance.GetButtonClickSound();
 
         InAnimation();
     }
@@ -26,7 +26,6 @@ public class ButtonElement : Button ,IAnimatedElement
     {
         if (OnUpAction == null)
             return;
-        AudioController.Instance.GetButtonClickSound();
 
         OnUpAction.Invoke();
     }
@@ -37,12 +36,17 @@ public class ButtonElement : Button ,IAnimatedElement
 
     public virtual void InAnimation()
     {
-        Inputs.Instance.TurnOff(true);
+        if (_inputs == null)
+        {
+            _inputs = ProjectContext.Instance.GetService<Inputs>();
+        }
+
+        _inputs.TurnOff(true);
 
         DOTween.Sequence().
         AppendCallback(() => OnDownAction.Invoke()).
         Append(transform.DOScale(new Vector2(0.8f, 0.8f), animateDuration)).Append(transform.DOScale(Vector2.one, animateDuration)).
-        AppendCallback(() => Inputs.Instance.TurnOn(true));
+        AppendCallback(() => _inputs.TurnOn(true));
     }
 
     public virtual void OutAnimation()

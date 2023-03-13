@@ -3,65 +3,69 @@ using System.Collections.Generic;
 
 public class SpawnSystem : MonoBehaviour
 {
-    [SerializeField]
-    private BlocksData _blocksData;
+    [SerializeField] private BlocksData _blocksData;
 
-    [SerializeField]
-    private BlocksSystem _blockSystem;
+    [SerializeField] private BlocksSystem _blockSystem;
 
-    public static Dictionary<BlocksList, ObjectPool<Block>> Pools { get; private set; }
+    public Dictionary<string, BaseMonoPool<Block>> pools;
     
-    public Dictionary<BlocksList, FactoryBlock<Block>> factories;
+    public Dictionary<string, FactoryBlock<Block>> factories;
 
     public void Init()
     {
         SpawnBlocks();
     }
     private void SpawnBlocks()
-	{
-        Pools = new Dictionary<BlocksList, ObjectPool<Block>>();
+    {
+        pools = new Dictionary<string, BaseMonoPool<Block>>();
 
-        factories = new Dictionary<BlocksList, FactoryBlock<Block>>();
+        factories = new Dictionary<string, FactoryBlock<Block>>();
 
-        foreach (var block in _blocksData.blocksTypes)
+        SpawnSimple(_blocksData.simpleTypes);
+
+        SpawnBoost(_blocksData.boostTypes);
+
+        SpawnParentBoost(_blocksData.boostTypes);
+    }
+
+    private void SpawnSimple(SimpleType[] datas)
+    {
+        foreach (var blockType in datas)
         {
-            FactoryBlock<Block> factory = new FactoryBlock<Block>(block, _blockSystem);
+            var typeFactory = new FactoryBlock<Block>(blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite);
 
-            factories.Add(block.blockId, factory);
+            factories.Add(blockType.type, typeFactory);
 
-            ObjectPool<Block> pool = new ObjectPool<Block>(() => PoolOnCreateNewBlock(block), PoolOnCreate,
-                PoolOnGet, PoolOnDisable);
-           
-            for (int i = 0; i < block.poolSize; i++)
+            var TypePool = new BaseMonoPool<Block>(typeFactory, transform);
+
+            pools.Add(blockType.type, TypePool);
+
+            for (int i = 0; i < blockType.poolsize; i++)
             {
-                var newObject = factory.CreateObject();
+                var newBlock = typeFactory.ConstructObject();
 
-                pool.Add(newObject);
+                TypePool.ReturnObject(newBlock);
             }
-            Pools.Add(block.blockId, pool);
         }
     }
-    public void PoolOnGet(Block block)
-    {
-        block.gameObject.SetActive(true);
 
-        block.InAnimation();
+    private void SpawnBoost(SimpleType[] datas)
+    {
+
     }
 
-    public void PoolOnCreate(Block block)
+    private void SpawnParentBoost(SimpleType[] datas)
     {
-        block._blockSprite.size = Vector2.zero;
 
-        block.gameObject.SetActive(false);
     }
 
-    public void PoolOnDisable(Block block)
+    public Block GetBlock(string tag)
     {
-        block.OutAnimation();
+        return pools[tag].GetObject();
     }
 
-    public Block PoolOnCreateNewBlock(Block block)
+    public void ReturnBlock(Block block)
     {
-        return factories[block.blockId].CreateObject();
+        pools[block.BlockId].ReturnObject(block);
     }
 }

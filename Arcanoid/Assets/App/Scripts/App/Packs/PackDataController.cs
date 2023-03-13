@@ -1,56 +1,87 @@
-public class PackDataController
+using UnityEngine;
+
+public class PackDataController: IService
 {
-	private Pack _currentPack;
+    [Header("config")]
+    private int _currentLevel;
 
-    public Pack[] PacksModels { get; private set; }
+    private const string PackDataDirectory = "/PacksData.json";
 
-    private const int _defaultLevel = 0;
+    private const int _defaultValue = 0;
 
-	public PackDataController(Pack[] packsModels)
-	{
-		PacksModels = packsModels;
+    [Header("components")]
+    private Pack _currentPack;
+
+    private Pack[] _packsModels;
+
+    private GameProgress CurrentProgressData;
+
+    public void Init()
+    {
+        Load();
     }
 
-    public void Load(PackSaveData[] data, int level)
+    public void Load()
     {
-        for (int i = 0; i < PacksModels.Length; i++)
+        _packsModels = Resources.Load<PacksData>("Data/PackData").packsModels;
+
+        CurrentProgressData = new DataReader<GameProgress>(PackDataDirectory).ReadFileFromSystem();
+
+        if (CurrentProgressData == null)
         {
-            PacksModels[i].EndedLevel = data[i].EndedLevel;
+            SetPackDataToDefault();
+        }
 
-            PacksModels[i].isEnded = data[i].packIsended;
+        _currentLevel = CurrentProgressData.currentLevel;
 
-            PacksModels[i].isOpen = data[i].packIsOpen;
+        SetPacks(CurrentProgressData.packsDatas, _currentLevel);
+    }
 
-            if (PacksModels[i].startLevel <= level && PacksModels[i].finishLevel >= level)
-                _currentPack = PacksModels[i];
+    public void Save()
+    {
+        CurrentProgressData.currentLevel = _currentLevel;
+
+        DataWriter<GameProgress> currentWriter =
+            new DataWriter<GameProgress>(CurrentProgressData, PackDataDirectory);
+
+        currentWriter.SaveFileToSystem();
+
+        SetPacks(CurrentProgressData.packsDatas, _currentLevel);
+    }
+
+    private void SetPacks(PackSaveData[] data, int level)
+    {
+        for (int i = 0; i < _packsModels.Length; i++)
+        {
+            _packsModels[i].EndedLevel = data[i].EndedLevel;
+
+            _packsModels[i].isEnded = data[i].packIsended;
+
+            _packsModels[i].isOpen = data[i].packIsOpen;
+
+            if (_packsModels[i].startLevel <= level && _packsModels[i].finishLevel >= level)
+                _currentPack = _packsModels[i];
         }
     }
 
-    public void Save(PackSaveData[] data)
-    {
-        for (int i = 0; i < PacksModels.Length; i++)
-        {
-            data[i].EndedLevel = PacksModels[i].EndedLevel;
-
-            data[i].packIsended = PacksModels[i].isEnded;
-
-            data[i].packIsOpen = PacksModels[i].isOpen;
-        }
-    }
 
     public void SetLevelFrowView(int packIndex)
     {
-        if (packIndex >= 0 && packIndex <= PacksModels.Length)
+        if (packIndex >= 0 && packIndex <= _packsModels.Length)
         {
-            _currentPack = PacksModels[packIndex];
+            _currentPack = _packsModels[packIndex];
 
             if (_currentPack.isEnded)
             {
-                _currentPack.EndedLevel = _defaultLevel;
+                _currentPack.EndedLevel = _defaultValue;
 
                 _currentPack.isEnded = false;
+
+                _currentLevel = _currentPack.startLevel;
             }
         }
+
+        Save();
     }
     public Pack GetCurrentPack() => _currentPack;
 
@@ -58,15 +89,17 @@ public class PackDataController
 
     public int GetGlobalLevel() => _currentPack.EndedLevel + _currentPack.startLevel;
 
-    public void LevelPass(int newLevel)
+    public void LevelPass()
     {
-        if (newLevel > _currentPack.finishLevel)
+        _currentLevel++;
+
+        if (_currentLevel > _currentPack.finishLevel)
         {
             _currentPack.EndedLevel++;
 
             _currentPack.isEnded = true;
 
-            _currentPack = PacksModels[_currentPack.packIndex + 1];
+            _currentPack = _packsModels[_currentPack.packIndex + 1];
 
             _currentPack.isOpen = true;
         }
@@ -74,43 +107,55 @@ public class PackDataController
         {
             _currentPack.EndedLevel++;
         }
+
+        Save();
     }
-    public void SetPackDataToDefault(GameProgressData datas)
+    public void SetPackDataToDefault()
 	{
-        datas.packsDatas = new PackSaveData[PacksModels.Length];
+        CurrentProgressData = new GameProgress();
 
-        for (int i = 0; i < datas.packsDatas.Length; i++)
+        CurrentProgressData.currentLevel = _defaultValue;
+
+        CurrentProgressData.packsDatas = new PackSaveData[_packsModels.Length];
+
+        for (int i = 0; i < CurrentProgressData.packsDatas.Length; i++)
         {
-            datas.packsDatas[i] = new PackSaveData();
+            CurrentProgressData.packsDatas[i] = new PackSaveData();
 
-            datas.packsDatas[i].packIndex = i;
+            CurrentProgressData.packsDatas[i].packIndex = i;
         }
 
-        foreach (var item in PacksModels)
+        foreach (var item in _packsModels)
         {
-            item.EndedLevel = 0;
+            item.EndedLevel = _defaultValue;
             item.isOpen = false;
             item.isEnded = false;
         }
 
-        _currentPack = PacksModels[0];
+        CurrentProgressData.packsDatas[0].packIsOpen = true;
 
-        PacksModels[0].isOpen = true;
+        _currentLevel = _defaultValue;
 
-        PacksModels[0].EndedLevel = _defaultLevel;
-
-        Save(datas.packsDatas);
+        Save();
     }
-
 }
-    [System.Serializable]
-    public class PackSaveData
-    {
-        public int packIndex;
+[System.Serializable]
+public class GameProgress
+{
+    public int currentLevel;
 
-        public bool packIsOpen;
+    public PackSaveData[] packsDatas;
+}
+[System.Serializable]
+public class PackSaveData
+{
+    public int packIndex;
 
-        public bool packIsended;
+    public bool packIsOpen;
 
-        public int EndedLevel;
-    }
+    public bool packIsended;
+
+    public int EndedLevel;
+}
+
+

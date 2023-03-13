@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using TMPro;
-using System;
 using System.Collections.Generic;
 
 public class LangSwitcher : MonoBehaviour
@@ -9,45 +8,64 @@ public class LangSwitcher : MonoBehaviour
 
     private LangHandler _langHandler;
 
-    private int _langId;
-
     private List<string> _avaliableLangs;
 
-    private string _currentLang;
+    private Dictionary<int, string> _langsValues;
 
-    public static Action<int> OnLangSwitch;
+    private const string CurrentIndexKey = "CurrentIndexKey";
 
-    private void Awake()
+    private int _currentIndex;
+
+    public void SetLang(TMP_Dropdown drop)
     {
-        Init();
+        _currentIndex = drop.value;
+
+        _langHandler.SetLang(_langsValues[_currentIndex]);
+
+        _switcher.value = _currentIndex;
+
+        SetCurrentIndex();
     }
 
-    public void SetLanguage(TMP_Dropdown drop)
+    public void Init(LangHandler langHandler)
     {
-        _langId = drop.value;
-
-        _langHandler.SetLang(_currentLang);
-    }
-
-    public void Init()
-    {
-        _langHandler = MainServiceLocator.Instance.GetService<LangHandler>();
-
-        _currentLang = _langHandler.CurrentLang;
+        _langHandler = langHandler;
 
         _avaliableLangs = _langHandler.AvaliableLangs;
 
-        _switcher.value = _langId;
+        SetDropDownValues();
 
-        SetDropDownValues(_switcher);
+        GetCurerntIndex();
+
+        _switcher.value = _currentIndex;
     }
 
-    private void SetDropDownValues(TMP_Dropdown drop)
+
+    private void SetDropDownValues()
     {
         for (int i = 0; i < _avaliableLangs.Count; i++)
         {
-            drop.options[i].text = _avaliableLangs[i];
+            _switcher.options[i].text = _avaliableLangs[i];
         }
-     
+
+        if (_langsValues == null)
+        {
+            _langsValues = new Dictionary<int, string>();
+
+            for (int i = 0; i < _avaliableLangs.Count; i++)
+            {
+                _langsValues.Add(i, _avaliableLangs[i]);
+            }
+        }
+    }
+
+    private void SetCurrentIndex()
+    {
+        PlayerPrefs.SetInt(CurrentIndexKey, _currentIndex);
+    }
+
+    private void GetCurerntIndex()
+    {
+        _currentIndex = PlayerPrefs.GetInt(CurrentIndexKey);
     }
 }

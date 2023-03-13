@@ -38,27 +38,27 @@ public class PackViewManager : MonoBehaviour
 
     public void SetPacksView()
     {
-        if (!GameProgressController.Instance)
-            return;
+        //if (!GameProgressController.Instance)
+        //    return;
         
-        var packModels = GameProgressController.Instance.PacksController.PacksModels;
+       // var packModels = GameProgressController.Instance.PacksController.PacksModels;
 
-        for (int i = 0; i < packModels.Length; i++)
-        {
-            if (packModels[i].packIndex == _packViews[i].packIndex)
-            {
-                SetInterface(packModels[i], _packViews[i]);
-            }
-        }
+        //for (int i = 0; i < packModels.Length; i++)
+        //{
+        //    if (packModels[i].packIndex == _packViews[i].packIndex)
+        //    {
+        //        SetInterface(packModels[i], _packViews[i]);
+        //    }
+        //}
     }
     public void SetCurrentPack(int index)
     {
-        if (GameProgressController.Instance.GameAccess)
-        {
-            GameProgressController.Instance.SetDataFromVeiw(index);
+        //if (GameProgressController.Instance.GameAccess)
+        //{
+        //    //GameProgressController.Instance.SetDataFromVeiw(index);
 
-            ScenesManager.Instance.LoadScene(SCENELIST.GameScene);
-        }
+        //    ScenesManager.Instance.LoadScene(SCENELIST.GameScene);
+        //}
     }
 
     private void SetScrollContentPosition(int index)

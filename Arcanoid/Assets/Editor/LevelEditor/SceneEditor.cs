@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 public class SceneEditor : EditorWindow
 {
@@ -7,11 +8,15 @@ public class SceneEditor : EditorWindow
 
     private Transform _parent;
 
+    private List<GameObject> editedTiles;
+
     public void Init(LevelEditor levelEditor, Transform parent)
     {
         _lEditor = levelEditor;
 
         _parent = parent;
+
+        editedTiles = new List<GameObject>();
     }
 
     public void OnsceneGui(SceneView sceneView)
@@ -34,12 +39,33 @@ public class SceneEditor : EditorWindow
 
     private void CreateCurrentBlock(Collider2D collider)
     {
-        Block newBlock = Instantiate(_lEditor.editorBlocksData.editorData[_lEditor.index].block, _parent);
+        editedTiles.Add(collider.gameObject);
 
-        newBlock.transform.position = collider.transform.position;
+        var tileSprite = collider.GetComponent<SpriteRenderer>();
 
-        newBlock.name = collider.name;
+        tileSprite.sprite = _lEditor.allObjects[_lEditor.index].sprite;
 
-        _lEditor.currentObjects.Add((newBlock));
+        var pos = collider.gameObject.name.Split(',');
+
+        var newIndex = new Vector2(int.Parse(pos[0]), int.Parse(pos[1]));
+
+        _lEditor.currentObjects.Add(newIndex, _lEditor.allObjects[_lEditor.index].id);
+    }
+
+    public void Clear()
+    {
+        for (int i = 0; i < editedTiles.Count; i++)
+        {
+            editedTiles[i].GetComponent<SpriteRenderer>().sprite = default;
+
+            editedTiles.RemoveAt(i);
+        }
+    }
+
+    public void Undo()
+    {
+        editedTiles[editedTiles.Count - 1].GetComponent<SpriteRenderer>().sprite = null;
+
+        editedTiles.RemoveAt(editedTiles.Count - 1);
     }
 }

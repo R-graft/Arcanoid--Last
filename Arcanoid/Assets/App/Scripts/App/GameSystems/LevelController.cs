@@ -1,144 +1,49 @@
-using UnityEngine;
+using System;
 
-public class LevelController : MonoBehaviour
+public class LevelController
 {
-    [SerializeField] private SpawnSystem _spawnSystem;
+    public Action OnStartGame;
+    public Action OnPauseGame;
+    public Action OnRestarGame;
+    public Action OnWinGame;
+    public Action OnLoseGame;
 
-    [SerializeField] private BlocksSystem _blocksSystem;
-
-    [SerializeField] private PlatformController _platformController;
-
-    [SerializeField] private BallsController _ballController;
-
-    [SerializeField] private BoostSystem _boostSystem;
-
-    [SerializeField] private GameFieldSystem _gamefieldSystem;
-
-    [SerializeField] private GamePanelController _gamePanelController;
-
-    [SerializeField] private GameUI _GameUI;
-
-    private Inputs _inputs;
-
-    private void Awake()
+    public LevelController(params IGameHandler[] handlers)
     {
-        SubscribeOnUI();
+        SubscribeOnGameEvents(handlers);
 
-        InitLevel();
+        SetController(handlers);
     }
-
-    private void InitLevel()
+    public void SetController(IGameHandler[] handlers)
     {
-        _inputs = Inputs.Instance;
-
-        _inputs.TurnOff(false);
-
-        _spawnSystem.Init();
-
-        _blocksSystem.Init();
-
-        _platformController.Init();
-
-        _ballController.Init();
-
-        _gamefieldSystem.Init();
-
-        _GameUI.Init();
-
-        StartGame();
-    }
-
-    public void StartGame()
-    {
-        GameProgressController.Instance.LoadLevel();
-
-        _blocksSystem.StartSystem();
-
-        _gamePanelController.StartSystem();
-
-        _inputs.TurnOn(false);
-    }
-
-    public void Restart()
-    {
-        _ballController.RestartSystem();
-
-        _platformController.RestartSystem();
-
-        _inputs.TurnOn(false);
-    }
-
-    
-    public void PauseGame()
-    {
-        if (Time.timeScale == 0)
+        foreach (var handler in handlers)
         {
-            Time.timeScale = 1;
-
-            _inputs.TurnOn(false);
-        }
-
-        else
-        {
-            _inputs.TurnOff(false);
-
-            _GameUI.GameUiPause();
-
-            Time.timeScale = 0;
+            handler.InitController(this);
         }
     }
-
-    public void Lose()
+    public void SubscribeOnGameEvents(IGameHandler[] handlers)
     {
-        _inputs.TurnOff(false);
-
-        _ballController.StopBalls();
-
-        _boostSystem.StopSystem();
-
-        _gamePanelController.LivesCounter(1, false);
-
-        if (_gamePanelController.LivesCount == 0)
-            _GameUI.GameUiGameOver();
-
-        else
-            Restart();
+        foreach (var handler in handlers)
+        {
+            OnStartGame += handler.StartGame;
+            OnPauseGame += handler.PauseGame;
+            OnRestarGame += handler.RestartGame;
+            OnLoseGame += handler.LoseGame;
+            OnWinGame += handler.WinGame;
+        }
     }
-    public void WinLevel()
-    {
-        GameProgressController.Instance.PassLevel();
+}
 
-        _inputs.TurnOff(false);
+public interface IGameHandler
+{
+    public void InitController(LevelController controller);
+    public void StartGame();
 
-        _ballController.StopBalls();
+    public void PauseGame();
 
-        _boostSystem.StopSystem();
+    public void RestartGame();
 
-        _GameUI.GameUiWin();
-    }
+    public void WinGame();
 
-    private void SubscribeOnUI()
-    {
-        _GameUI.OnStart += StartGame;
-        _GameUI.OnReStart += Restart;
-        _GameUI.OnPause += PauseGame;
-    }
-    private void OnEnable()
-    {
-        BlocksSystem.OnAllBlocksDestroyed += WinLevel;
-
-        BallsController.OnBallIsFall += Lose;
-
-        Time.timeScale = 1;
-    }
-    private void OnDisable()
-    {
-        _GameUI.OnStart -= StartGame;
-        _GameUI.OnReStart -= Restart;
-        _GameUI.OnPause -= PauseGame;
-
-        BlocksSystem.OnAllBlocksDestroyed -= WinLevel;
-
-        BallsController.OnBallIsFall -= Lose;
-    }
+    public void LoseGame();
 }

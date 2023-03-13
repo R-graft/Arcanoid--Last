@@ -5,15 +5,21 @@ public class EditorGrid : MonoBehaviour
 {
     private GameObject _tile;
 
+    private GameObject _tileParent;
+
     private Vector2 _leftUpPosition;
 
-    private const int _rowsCount = 10;
+    private Vector2 _screenSize;
 
-    private const int _linesCount = 10;
+    private const int _rowsCount = 7;
 
-    private const float _heightOffset = 0.81f;
+    private const int _linesCount = 7;
 
-    private const float _widthOffset = 0.1f;
+    private const float _heightOffset = 0.75f;
+
+    private const float _widthOffset = 0.98f;
+
+    private const float _abroadOffset = 0.05f;
 
     public  List<GameObject> _testTiles;
     public EditorGrid(GameObject testTile)
@@ -22,9 +28,15 @@ public class EditorGrid : MonoBehaviour
     }
     public void CreateGrid()
     {
-        _testTiles = new List<GameObject> ();
+        _tileParent = new GameObject();
 
-        _leftUpPosition = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width * _widthOffset, (Screen.height * _heightOffset)));
+        _screenSize = GetScreen();
+
+        _testTiles = new List<GameObject>();
+
+        _leftUpPosition = new Vector2(-_screenSize.x * _widthOffset, _screenSize.y * _heightOffset);
+
+        print(_leftUpPosition);
 
         var cellLength = (-_leftUpPosition.x * 2) / _rowsCount;
 
@@ -38,7 +50,9 @@ public class EditorGrid : MonoBehaviour
         {
             for (int j = 0; j < _rowsCount; j++)
             {
-                var newTile = Instantiate(_tile, tempPos, Quaternion.identity);
+                var newTile = Instantiate(_tile, tempPos, Quaternion.identity, _tileParent.transform);
+
+                ResizeBlock(newTile);
 
                 newTile.name = $"{i + 1},{j + 1}";
 
@@ -55,9 +69,24 @@ public class EditorGrid : MonoBehaviour
 
     public void ClearGrid()
     {
-        foreach (var item in _testTiles)
-        {
-            DestroyImmediate(item);
-        }
+        DestroyImmediate(_tileParent);
+    }
+    private Vector2 GetScreen()
+    {
+        var screenHeight = 10;
+
+        var screenWidth = screenHeight * Camera.main.aspect;
+
+        return new Vector2(screenWidth, screenHeight);
+    }
+    private void ResizeBlock(GameObject tile)
+    {
+        float widthBlocksSpace = _screenSize.x- _abroadOffset * (_rowsCount - 1);
+
+        float blockWidth = (widthBlocksSpace / _rowsCount) * 2;
+
+        float blockHeight = blockWidth / 2;
+
+        tile.transform.localScale = new Vector2(blockWidth, blockHeight);
     }
 }

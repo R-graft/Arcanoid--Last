@@ -5,12 +5,10 @@ using UnityEngine;
 public class BlocksSystem : MonoBehaviour
 {
     [Header("config")]
-    public int rowsCount = 10;
-    public int linesCount = 10;
+    public int rowsCount = 7;
+    public int linesCount = 7;
 
-    [SerializeField] private BlocksArranger _blocksArranger;
-
-    private FieldGrid _grid;
+    [SerializeField] private BlocksArrangeSystem _blocksArranger;
 
     private int _currentBlocksCount;
 
@@ -26,13 +24,13 @@ public class BlocksSystem : MonoBehaviour
 
     public void Init()
     {
-        _grid = new FieldGrid(rowsCount, linesCount);
+        //_grid = new FieldGridSystem(rowsCount, linesCount);
 
-        _gridWorldPositions = _grid.CreateGrid();
+        //_gridWorldPositions = _grid.CreateGrid();
 
-        _blockSize = _grid.GetBlocksSize();
+        //_blockSize = _grid.GetBlocksSize();
 
-        BlocksArranger.OnGetBlocksCount += SetStartBlocksCount;
+        BlocksArrangeSystem.OnGetBlocksCount += SetStartBlocksCount;
     }
 
     public void StartSystem()
@@ -55,7 +53,7 @@ public class BlocksSystem : MonoBehaviour
 
             _gridIndexes.Remove(index);
 
-            SpawnSystem.Pools[block.blockId].Disable(block);
+           // SpawnSystem.Pools[block.blockId].Disable(block);
         }
     }
     public void AddBlock((int x, int y) index, Block block) => _gridIndexes.Add(index, block);
@@ -74,8 +72,8 @@ public class BlocksSystem : MonoBehaviour
     {
         if (_gridIndexes != null &&_gridIndexes.Count != 0)
         {
-            foreach (var block in _gridIndexes)
-                SpawnSystem.Pools[block.Value.blockId].Disable(block.Value);
+           // foreach (var block in _gridIndexes)
+               // SpawnSystem.Pools[block.Value.blockId].Disable(block.Value);
         }
     }
 
@@ -86,7 +84,7 @@ public class BlocksSystem : MonoBehaviour
     {
         foreach (var item in _gridIndexes.Values)
         {
-            item._collider.isTrigger = isFury;
+            //item._collider.isTrigger = isFury;
         }
     }
 

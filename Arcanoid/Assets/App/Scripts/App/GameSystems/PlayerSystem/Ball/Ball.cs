@@ -2,23 +2,15 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField]
-    private Rigidbody2D _rb;
+    [SerializeField] private Rigidbody2D _rb;
 
-    [SerializeField]
-    private BallCollision _collisionController;
+    [SerializeField] private BallCollision _collisionController;
 
-    [SerializeField]
-    private BallBounce _bounce;
+    [SerializeField] private BallBounce _bounce;
 
-    [SerializeField]
-    private BallSpeed _speed;
+    [SerializeField] private BallSpeed _speed;
 
-    [SerializeField]
-    private BallDamage _damage;
-
-    [SerializeField]
-    private BallSounds _sounds;
+    [SerializeField] private BallDamage _damage;
 
     public Rigidbody2D BallRb { get => _rb; }
 
@@ -28,7 +20,6 @@ public class Ball : MonoBehaviour
         {
             _speed.OnBlockCollision();
         }
-        _sounds.GetSoundTouch();
 
         _bounce.TryAngleCorrect(collision);
     }

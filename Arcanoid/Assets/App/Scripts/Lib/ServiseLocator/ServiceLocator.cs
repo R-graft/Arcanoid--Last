@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ServiceLocator<T> : IServiceLocator<T>
 {
@@ -52,6 +50,5 @@ public interface IServiceLocator<T>
 {
     TP Regiser<TP>(TP newService) where TP : T;
     void Unregister<TP>(TP newService) where TP : T;
-
     TP Get<TP>() where TP : T;
 }

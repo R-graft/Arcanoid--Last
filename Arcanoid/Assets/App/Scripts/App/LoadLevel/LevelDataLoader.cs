@@ -6,14 +6,14 @@ public class LevelDataLoader
 
     public LevelData GetCurrentLevelData()
     {
-        if (GameProgressController.Instance != null)
-        {
-            _currentLevel = GameProgressController.Instance.Level;
+        //if (GameProgressController.Instance != null)
+        //{
+        //    _currentLevel = GameProgressController.Instance.Level;
 
-            string _levelsFilesPath = $"Data/Levels/{_currentLevel}";
+        //    string _levelsFilesPath = $"Data/Levels/{_currentLevel}";
 
-            return new DataReader<LevelData>(_levelsFilesPath).ReadFileFromResources();
-        }
+        //    return new DataReader<LevelData>(_levelsFilesPath).ReadFileFromResources();
+        //}
 
         Debug.Log("Game progress not exist");
 
