@@ -1,121 +1,43 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class BlocksSystem : MonoBehaviour
+public class BlocksSystem : GameSystem
 {
-    [Header("config")]
-    public int rowsCount = 7;
-    public int linesCount = 7;
+    private List<Block> _allBlocks = new List<Block>();
 
-    [SerializeField] private BlocksArrangeSystem _blocksArranger;
-
-    private int _currentBlocksCount;
-
-    private Vector2 _blockSize;
-
-    public Dictionary<(int x, int y), Block> _gridIndexes = new Dictionary<(int x, int y), Block>();
-
-    public Dictionary<(int x, int y), Vector2> _gridWorldPositions;
-
-    public static Action OnBlockDestroyed;
-
-    public static Action OnAllBlocksDestroyed;
-
-    public void Init()
+    private SpawnSystem _spawner;
+    public override void InitSystem()
     {
-        //_grid = new FieldGridSystem(rowsCount, linesCount);
-
-        //_gridWorldPositions = _grid.CreateGrid();
-
-        //_blockSize = _grid.GetBlocksSize();
-
-        BlocksArrangeSystem.OnGetBlocksCount += SetStartBlocksCount;
+        _spawner = LevelContext.Instance.GetSystem<SpawnSystem>();
     }
 
-    public void StartSystem()
+    public void AddBlock(Block block)
     {
-        ClearBlocks();
-
-        _gridIndexes = new Dictionary<(int x, int y), Block>();
-
-        _blocksArranger.GetBlocks(_gridWorldPositions, _gridIndexes, _blockSize);
+        _allBlocks.Add(block);
     }
 
-    public void BlockRemove((int x, int y) index)
+    public void RemoveBlock(Block block)
     {
-        if (_gridIndexes.TryGetValue(index, out Block block))
+        if (_allBlocks.Contains(block))
         {
-            if (block.TryGetComponent(out IDamageable _))
+            _spawner.ReturnBlock(block);
+
+            _allBlocks.Remove(block);
+
+            if (_allBlocks.Count == 0)
             {
-                BlocksCounter(1);
+                _controller.Win();
             }
-
-            _gridIndexes.Remove(index);
-
-           // SpawnSystem.Pools[block.blockId].Disable(block);
         }
-    }
-    public void AddBlock((int x, int y) index, Block block) => _gridIndexes.Add(index, block);
-
-    private void BlocksCounter(int count)
-    {
-        _currentBlocksCount -= count;
-
-        OnBlockDestroyed?.Invoke();
-
-        if (_currentBlocksCount == 0)
-            OnAllBlocksDestroyed?.Invoke();
     }
 
     public void ClearBlocks()
     {
-        if (_gridIndexes != null &&_gridIndexes.Count != 0)
+        foreach (var block in _allBlocks)
         {
-           // foreach (var block in _gridIndexes)
-               // SpawnSystem.Pools[block.Value.blockId].Disable(block.Value);
+            _spawner.ReturnBlock(block);
         }
-    }
 
-    private void SetStartBlocksCount(int value) => _currentBlocksCount = value;
-
-    #region(bonus actoins)
-    private void FuryModeBonus(bool isFury)
-    {
-        foreach (var item in _gridIndexes.Values)
-        {
-            //item._collider.isTrigger = isFury;
-        }
-    }
-
-    private void BombBonus(List<(int, int)> targetIndexes, int damage)
-    {
-        foreach (var index in targetIndexes)
-        {
-            if (_gridIndexes.TryGetValue(index, out Block block))
-            {
-                if (block.TryGetComponent(out IDamageable dam))
-                {
-                    if (damage == -1)
-                    {
-                        dam.InDestroy();
-                    }
-                    else
-                    {
-                        dam.InDamage(damage);
-                    }
-                }
-                else
-                    BlockRemove(index);
-            }
-        }
-    }
-   
-    #endregion
-    private void OnEnable()
-    {
-        BonusEvents.OnBombBonus.AddListener(BombBonus);
-        BonusEvents.OnFuryBallBonus.AddListener(FuryModeBonus);
+        _allBlocks.Clear();
     }
 }
 

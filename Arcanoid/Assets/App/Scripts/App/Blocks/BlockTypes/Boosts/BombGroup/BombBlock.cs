@@ -16,10 +16,10 @@ public abstract class BombBlock : BoostBlock
 
     protected void OnEnable()
     {
-        BlocksArrangeSystem.OnBlocksGridFull += SetTargetIndexes;
+       // BlocksArrangeSystem.OnBlocksGridFull += SetTargetIndexes;
     }
     protected void OnDisable()
     {
-        BlocksArrangeSystem.OnBlocksGridFull -= SetTargetIndexes;
+       // BlocksArrangeSystem.OnBlocksGridFull -= SetTargetIndexes;
     }
 }

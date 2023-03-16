@@ -38,9 +38,19 @@ public class BaseMonoPool<T> : ObjectPool<T> where T : BasePoolObject
         _container = container;
     }
 
+    public override T GetObject()
+    {
+        var obj = base.GetObject();
+
+        obj.gameObject.SetActive(true);
+
+        return obj;
+    }
+
     public override void ReturnObject(T obj)
     {
         obj.transform.SetParent(_container);
+        obj.gameObject.SetActive(false);
         base.ReturnObject(obj);
     }
 }

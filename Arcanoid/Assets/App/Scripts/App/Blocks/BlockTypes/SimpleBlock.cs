@@ -1,24 +1,22 @@
 using UnityEngine;
 
-public class SimpleBlock : Block
+public class SimpleBlock : Block, IDamageable
 {
-    //public override int HealthCount { get; set; }
+    public Block Current { get => this; set => throw new System.NotImplementedException(); }
 
-    //public override void InDamage(int damageValue)
-    //{
-    //    HealthCount-= damageValue;
+    public void InDamage(int damageValue, out int currentHealth)
+    {
+        _healthCount -= damageValue;
 
-    //    if (HealthCount <= 0)
-    //    {
-    //        InDestroy();
-    //    }
+        currentHealth = _healthCount;
 
-    //    else
-    //    {
-    //        base.InDamage(damageValue);
+        _damageEffect.ApplyEffect();
+    }
 
-    //        _coloredBlock.SetColor(_blockSprite, HealthCount);
-    //    }
-    //}
-   
+    public void InDestroy()
+    {
+        _damageEffect.ClearEffect();
+
+        //Return();
+    }
 }

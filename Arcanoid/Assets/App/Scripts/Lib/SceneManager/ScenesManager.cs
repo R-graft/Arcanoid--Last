@@ -17,7 +17,7 @@ public class ScenesManager : Singleton<ScenesManager>, IService
 
     public Action OnSceneIsLoaded;
 
-    public void Init()
+    public void InitService()
     {
         SingleInit();
 

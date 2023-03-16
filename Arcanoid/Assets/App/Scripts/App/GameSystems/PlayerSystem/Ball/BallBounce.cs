@@ -12,10 +12,6 @@ public class BallBounce : MonoBehaviour
     private const float _maxForceIndex = 0.003f;
 
     private const float _minForceIndex = 0.001f;
-    public BallBounce(Rigidbody2D rb)
-    {
-        _objectRb = rb;
-    }
 
     public void TryAngleCorrect(Collision2D collision)
     {

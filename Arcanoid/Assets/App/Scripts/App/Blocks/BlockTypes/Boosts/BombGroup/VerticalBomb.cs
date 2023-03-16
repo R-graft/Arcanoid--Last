@@ -8,18 +8,18 @@ public class VerticalBomb : BombBlock
         {
             _damage = -1;
 
-            var linesCount = _blocksSystem.linesCount;
+           var linesCount = 0;
 
             _currentIndexes = new List<(int x, int y)>();
 
             for (int i = 1; i <= linesCount; i++)
             {
-                var newIndex = (i,selfGridIndex.y);
+                //var newIndex = (i,selfGridIndex.y);
 
-                if (_blocksSystem._gridIndexes.TryGetValue(newIndex, out Block _))
-                {
-                    _currentIndexes.Add(newIndex);
-                }
+                //if (_blocksSystem._gridIndexes.TryGetValue(newIndex, out Block _))
+                //{
+                //    _currentIndexes.Add(newIndex);
+                //}
             }
         }
     }

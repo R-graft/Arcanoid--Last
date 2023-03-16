@@ -15,8 +15,7 @@ GameObject:
   - component: {fileID: -9066686093225011570}
   - component: {fileID: 8953294609221123785}
   - component: {fileID: -6396730700093071376}
-  - component: {fileID: 4664103140317227674}
-  - component: {fileID: 2237517803488325634}
+  - component: {fileID: -5115706995574021814}
   m_Layer: 6
   m_Name: Ball
   m_TagString: Untagged
@@ -33,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 6485567664704144413}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -123,7 +122,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.0039648935}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -148,6 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2beffe7f90e9bdd42b7ded3c4302bc69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: {fileID: 8953294609221123785}
+  _bounce: {fileID: -6396730700093071376}
 --- !u!114 &8953294609221123785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectRb: {fileID: 6485567664704144400}
---- !u!114 &4664103140317227674
+--- !u!114 &-5115706995574021814
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,24 +184,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6485567664704144413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 360beb576e44edd4c98dccc6feae20bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f29225e737ec6247aede6619840cc38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2237517803488325634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6485567664704144413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c811a98130b020e418157b967dde32a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rb: {fileID: 6485567664704144400}
-  _collisionController: {fileID: -9066686093225011570}
-  _bounce: {fileID: -6396730700093071376}
+  _ballRb: {fileID: 6485567664704144400}
   _speed: {fileID: 8953294609221123785}
-  _damage: {fileID: 4664103140317227674}
-  _sounds: {fileID: 0}
+  _collision: {fileID: -9066686093225011570}
+  _bounce: {fileID: -6396730700093071376}

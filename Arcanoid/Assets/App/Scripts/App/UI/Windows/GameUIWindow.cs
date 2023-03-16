@@ -1,17 +1,11 @@
-using System;
 using UnityEngine;
 
 public class GameUIWindow : UIWindow
 {
     [SerializeField] private ButtonElement _pauseButton;
-
-    private ScenesManager _scenesManager;
-
     public override void InitWindow()
     {
-        _scenesManager = ProjectContext.Instance.GetService<ScenesManager>();
-
-        _pauseButton.SetDownAction(()=> GameUiPause(), true);
+        _pauseButton.SetDownAction(() => GameUiPause(), true);
     }
 
     public void GameUiWin()
@@ -21,12 +15,23 @@ public class GameUIWindow : UIWindow
 
     public void GameUiPause()
     {
-        _popUpHandler.ShowPop("pause");
+        _popUpHandler.ShowPop("gamemenu");
     }
     public void GameUiGameOver()
     {
         _popUpHandler.ShowPop("lose");
     }
 
-    
+    public void SetPause()
+    {
+        if (Time.timeScale == 0)
+        {
+            Time.timeScale = 1;
+        }
+
+        else
+        {
+            Time.timeScale = 0;
+        }
+    }
 }

@@ -5,9 +5,19 @@ public abstract class UIPopUp : MonoBehaviour
 {
     public abstract void InitPopUp();
 
-    public virtual void Show() => gameObject.SetActive(true);
+    public virtual void Show()
+    {
+        gameObject.SetActive(true);
 
-    public virtual void Hide() => gameObject.SetActive(false);
+        Time.timeScale = 0;
+    }
+
+    public virtual void Hide()
+    {
+        gameObject.SetActive(false);
+
+        Time.timeScale = 1;
+    }
 
     protected UIPopUpController _controller;
 

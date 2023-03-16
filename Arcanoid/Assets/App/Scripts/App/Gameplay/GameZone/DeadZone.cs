@@ -2,16 +2,22 @@ using UnityEngine;
 
 public class DeadZone : MonoBehaviour
 {
+    private BallsController _ballsController;
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!_ballsController)
+        {
+            _ballsController = LevelContext.Instance.GetSystem<BallsController>();
+        }
+
         if (collision.TryGetComponent(out Bonus bonus))
         {
             Destroy(bonus.gameObject);
         }
 
-        if (collision.TryGetComponent(out Ball ball))
+        if (collision.TryGetComponent(out BallHandler ball))
         {
-            BallsController.OnBallDestroy?.Invoke(ball);
+            _ballsController.Fall(ball);
         }
     }
 }

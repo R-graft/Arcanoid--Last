@@ -1,83 +1,61 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GamePanelController : MonoBehaviour
 {
-    [SerializeField]
-    private GamePanelView _interface;
+    [Header("config")]
+    public int startLivesCount = 3;
 
-    [SerializeField]
-    private PacksData _packsData;
+    public int maxLivesCount = 5;
 
-    [SerializeField]
-    private GameObject _livesPanel;
+    [SerializeField] private GamePanelView _interface;
 
-    [SerializeField]
-    private GameObject _lifePrefab;
+    public LevelController controller;
 
-    private List<GameObject> _livesList;
-
-    public int LivesCount { get => _livesList.Count; }
-
-    private const int StartLivesCount = 3;
-
-    private const int MaxLivesCount = 5;
+    private int _livesCount;
 
     private float _progressStep;
 
-    public void StartSystem()
+    private PackDataController _packsData;
+
+    public void Init()
     {
+        _packsData = ProjectContext.Instance.GetService<PackDataController>();
+
         _interface.Init(_packsData);
 
-        SetStartLives();
+        _interface.RefreshPanel();
+
+        ReStart();
+    }
+    public void ReStart()
+    {
+        _livesCount = startLivesCount;
+
+        _interface.SetStartLives(_livesCount);
     }
 
-    public void LivesCounter(int count, bool add)
+    public void Lose()
     {
-        _livesList ??= new List<GameObject>();
+        _livesCount--;
 
-        for (int i = 0; i < count; i++)
+        if (_livesCount == 0)
         {
-            if (add && _livesList.Count < MaxLivesCount)
-            {
-                var newLife = Instantiate(_lifePrefab, _livesPanel.transform);
-
-                _livesList.Add(newLife);
-            }
-
-            else if (!add && _livesList.Count > 0)
-            {
-                Destroy(_livesList[0]);
-
-                _livesList.RemoveAt(0);
-            }
+            controller.GameOver();
         }
+
+        _interface.RemoveLife();
+    }
+    
+    public void Win()
+    {
+        _interface.RefreshPanel();
     }
 
-    public void SetStartLives()
+    private void LevelProgressCounter()
     {
-        if (_livesList == null)
-        {
-            LivesCounter(StartLivesCount, true);
-        }
+
     }
     private void SetProgressStep(int count) => _progressStep = 1 / (float)count;
 
     private void SetLevelProgress() => _interface.SetProgress(_progressStep);
-
-    private void OnEnable()
-    {
-        BlocksArrangeSystem.OnGetBlocksCount += SetProgressStep;
-
-        BlocksSystem.OnBlockDestroyed += SetLevelProgress;
-
-        BonusEvents.OnSetLives.AddListener(LivesCounter);
-    }
-
-    private void OnDisable()
-    {
-        BlocksArrangeSystem.OnGetBlocksCount -= SetProgressStep;
-
-        BlocksSystem.OnBlockDestroyed -= SetLevelProgress;
-    }
 }

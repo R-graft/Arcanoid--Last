@@ -15,10 +15,10 @@ public class CircleBombBlock : BombBlock
 
             foreach (var (x, y) in _targetIndexes)
             {
-                var newIndex = (selfGridIndex.x + x, selfGridIndex.y + y);
+                //var newIndex = (selfGridIndex.x + x, selfGridIndex.y + y);
 
-                if (_blocksSystem._gridIndexes.TryGetValue(newIndex, out Block _))
-                    _currentIndexes.Add(newIndex);
+                //if (_blocksSystem._gridIndexes.TryGetValue(newIndex, out Block _))
+                //    _currentIndexes.Add(newIndex);
             }
         }
     }

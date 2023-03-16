@@ -1,56 +1,63 @@
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameWinPopUp : UIPopUp
 {
-    [SerializeField]
-    private Image _levelLogo;
+    [SerializeField] private Image _levelLogo;
 
-    [SerializeField]
-    private Slider _levelProgress;
+    [SerializeField] private TextMeshProUGUI _level;
+    [SerializeField] private TextMeshProUGUI _levelsInPack;
 
-    [SerializeField]
-    private TextMeshProUGUI _levelName;
+    [SerializeField] private TextMeshProUGUI _levelName;
 
-    [SerializeField]
-    private TextMeshProUGUI _energy;
+    [SerializeField] private TextMeshProUGUI _energyValue;
+    [SerializeField] private TextMeshProUGUI _maxEnergyValue;
 
-    [SerializeField]
-    private PacksData _packsData;
+    [SerializeField] private Slider _energySlide;
 
-    [SerializeField]
-    private ButtonElement _continue;
+    [SerializeField] private ButtonElement _continue;
+
+    private PackDataController _packsData;
+
+    private EnergyCounter _energy;
+
+    private int _oldLevel;
+    private int _newLevel;
 
     public override void InitPopUp()
     {
-        //_continue.SetDownAction(HideWindow, true);
+        _continue.SetDownAction(() => ProjectContext.Instance.GetService<LevelController>().Restart(), true);
 
-        //_continue.SetDownAction(uiParent.OnStart, true);
-        //_continue.SetDownAction(uiParent.OnReStart, true);
+        _continue.SetDownAction(_controller.HidePop, true);
     }
 
-    //public override void ShowWindow()
-    //{
-    //    base.ShowWindow();
+    public override void Show()
+    {
+        base.Show();
 
-    //    if (!GameProgressController.Instance)
-    //    {
-    //        Debug.Log("Game progress not exist");
-    //        return;
-    //    }
+        _packsData = ProjectContext.Instance.GetService<PackDataController>();
 
-    //    var pack = GameProgressController.Instance.PacksController.GetCurrentPack();
+        _energy = ProjectContext.Instance.GetService<EnergyCounter>();
 
-    //    _levelLogo.sprite = pack.sprite;
+        _level.text = _packsData.GetCurrentPackLevel().ToString();
 
-    //    _levelName.text = pack.title;
+        _levelsInPack.text = _packsData.GetCurrentPackLastLevel().ToString();
 
-    //    _energy.text = GameProgressController.Instance.EnergyCounter.GetEnergy().ToString();
+        _levelLogo.sprite = _packsData.GetCurrentPack().sprite;
 
-    //    ProgressIncrease();
-    //}
+        _levelName.text = _packsData.GetCurrentPack().title.ToString();
+
+        var (current, max) = _energy.GetCurrentEnergy();
+
+        _energyValue.text = current.ToString();
+
+        _maxEnergyValue.text = max.ToString();
+
+        _energySlide.value = (float)current/ (float)max;
+
+        //ProgressIncrease();
+    }
 
     private void ProgressIncrease()
     {

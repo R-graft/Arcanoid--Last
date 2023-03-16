@@ -13,7 +13,7 @@ public class UIPopUpController : MonoBehaviour, IService
 
     private Dictionary<string, UIPopUp> _popUpDictionary = new Dictionary<string, UIPopUp>();
 
-    public void Init()
+    public void InitService()
     {
         foreach (var pop in _popList)
         {

@@ -1,5 +1,4 @@
 using UnityEngine;
-using DG.Tweening;
 
 [System.Serializable]
 public abstract class Block : BasePoolObject
@@ -8,55 +7,34 @@ public abstract class Block : BasePoolObject
 
     [SerializeField] private Collider2D _collider;
 
-    public string BlockId { get; private set; }
+    [SerializeField] protected DamageEffect _damageEffect;
+
+    private string _blockId;
 
     private Vector2 _selfGridIndex;
 
-    private int _healthCount;
-    // //////////////////////////
+    protected int _healthCount;
 
-    [HideInInspector] public string blockId;
+    public bool nonDamageable;
 
-    [HideInInspector] public BlocksSystem _blocksSystem;
-
-    [HideInInspector] public (int x,int y) selfGridIndex;
     public void Construct(string id, int health, Sprite sprite)
     {
-        BlockId = id;
+        _blockId = id;
 
         _healthCount = health;
 
         _renderer.sprite = sprite;
+
+        _damageEffect.CreateEffect(transform.position);
     }
-    public override void Return()
-    {
-        gameObject.SetActive(false);
+    public void SetStartSize(Vector2 size) => transform.localScale = size;
 
-        base.Return();
-    }
+    public void SetGridIndex(Vector2 index) => _selfGridIndex = index;
 
-    public void SetStartSize(Vector2 size)
-    {
-        transform.localScale = size;
-    }
-
-    public virtual void InDamage(int damage)
-    {
-
-    }
-
-    public virtual void InDestroy()
-    {
-
-    }
+    public string GetId() => _blockId;
 }
 
-public interface IDamageable
-{
-    public int HealthCount { get; set; }
-    public void InDestroy();
-    public void InDamage(int damageValue);
-}
+
 
 
 

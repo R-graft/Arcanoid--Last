@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LangHandler : IService
+public class LangHandler : MonoBehaviour, IService
 {
-    private WordList _translatesData;
+    [SerializeField] private WordList _translatesData;
 
     public Dictionary<string, string> TranslatesDictionary { get; private set; }
 
@@ -18,11 +18,9 @@ public class LangHandler : IService
 
     public Action<Dictionary<string, string>> OnChangeLang;
 
-    public void Init()
+    public void InitService()
     {
         LoadLang();
-
-        GetTranslatesData();
 
         SetLangDict();
 
@@ -101,13 +99,6 @@ public class LangHandler : IService
         foreach (var lang in _translatesData.languages)
         {
             AvaliableLangs.Add(lang);
-        }
-    }
-    private void GetTranslatesData()
-    {
-        if (_translatesData == null)
-        {
-            _translatesData = Resources.Load<WordList>("Data/Localization/WordList");
         }
     }
 }

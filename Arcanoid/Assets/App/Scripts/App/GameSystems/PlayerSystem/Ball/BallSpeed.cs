@@ -11,7 +11,7 @@ public class BallSpeed: MonoBehaviour
 
     private const float _minVelocityValue = 2;
 
-    public void OnBlockCollision()
+    public void CollisionSpeed()
     {
         if (_objectRb.velocity.magnitude < _maxVelocityValue)
         {

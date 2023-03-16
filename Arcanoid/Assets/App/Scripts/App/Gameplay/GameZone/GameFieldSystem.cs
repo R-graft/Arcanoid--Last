@@ -1,28 +1,24 @@
 using UnityEngine;
 
-public class GameFieldSystem : MonoBehaviour
+public class GameFieldSystem : GameSystem
 {
-    [SerializeField]
-    private Transform _leftEdge;
+    [Header("config")]
+    public float UpOffset = 0.75f;
+    public float ColliderWidth = 4;
 
-    [SerializeField]
-    private Transform _rightEdge;
+    [Header("components")]
+    [SerializeField] private Transform _leftEdge;
+    [SerializeField] private Transform _rightEdge;
+    [SerializeField] private Transform _upEdge;
+    [SerializeField] private Transform _downEdge;
 
-    [SerializeField]
-    private Transform _upEdge;
-
-    [SerializeField]
-    private Transform _downEdge;
+    [SerializeField] private Camera _mCamera;
 
     private Vector2 _screenValue;
 
-    private const float UpOffset = 0.75f;
-
-    private const float ColliderWidth = 4;
-
-    public void Init()
+    public override void InitSystem()
     {
-        _screenValue = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        _screenValue = _mCamera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
 
         SetLeft();
         SetRight();

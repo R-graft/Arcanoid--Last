@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FieldGridSystem : MonoBehaviour
+public class FieldGridSystem : GameSystem
 {
     [Header("config")]
     public int _rowsCount = 7;
@@ -20,20 +20,27 @@ public class FieldGridSystem : MonoBehaviour
     private const float _widthOffset = 0.98f;
     private const float _abroadOffset = 0.05f;
 
-    public Dictionary<(int,int), Vector2> gridPositions = new Dictionary<(int, int), Vector2>();
+    private Dictionary<Vector2, Vector2> _tilePositions;
 
-    [HideInInspector] public Vector2 blockSize;
+    private Vector2 _tileSize;
 
-    public void Init()
+    public override void InitSystem()
     {
         _screenSize = new Vector2(cameraHeight * _mCamera.aspect, cameraHeight);
 
-        blockSize = GetBlocksSize();
+        _tileSize = GetBlocksSize();
 
-        gridPositions = CreateGrid();
+        _tilePositions = CreateGrid();
     }
-    public Dictionary<(int, int), Vector2> CreateGrid()
+
+    public Vector2 GetCurrentBlockSize() => _tileSize;
+
+    public Dictionary<Vector2, Vector2> GetGrid()=> _tilePositions;
+
+    private Dictionary<Vector2, Vector2> CreateGrid()
     {
+        _tilePositions = new Dictionary<Vector2, Vector2>();
+
         _leftUpPosition = new Vector2(-_screenSize.x * _widthOffset, _screenSize.y * _heightOffset);
 
         var cellLength = (-_leftUpPosition.x * 2) / _rowsCount;
@@ -48,7 +55,7 @@ public class FieldGridSystem : MonoBehaviour
         {
             for (int j = 1; j <= _rowsCount; j++)
             {
-                gridPositions.Add((i, j), tempPos);
+                _tilePositions.Add(new Vector2(i, j), tempPos);
 
                 tempPos.x += cellLength;
             }
@@ -57,18 +64,24 @@ public class FieldGridSystem : MonoBehaviour
 
             tempPos.x = startPoint.x; 
         }
-
-        return gridPositions;
+        return _tilePositions;
     }
 
-    public Vector2 GetBlocksSize()
+    private Vector2 GetBlocksSize()
     {
         float widthBlocksSpace = _screenSize.x - _abroadOffset * (_rowsCount - 1);
 
         float blockWidth = (widthBlocksSpace / _rowsCount) * 2;
 
-        float blockHeight = blockWidth / 2;
+        float blockHeight = blockWidth * 0.97f;
 
         return new Vector2(blockWidth, blockHeight);
     }
+}
+
+public struct Tile
+{
+    public Vector2 gridPosition;
+
+    public Vector2 worldPosition;
 }
