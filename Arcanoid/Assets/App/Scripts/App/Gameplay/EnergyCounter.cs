@@ -8,6 +8,8 @@ public class EnergyCounter : IService
     [Header("config") ]
     private const int DefaultEnergy = 50;
 
+    private const int MaxEnergyValue = 100;
+
     private const int EnergyIncreaseValue = 4;
 
     private const int EnergyDecreaseValue = 3;
@@ -17,7 +19,7 @@ public class EnergyCounter : IService
     private const string DateKey = "SavigDateValue";
 
 
-    public void Init()
+    public void InitService()
     {
         Load();
     }
@@ -34,7 +36,9 @@ public class EnergyCounter : IService
 
     public void IncreaseEnergy(int value)
     {
-        _energy+= value;
+        _energy = _energy + value > MaxEnergyValue ? MaxEnergyValue : _energy + value;
+
+        Save();
     }
 
     public void DecreaseEnergy(int value)
@@ -55,7 +59,9 @@ public class EnergyCounter : IService
 
         if (long.TryParse(lastDateStr, out long lastDateLong))
         {
-            _energy = GetSavedEnergy(lastEnergy, lastDateLong);
+            int loadedEnergy = GetSavedEnergy(lastEnergy, lastDateLong);
+
+            _energy = loadedEnergy > MaxEnergyValue? MaxEnergyValue : loadedEnergy;
         }
         else
         {
@@ -86,7 +92,12 @@ public class EnergyCounter : IService
     public void LevelPass() => IncreaseEnergy(EnergyIncreaseValue);
 
 
-    public int GetCurrentEnergy() => _energy;
-    public void SetDefaultEnergy() => _energy = DefaultEnergy;
+    public (int current, int max) GetCurrentEnergy() => (_energy, MaxEnergyValue);
+    public void SetDefaultEnergy()
+    {
+        PlayerPrefs.SetString(DateKey, DateTime.Now.ToString());
+
+        _energy = DefaultEnergy;
+    } 
     public bool GetGameAsses() => _energy >= EnergyDecreaseValue;
 }

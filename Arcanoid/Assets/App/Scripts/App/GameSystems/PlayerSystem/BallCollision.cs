@@ -3,17 +3,35 @@ using UnityEngine;
 
 public class BallCollision : MonoBehaviour
 {
-    public Action<Collision2D> OnCollision;
+    [SerializeField] private BallSpeed _speed;
 
-    public Action<Collider2D> OnTrigger;
+    [SerializeField] private BallBounce _bounce;
+
+    private BlocksDamageHandler _blocksDamage;
+
+    private const int BallDamageValue = 1;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        OnCollision?.Invoke(collision);
+        if (!_blocksDamage)
+        {
+            _blocksDamage = LevelContext.Instance.GetSystem<BlocksDamageHandler>();
+        }
+
+        if (collision.gameObject.TryGetComponent(out IDamageable dam))
+        {
+            _blocksDamage.SetDamage(dam, BallDamageValue);
+        }
+        else
+        {
+            _speed.CollisionSpeed();
+
+            _bounce.TryAngleCorrect(collision);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        OnTrigger?.Invoke(collision);
+     
     }
 }

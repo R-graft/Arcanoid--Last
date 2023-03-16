@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class GameOverPopUp : UIPopUp
 {
+    [SerializeField] private ButtonElement _purchaseContinue;
+
     [SerializeField] private ButtonElement _continueButton;
+
+    private LevelController _levelController;
 
     private const int EnergyForContinue = 5;
 
@@ -10,10 +14,9 @@ public class GameOverPopUp : UIPopUp
 
     public override void InitPopUp()
     {
-        _continueButton.SetDownAction(OnButtonContinueWihEnergy, true);
-        //_continueButton.SetDownAction(uiParent.OnReStart, true);
+        _continueButton.SetDownAction(()=> ProjectContext.Instance.GetService<LevelController>().Restart(), true);
 
-        //_continueButton.SetDownAction(HideWindow, true);
+        _continueButton.SetDownAction(_controller.HidePop, true);
     }
 
     //public override void ShowWindow()
@@ -23,10 +26,10 @@ public class GameOverPopUp : UIPopUp
     //    _continueButton.gameObject.SetActive(GameProgressController.Instance.EnergyCounter.GetEnergy() >= EnergyForContinue);
     //}
 
-    public void OnButtonContinueWihEnergy()
-    {
-       // GameProgressController.Instance.SetEnergy(EnergyForContinue, false);
+    //public void OnButtonContinueWihEnergy()
+    //{
+    //    // GameProgressController.Instance.SetEnergy(EnergyForContinue, false);
 
-        BonusEvents.OnSetLives.Invoke(ExtraLives, true);
-    }
+    //    BonusEvents.OnSetLives.Invoke(ExtraLives, true);
+    //}
 }

@@ -1,29 +1,31 @@
 using UnityEngine;
 
-public class PackDataController: IService
+public class PackDataController: MonoBehaviour, IService
 {
     [Header("config")]
-    private int _currentLevel;
-
     private const string PackDataDirectory = "/PacksData.json";
 
     private const int _defaultValue = 0;
 
     [Header("components")]
+    [SerializeField] private PacksData _packsData;
+
     private Pack _currentPack;
 
     private Pack[] _packsModels;
 
     private GameProgress CurrentProgressData;
 
-    public void Init()
+    private int _currentLevel;
+
+    public void InitService()
     {
         Load();
     }
 
     public void Load()
     {
-        _packsModels = Resources.Load<PacksData>("Data/PackData").packsModels;
+        _packsModels = _packsData.packsModels;
 
         CurrentProgressData = new DataReader<GameProgress>(PackDataDirectory).ReadFileFromSystem();
 
@@ -34,7 +36,9 @@ public class PackDataController: IService
 
         _currentLevel = CurrentProgressData.currentLevel;
 
-        SetPacks(CurrentProgressData.packsDatas, _currentLevel);
+        ToPacks(CurrentProgressData.packsDatas, _currentLevel);
+
+        Save();
     }
 
     public void Save()
@@ -45,11 +49,9 @@ public class PackDataController: IService
             new DataWriter<GameProgress>(CurrentProgressData, PackDataDirectory);
 
         currentWriter.SaveFileToSystem();
-
-        SetPacks(CurrentProgressData.packsDatas, _currentLevel);
     }
 
-    private void SetPacks(PackSaveData[] data, int level)
+    private void ToPacks(PackSaveData[] data, int level)
     {
         for (int i = 0; i < _packsModels.Length; i++)
         {
@@ -58,6 +60,22 @@ public class PackDataController: IService
             _packsModels[i].isEnded = data[i].packIsended;
 
             _packsModels[i].isOpen = data[i].packIsOpen;
+
+            if (_packsModels[i].startLevel <= level && _packsModels[i].finishLevel >= level)
+                _currentPack = _packsModels[i];
+        }
+    }
+    private void FromPacks(PackSaveData[] data, int level)
+    {
+        for (int i = 0; i < _packsModels.Length; i++)
+        {
+            data[i].packIndex = i;
+
+            data[i].EndedLevel = _packsModels[i].EndedLevel;
+
+            data[i].packIsended = _packsModels[i].isEnded;
+
+            data[i].packIsOpen = _packsModels[i].isOpen;
 
             if (_packsModels[i].startLevel <= level && _packsModels[i].finishLevel >= level)
                 _currentPack = _packsModels[i];
@@ -80,14 +98,15 @@ public class PackDataController: IService
                 _currentLevel = _currentPack.startLevel;
             }
         }
+        FromPacks(CurrentProgressData.packsDatas, _currentLevel);
 
         Save();
     }
     public Pack GetCurrentPack() => _currentPack;
 
-    public int GetCurrentPackLevel() => _currentPack.EndedLevel+1;
-
-    public int GetGlobalLevel() => _currentPack.EndedLevel + _currentPack.startLevel;
+    public int GetCurrentPackLevel() => _currentPack.EndedLevel;
+    public int GetCurrentPackLastLevel() => _currentPack.finishLevel - _currentPack.startLevel+1;
+    public int GetGlobalLevel() => _currentLevel;
 
     public void LevelPass()
     {
@@ -107,6 +126,8 @@ public class PackDataController: IService
         {
             _currentPack.EndedLevel++;
         }
+
+        FromPacks(CurrentProgressData.packsDatas, _currentLevel);
 
         Save();
     }
@@ -134,7 +155,9 @@ public class PackDataController: IService
 
         CurrentProgressData.packsDatas[0].packIsOpen = true;
 
-        _currentLevel = _defaultValue;
+        _currentLevel = 1;
+
+        ToPacks(CurrentProgressData.packsDatas, _currentLevel);
 
         Save();
     }

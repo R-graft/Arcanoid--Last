@@ -26,7 +26,6 @@ public class ButtonElement : Button ,IAnimatedElement
     {
         if (OnUpAction == null)
             return;
-
         OnUpAction.Invoke();
     }
 
@@ -49,7 +48,8 @@ public class ButtonElement : Button ,IAnimatedElement
         AppendCallback(() => _inputs.TurnOn(true));
     }
 
-    public virtual void OutAnimation()
+    public void OutAnimation()
     {
+        
     }
 }

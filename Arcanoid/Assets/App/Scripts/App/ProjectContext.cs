@@ -8,9 +8,13 @@ public class ProjectContext : MonoBehaviour
 
     [SerializeField] private ScenesManager _scenesHandler;
 
+    [SerializeField] private PackDataController _packDataController;
+
+    [SerializeField] private LangHandler _langHandler;
+
     public static ProjectContext Instance { get; private set; }
 
-    public IServiceLocator<IService> _locator;
+    private IServiceLocator<IService> _locator;
 
     public void InitContext()
     {
@@ -18,29 +22,23 @@ public class ProjectContext : MonoBehaviour
 
         _locator = new ServiceLocator<IService>();
 
-        var langHandler = new LangHandler();
-        _locator.Regiser(langHandler);
-        InitService(langHandler);
-
-        var packController = new PackDataController();
-        _locator.Regiser(packController);
-        InitService(packController);
-
         var energyCounter = new EnergyCounter();
-        _locator.Regiser(energyCounter);
-        InitService(energyCounter);
+        _locator.Regiser(energyCounter).InitService();
 
-        _popUpHandler = Instantiate(_popUpHandler);
-        _locator.Regiser(_popUpHandler);
-        InitService(_popUpHandler);
+        _langHandler = Instantiate(_langHandler);
+        _locator.Regiser(_langHandler).InitService();
 
-        _inputHandler= Instantiate(_inputHandler);
-        _locator.Regiser(_inputHandler);
-        InitService(_inputHandler);
+        _packDataController = Instantiate(_packDataController);
+        _locator.Regiser(_packDataController).InitService();
 
         _scenesHandler = Instantiate(_scenesHandler);
-        _locator.Regiser(_scenesHandler);
-        InitService(_scenesHandler);
+        _locator.Regiser(_scenesHandler).InitService();
+
+        _popUpHandler = Instantiate(_popUpHandler);
+        _locator.Regiser(_popUpHandler).InitService();
+
+        _inputHandler= Instantiate(_inputHandler);
+        _locator.Regiser(_inputHandler).InitService();
     }
 
     public T GetService<T>() where T : IService
@@ -48,8 +46,8 @@ public class ProjectContext : MonoBehaviour
         return _locator.Get<T>();
     }
 
-    public void InitService(IService service)
+    public void AddService(IService service)
     {
-        service.Init();
+        _locator.Regiser(service).InitService();
     }
 }

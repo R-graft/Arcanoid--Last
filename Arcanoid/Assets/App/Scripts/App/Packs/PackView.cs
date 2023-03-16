@@ -10,6 +10,8 @@ public class PackView : MonoBehaviour
 
     public Image packBackground;
 
+    public Image packFrame;
+
     public PackButton packButton;
 
     public TextMeshProUGUI currentLevel;

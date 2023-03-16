@@ -8,15 +8,15 @@ public class Inputs : MonoBehaviour, IService
 
     private const float _inputConstrainterY = 0;
 
-    public static Action<float> _inputPositionX;
+    public Action<float> _inputPositionX;
 
-    public static Action OnMouseUp, OnMouseDown;
+    public Action OnMouseUp, OnMouseDown;
 
     private Camera _camera;
 
-    private bool _enabled;
+    public bool _enabled;
 
-    public void Init()
+    public void InitService()
     {
         _enabled = false;
     }
@@ -62,7 +62,7 @@ public class Inputs : MonoBehaviour, IService
             SetCamera();
         }
 
-        if (_enabled)
+        if (_enabled && Time.timeScale != 0)
         {
             if (Input.GetMouseButton(0))
             {

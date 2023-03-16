@@ -2,102 +2,111 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallsController : MonoBehaviour
+public class BallsController : GameSystem
 {
     [Header("config")]
     public Vector2 _startBallPosition = new Vector2(0, -5.5f);
 
-    [SerializeField] private Ball _ballPrefab;
+    [SerializeField] private BallHandler _ballPrefab;
 
-    [SerializeField] private BallLauncher _launcherHandler;
+	private List<BallHandler> _balls;
 
-	private List<Ball> _balls;
+    private BallHandler _currentBall;
 
-    public static Action<Ball> OnBallDestroy;
+    public Action OnBallIsFall;
 
-    public static Action OnBallIsFall;
-
-    public void Init()
-	{
-        _balls = new List<Ball>();
+    public override void InitSystem()
+    {
+        _balls = new List<BallHandler>();
 
         CreateBall(_startBallPosition);
 
-        LaunchBall();
+        _currentBall = _balls[0]; 
     }
 
-    private void LaunchBall()
-    {
-        _launcherHandler.gameObject.SetActive(true);
-
-        _launcherHandler.Init(_balls[0].BallRb, PlatformController.OnGetTransform.Invoke());
-    }
-    public void RestartSystem()
+    public override void StartSystem()
     {
         ClearBalls();
-
-        CreateBall(_startBallPosition);
-
-        LaunchBall();
     }
 
+    public override void StopSystem()
+    {
+        StopBalls();
+    }
+
+    public override void ReStartSystem()
+    {
+        ClearBalls();
+    }
     private void CreateBall(Vector2 position)
 	{
-        Ball newBall = Instantiate(_ballPrefab, transform);
+        var newBall = Instantiate(_ballPrefab, transform);
 
         newBall.transform.position = position;
 
         _balls.Add(newBall);
     }
 
-    private void DestroyBall(Ball ball)
+    public void Fall(BallHandler ball)
     {
         if (_balls.Contains(ball))
         {
-            _balls.Remove(ball);
+            if (_balls.Count == 1)
+            {
+                _currentBall = ball;
 
-            Destroy(ball.gameObject);
-
-            if (_balls.Count == 0)
-                OnBallIsFall?.Invoke();
+                _controller.Lose();
+            }
+            else
+            {
+                _balls.Remove(ball);
+                Destroy(ball.gameObject);
+            }
         }
     }
 
     private void ClearBalls()
     {
-        if (_balls.Count != 0)
+        if (_balls.Count > 1)
         {
-            foreach (var item in _balls)
-                Destroy(item.gameObject);
+            for (int i = 1; i < _balls.Count; i++)
+            {
+                Destroy(_balls[i].gameObject);
 
-            _balls.Clear();
+                _balls.Remove(_balls[i]);
+            }
         }
+
+        _currentBall.GetRb().velocity = Vector2.zero;
+
+        _currentBall.transform.position = _startBallPosition;
     }
 
-    public void StopBalls()
+    private void StopBalls()
     {
         if (_balls.Count != 0)
         {
             foreach (var item in _balls)
-                item.BallRb.velocity = Vector2.zero;
+                item.StopBallMove();
         }
     }
-
+    private void StartBalls()
+    {
+        if (_balls.Count != 0)
+        {
+            foreach (var item in _balls)
+                item.StartBallMove();
+        }
+    }
     private void BonusBall(Vector2 position)
     {
         CreateBall(position);
 
-        _balls[_balls.Count - 1].BallRb.velocity = _balls[_balls.Count - 2].BallRb.velocity;
+        //_balls[_balls.Count - 1].BallRb.velocity = _balls[_balls.Count - 2].BallRb.velocity;
     }
 
-    private void OnEnable()
+    public Rigidbody2D GetBall()
     {
-        OnBallDestroy += DestroyBall;
-
-        BonusEvents.OnDuplicateBall.AddListener(BonusBall);
-    }
-    private void OnDisable()
-    {
-        OnBallDestroy -= DestroyBall;
+        return _currentBall.GetRb();
     }
 }

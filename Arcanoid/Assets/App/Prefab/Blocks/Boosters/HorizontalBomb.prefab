@@ -122,10 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c718b21f4c562a443882ddad5622f94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolSize: 10
-  blockId: 16
+  _renderer: {fileID: 521569264472985890}
   _collider: {fileID: 1509353130986910368}
-  _blockSprite: {fileID: 521569264472985890}
-  _sound: {fileID: 0}
+  blockId: 16
   _blocksSystem: {fileID: 0}
   health: 1

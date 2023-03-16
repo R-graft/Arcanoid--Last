@@ -1,37 +1,46 @@
 using UnityEngine;
 
-public class PlatformMove : MonoBehaviour
+public class PlatformMove
 {
+    private Transform _platform;
+
+    private Vector2 _startPlatformPosition;
+
     private float _moveConstrainterX;
 
     private float _moveSpeed;
 
-    private float _yPosition;
-
     private float _scale;
 
-    private readonly Vector2 StartScale = new Vector2(2,2);
+    private float _defaultSpeed;
 
-    public void Init()
+    public PlatformMove(Transform platform, Vector2 startPlatformPosition, float moveConstrainer, float moveSpeed)
     {
-        _yPosition = transform.position.y;
+        _platform = platform;
 
-        _moveSpeed = 0.1f;
+        _startPlatformPosition = startPlatformPosition;
 
-        transform.localScale = StartScale;
+        _moveConstrainterX = moveConstrainer;
 
-        _scale = transform.localScale.x / 2;
+        _defaultSpeed = moveSpeed;
+    }
 
-        _moveConstrainterX = Camera.main.ScreenToWorldPoint(Vector2.zero).x;
+    public void Reset()
+    {
+        _platform.position = _startPlatformPosition;
+
+        _moveSpeed = _defaultSpeed;
+
+        _scale = _platform.localScale.x;
     }
 
     public void Move(float _inputX)
     {
         var _direction = Mathf.Clamp(_inputX, _moveConstrainterX + _scale, -_moveConstrainterX - _scale);
 
-        var moveDirection = new Vector2(_direction, _yPosition);
+        var moveDirection = new Vector2(_direction, _startPlatformPosition.y);
 
-        transform.position = Vector2.MoveTowards(transform.position, moveDirection, _moveSpeed);
+        _platform.position = Vector2.MoveTowards(_platform.position, moveDirection, _moveSpeed);
     }
 
     public void SetSpeed(bool isSpeedUp, float value)
@@ -41,8 +50,8 @@ public class PlatformMove : MonoBehaviour
 
     public void SetScale(float value)
     {
-        transform.localScale = new Vector2(transform.localScale.x + value, transform.localScale.y);
+        _platform.localScale = new Vector2(_platform.localScale.x + value, _platform.localScale.y);
 
-        _scale = transform.localScale.x / 2;
+        _scale = _platform.localScale.x / 2;
     } 
 }

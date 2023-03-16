@@ -2,31 +2,21 @@ using UnityEngine;
 
 public class BoostBlock : Block, IDamageable
 {
-    [SerializeField]
-    private int health;
+    public Block Current => this;
 
-    public int HealthCount { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-    public override void InDamage(int damageValue)
+    public void InDamage(int damageValue, out int currentHealth)
     {
-        HealthCount -= damageValue;
+        _healthCount -= damageValue;
 
-        if (HealthCount <= 0)
-        {
-            InDestroy();
-        }
+        currentHealth = _healthCount;
 
-        else
-        {
-            base.InDamage(damageValue);
-
-            BoostEffect();
-        }
+        BoostEffect();
+        
     }
 
-    public override void InDestroy()
+    public void InDestroy()
     {
-        base.InDestroy();
+        _damageEffect.ClearEffect();
 
         BoostEffect();
     }

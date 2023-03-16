@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 028f6fd4b5648da408750b332adcc576, type: 3}
+  m_Name: WordList
+  m_EditorClassIdentifier: 
+  languages:
+  - eng
+  - rus
+  words:
+  - key: next
+    phrases:
+    - langName: eng
+      phrase: NEXT
+    - langName: rus
+      phrase: "\u0414\u0410\u041B\u0415\u0415"
+    hide: 0
+  - key: milkyway
+    phrases:
+    - langName: eng
+      phrase: MILKY WAY
+    - langName: rus
+      phrase: "\u041C\u041B\u0415\u0427\u041D\u042B\u0419 \u041F\u0423\u0422\u042C"
+    hide: 0
+  - key: sombrero
+    phrases:
+    - langName: eng
+      phrase: SOMBRERO
+    - langName: rus
+      phrase: "\u0421\u041E\u041C\u0411\u0420\u0415\u0420\u041E"
+    hide: 0
+  - key: sigar
+    phrases:
+    - langName: eng
+      phrase: CIGAR
+    - langName: rus
+      phrase: "\u0421\u0418\u0413\u0410\u0420\u0410"
+    hide: 0
+  - key: lose
+    phrases:
+    - langName: eng
+      phrase: YOU LOSE!
+    - langName: rus
+      phrase: "\u0412\u042B \u041F\u0420\u041E\u0418\u0413\u0420\u0410\u041B\u0418!"
+    hide: 0
+  - key: continue
+    phrases:
+    - langName: eng
+      phrase: CONTINUE
+    - langName: rus
+      phrase: "\u041F\u0420\u041E\u0414\u041E\u041B\u0416\u0418\u0422\u042C"
+    hide: 0
+  - key: restart
+    phrases:
+    - langName: eng
+      phrase: RESTART
+    - langName: rus
+      phrase: "\u0420\u0415\u0421\u0422\u0410\u0420\u0422"
+    hide: 0
+  - key: youwin
+    phrases:
+    - langName: eng
+      phrase: YOU WIN!
+    - langName: rus
+      phrase: "\u0412\u042B \u0412\u042B\u0418\u0413\u0420\u0410\u041B\u0418!"
+    hide: 0
+  - key: menu
+    phrases:
+    - langName: eng
+      phrase: MENU
+    - langName: rus
+      phrase: "\u041C\u0415\u041D\u042E"
+    hide: 0
+  - key: galactic
+    phrases:
+    - langName: eng
+      phrase: GALACTIC
+    - langName: rus
+      phrase: "\u0413\u0410\u041B\u0410\u041A\u0422\u0418\u041A\u0410"
+    hide: 0
+  - key: lang
+    phrases:
+    - langName: eng
+      phrase: LANGUAGE
+    - langName: rus
+      phrase: "\u042F\u0417\u042B\u041A"
+    hide: 0
+  - key: back
+    phrases:
+    - langName: eng
+      phrase: BACK
+    - langName: rus
+      phrase: "\u041D\u0410\u0417\u0410\u0414"
+    hide: 0
+  - key: play
+    phrases:
+    - langName: eng
+      phrase: PLAY
+    - langName: rus
+      phrase: "\u0418\u0413\u0420\u0410\u0422\u042C"
+    hide: 0
+  - key: exit
+    phrases:
+    - langName: eng
+      phrase: EXIT
+    - langName: rus
+      phrase: "\u0412\u042B\u0425\u041E\u0414"
+    hide: 0
+  - key: settings
+    phrases:
+    - langName: eng
+      phrase: SETTINGS
+    - langName: rus
+      phrase: "\u041D\u0410\u0421\u0422\u0420\u041E\u0419\u041A\u0418"
+    hide: 0

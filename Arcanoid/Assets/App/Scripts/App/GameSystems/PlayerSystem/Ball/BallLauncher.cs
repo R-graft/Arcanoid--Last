@@ -2,25 +2,49 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BallLauncher : MonoBehaviour , IPointerUpHandler, IPointerDownHandler
+public class BallLauncher : GameSystem, IPointerUpHandler, IPointerDownHandler
 {
-    public Rigidbody2D _ballRb;
+    [Header("config")]
+    public float BallDisposition = 0.9f;
 
-    public Transform _platformTransform;
+    public float BallOffset = 0.4f;
 
-    private const float BallDisposition = 0.9f;
+    public float StartForceIndex = 0.04f;
 
-    private const float BallOffset = 0.4f;
+    [Header("components")]
+    private BallsController _ballsController;
 
-    private const float StartForceIndex = 0.04f;
+    private PlatformController _platformController;
 
-    public void Init(Rigidbody2D ballRb, Transform platformTransform)
+    private Inputs _inputs;
+
+    private Rigidbody2D _ballRb;
+
+    private Transform _platformTransform;
+
+    public override void InitSystem()
     {
-        _ballRb = ballRb;
+        _inputs =ProjectContext.Instance.GetService<Inputs>();
 
-        _platformTransform = platformTransform;
+        _ballsController = LevelContext.Instance.GetSystem<BallsController>();
+
+        _platformController = LevelContext.Instance.GetSystem<PlatformController>();
+
+        ReStartSystem();
     }
 
+    public override void StartSystem()
+    {
+        ReStartSystem();
+    }
+    public override void ReStartSystem()
+    {
+        _ballRb = _ballsController.GetBall();
+
+        _platformTransform = _platformController.GetTransform();
+
+        gameObject.SetActive(true);
+    }
     private void Launch()
     {
         var startDirection = _ballRb.position.normalized;
@@ -31,15 +55,22 @@ public class BallLauncher : MonoBehaviour , IPointerUpHandler, IPointerDownHandl
     }
     private IEnumerator FollowPlatform()
     {
+        _inputs.TurnOn(false);
+
         while (true)
         {
             yield return new WaitForFixedUpdate();
 
             _ballRb.position = new Vector2((_platformTransform.position.x) / BallDisposition,
-           _platformTransform.position.y + BallOffset);
+
+            _platformTransform.position.y + BallOffset);
         }
     }
     public void OnPointerUp(PointerEventData eventData) => Launch();
 
     public void OnPointerDown(PointerEventData eventData) => StartCoroutine(FollowPlatform());
+
+  
+
+    
 }

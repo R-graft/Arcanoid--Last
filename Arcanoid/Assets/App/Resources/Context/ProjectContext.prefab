@@ -46,3 +46,5 @@ MonoBehaviour:
   _popUpHandler: {fileID: 3131273605123463815, guid: 71fbaf076eb721f4a854f147c1bc7e5c, type: 3}
   _inputHandler: {fileID: 3766026422398396170, guid: 67da4f4a5db5ba24c98ff80149ac333d, type: 3}
   _scenesHandler: {fileID: 1366443509061392091, guid: 321ea77f74f08b04f9fe79811ee7e4b8, type: 3}
+  _packDataController: {fileID: 3648155061404183360, guid: 688acf56a0cff9541b12def93e1e74b8, type: 3}
+  _langHandler: {fileID: 5758287490736304549, guid: 5b3af2f7a0bf60c478785987eaef4950, type: 3}

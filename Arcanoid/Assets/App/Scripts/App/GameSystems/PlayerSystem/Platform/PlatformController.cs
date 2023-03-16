@@ -1,56 +1,63 @@
-using System;
 using UnityEngine;
 
-public class PlatformController : MonoBehaviour
+public class PlatformController : GameSystem
 {
     [Header("config")]
     public Vector2 _startPlatformPosition = new Vector2(0, -3.2f);
 
-    [SerializeField] private PlatformMove _platformMove;
+    public float moveSpeed = 0.1f;
 
-    public static Func<Transform> OnGetTransform;
+    [Header("components")]
+    [SerializeField] private GameObject _platform;
 
-    public void Init()
+    [SerializeField] private Camera _mCamera;
+
+    private PlatformMove _mover;
+
+    private Inputs _inputs;
+
+    private float _moveConstrainer;
+
+    public override void InitSystem()
     {
-        _platformMove = Instantiate(_platformMove, transform);
+        InitPlatform();
 
-        _platformMove.transform.position = _startPlatformPosition;
-
-        _platformMove.Init();
-
-        OnGetTransform += GetTransform;
+        _inputs._inputPositionX += _mover.Move;
     }
 
-    public void RestartSystem()
+    public override void StartSystem()
     {
-        _platformMove.transform.position = _startPlatformPosition;
-
-        _platformMove.Init();
-    }
-    public void DestroyPlatform()
-    {
-        if (_platformMove)
-        {
-            Inputs._inputPositionX -= _platformMove.Move;
-
-            Destroy(_platformMove.gameObject);
-        }
+        _mover.Reset();
     }
 
-    public Transform GetTransform() => _platformMove.transform;
-
-    private void OnEnable()
+    public override void StopSystem()
     {
-        BonusEvents.OnResizePlatform.AddListener(_platformMove.SetScale);
-        BonusEvents.OnSetPlatformSpeed.AddListener(_platformMove.SetSpeed);
-
-        Inputs._inputPositionX += _platformMove.Move;
+        _inputs._inputPositionX -= _mover.Move;
     }
+    public override void ReStartSystem()
+    {
+        _inputs._inputPositionX += _mover.Move;
+
+        _mover.Reset();
+    }
+
+    private void InitPlatform()
+    {
+        _inputs = ProjectContext.Instance.GetService<Inputs>();
+
+        _platform = Instantiate(_platform, transform);
+
+        _moveConstrainer = _mCamera.ScreenToWorldPoint(Vector2.zero).x;
+
+        _mover = new PlatformMove(_platform.transform, _startPlatformPosition, _moveConstrainer, moveSpeed);
+
+        _mover.Reset();
+    }
+
+    public Transform GetTransform() => _platform.transform;
 
     private void OnDisable()
     {
-        Inputs._inputPositionX -= _platformMove.Move;
-
-        OnGetTransform -= GetTransform;
+        _inputs._inputPositionX -= _mover.Move;
     }
 }
