@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class BonusMove : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed;
+    [SerializeField] private float _speed;
 
     private void FixedUpdate()
     {

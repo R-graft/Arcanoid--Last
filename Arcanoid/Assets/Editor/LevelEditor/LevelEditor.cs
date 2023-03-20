@@ -46,6 +46,14 @@ public class LevelEditor : EditorWindow
         {
             allObjects.Add((item.type, item.sprite));
         }
+        foreach (var item in blocksData.boostTypes)
+        {
+            allObjects.Add((item.type, item.sprite));
+        }
+        foreach (var item in blocksData.parentBoostTypes)
+        {
+            allObjects.Add((item.type, item.sprite));
+        }
 
     }
     private void OnGUI()
@@ -202,11 +210,11 @@ public class LevelEditor : EditorWindow
                             newData.levelBlocks.Add(newLevelBlock);
                         }
 
-                        var directory = Application.dataPath + $"/App/Resources/Data/Levels";
+                        var directory = Application.dataPath + $"/App/Resources/Levels";
 
                         if (Directory.Exists(directory))
                         {
-                            _savePath = Application.dataPath + $"/App/Resources/Data/Levels/{_levelNumber}.json";
+                            _savePath = Application.dataPath + $"/App/Resources/Levels/{_levelNumber}.json";
 
                             string savingData = JsonUtility.ToJson(newData);
 

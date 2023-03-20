@@ -48,19 +48,19 @@ public class GamePanelView :MonoBehaviour
 
     public void RemoveLife()
     {
-        _currentLife --;
+        _currentLife--;
 
-        _livesPanel[_currentLife].sprite = _deActiveLife;
+        _currentLife = _currentLife < 0 ? 0: _currentLife;
 
-        if (_currentLife == 0)
+        if (_currentLife < _livesPanel.Length)
         {
-            //gameov
+            _livesPanel[_currentLife].sprite = _deActiveLife;
         }
     }
 
     public void AddLife()
     {
-        if (_currentLife < _livesPanel.Length)
+        if ( _currentLife < _livesPanel.Length)
         {
             _livesPanel[_currentLife].sprite = _activeLife;
         }
@@ -68,7 +68,7 @@ public class GamePanelView :MonoBehaviour
         _currentLife++;
     }
 
-    public void SetProgress(float value)
+    public void SetProgress(int value)
     {
         _levelProgressCounter.text = value.ToString();
     }

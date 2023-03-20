@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 public class BallLauncher : GameSystem, IPointerUpHandler, IPointerDownHandler
 {
     [Header("config")]
-    public float BallDisposition = 0.9f;
-
     public float BallOffset = 0.4f;
 
     public float StartForceIndex = 0.04f;
@@ -59,11 +57,9 @@ public class BallLauncher : GameSystem, IPointerUpHandler, IPointerDownHandler
 
         while (true)
         {
-            yield return new WaitForFixedUpdate();
+            _ballRb.position = new Vector2(_platformTransform.position.x, _platformTransform.position.y + BallOffset);
 
-            _ballRb.position = new Vector2((_platformTransform.position.x) / BallDisposition,
-
-            _platformTransform.position.y + BallOffset);
+            yield return null;
         }
     }
     public void OnPointerUp(PointerEventData eventData) => Launch();

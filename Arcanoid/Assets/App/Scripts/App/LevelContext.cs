@@ -6,9 +6,7 @@ public class LevelContext : MonoBehaviour
 
     [SerializeField] private BlocksSystem _blocksSystem;
 
-    [SerializeField] private BoostSystem _boostSystem;
-
-    [SerializeField] private GameFieldSystem _gamefieldSystem;
+    [SerializeField] private BonusSystem _bonusSystem;
 
     [SerializeField] private BlocksArrangeSystem _arrangeSystem;
 
@@ -19,6 +17,8 @@ public class LevelContext : MonoBehaviour
     [SerializeField] private PlatformController _platformController;
 
     [SerializeField] private BlocksDamageHandler _blocksDamage;
+
+    [SerializeField] private GamePanelController _gamePanelController;
     public static LevelContext Instance { get; private set; }
 
     private IServiceLocator<GameSystem> _locator;
@@ -40,6 +40,13 @@ public class LevelContext : MonoBehaviour
         _locator.Regiser(_blocksSystem);
 
         _locator.Regiser(_blocksDamage);
+
+        _locator.Regiser(_arrangeSystem);
+
+        _locator.Regiser(_bonusSystem);
+
+        _locator.Regiser(_gamePanelController);
+        
     }
 
     public T GetSystem<T>() where T : GameSystem

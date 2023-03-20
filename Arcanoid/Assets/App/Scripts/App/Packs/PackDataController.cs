@@ -5,7 +5,7 @@ public class PackDataController: MonoBehaviour, IService
     [Header("config")]
     private const string PackDataDirectory = "/PacksData.json";
 
-    private const int _defaultValue = 0;
+    private const int DefaultValue = 0;
 
     [Header("components")]
     [SerializeField] private PacksData _packsData;
@@ -17,6 +17,8 @@ public class PackDataController: MonoBehaviour, IService
     private GameProgress CurrentProgressData;
 
     private int _currentLevel;
+
+    private int _currentPackIndex;
 
     public void InitService()
     {
@@ -34,9 +36,14 @@ public class PackDataController: MonoBehaviour, IService
             SetPackDataToDefault();
         }
 
-        _currentLevel = CurrentProgressData.currentLevel;
+        else
+        {
+            _currentLevel = CurrentProgressData.currentLevel;
 
-        ToPacks(CurrentProgressData.packsDatas, _currentLevel);
+            _currentPackIndex = CurrentProgressData.currentPackIndex;
+
+            _currentPack = _packsModels[_currentPackIndex];
+        }
 
         Save();
     }
@@ -45,63 +52,38 @@ public class PackDataController: MonoBehaviour, IService
     {
         CurrentProgressData.currentLevel = _currentLevel;
 
+        CurrentProgressData.currentPackIndex = _currentPackIndex;
+
         DataWriter<GameProgress> currentWriter =
             new DataWriter<GameProgress>(CurrentProgressData, PackDataDirectory);
 
         currentWriter.SaveFileToSystem();
     }
 
-    private void ToPacks(PackSaveData[] data, int level)
-    {
-        for (int i = 0; i < _packsModels.Length; i++)
-        {
-            _packsModels[i].EndedLevel = data[i].EndedLevel;
-
-            _packsModels[i].isEnded = data[i].packIsended;
-
-            _packsModels[i].isOpen = data[i].packIsOpen;
-
-            if (_packsModels[i].startLevel <= level && _packsModels[i].finishLevel >= level)
-                _currentPack = _packsModels[i];
-        }
-    }
-    private void FromPacks(PackSaveData[] data, int level)
-    {
-        for (int i = 0; i < _packsModels.Length; i++)
-        {
-            data[i].packIndex = i;
-
-            data[i].EndedLevel = _packsModels[i].EndedLevel;
-
-            data[i].packIsended = _packsModels[i].isEnded;
-
-            data[i].packIsOpen = _packsModels[i].isOpen;
-
-            if (_packsModels[i].startLevel <= level && _packsModels[i].finishLevel >= level)
-                _currentPack = _packsModels[i];
-        }
-    }
-
-
     public void SetLevelFrowView(int packIndex)
     {
         if (packIndex >= 0 && packIndex <= _packsModels.Length)
         {
+            _currentPackIndex = packIndex;
+
             _currentPack = _packsModels[packIndex];
 
             if (_currentPack.isEnded)
             {
-                _currentPack.EndedLevel = _defaultValue;
-
+                _currentPack.EndedLevel = 0;
                 _currentPack.isEnded = false;
-
                 _currentLevel = _currentPack.startLevel;
             }
+
+            else
+            {
+                _currentLevel = _currentPack.startLevel + _currentPack.EndedLevel;
+            }
         }
-        FromPacks(CurrentProgressData.packsDatas, _currentLevel);
 
         Save();
     }
+
     public Pack GetCurrentPack() => _currentPack;
 
     public int GetCurrentPackLevel() => _currentPack.EndedLevel;
@@ -127,39 +109,35 @@ public class PackDataController: MonoBehaviour, IService
             _currentPack.EndedLevel++;
         }
 
-        FromPacks(CurrentProgressData.packsDatas, _currentLevel);
-
         Save();
     }
     public void SetPackDataToDefault()
 	{
+        ClearPacks();
+
         CurrentProgressData = new GameProgress();
 
-        CurrentProgressData.currentLevel = _defaultValue;
+        CurrentProgressData.currentPackIndex = 0;
 
-        CurrentProgressData.packsDatas = new PackSaveData[_packsModels.Length];
+        CurrentProgressData.currentLevel = 1;
 
-        for (int i = 0; i < CurrentProgressData.packsDatas.Length; i++)
-        {
-            CurrentProgressData.packsDatas[i] = new PackSaveData();
+        _currentPack = _packsModels[CurrentProgressData.currentPackIndex];
 
-            CurrentProgressData.packsDatas[i].packIndex = i;
-        }
+        _currentLevel = CurrentProgressData.currentLevel;
 
-        foreach (var item in _packsModels)
-        {
-            item.EndedLevel = _defaultValue;
-            item.isOpen = false;
-            item.isEnded = false;
-        }
-
-        CurrentProgressData.packsDatas[0].packIsOpen = true;
-
-        _currentLevel = 1;
-
-        ToPacks(CurrentProgressData.packsDatas, _currentLevel);
-
+        _packsModels[0].isOpen = true;
+        
         Save();
+    }
+
+    private void ClearPacks()
+    {
+        foreach (var model in _packsModels)
+        {
+            model.isEnded= false;
+            model.isOpen= false;
+            model.EndedLevel = 0;
+        }
     }
 }
 [System.Serializable]
@@ -167,18 +145,5 @@ public class GameProgress
 {
     public int currentLevel;
 
-    public PackSaveData[] packsDatas;
+    public int currentPackIndex;
 }
-[System.Serializable]
-public class PackSaveData
-{
-    public int packIndex;
-
-    public bool packIsOpen;
-
-    public bool packIsended;
-
-    public int EndedLevel;
-}
-
-

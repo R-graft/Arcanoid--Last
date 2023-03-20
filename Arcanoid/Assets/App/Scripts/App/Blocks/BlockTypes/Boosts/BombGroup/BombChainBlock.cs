@@ -2,7 +2,12 @@ using System.Collections.Generic;
 
 public class BombChainBlock : BombBlock
 {
-    protected override void SetTargetIndexes()
+    protected override void GetTargetIndexes()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void SetTargetBlocks()
     {
         if (gameObject.activeSelf)
         {

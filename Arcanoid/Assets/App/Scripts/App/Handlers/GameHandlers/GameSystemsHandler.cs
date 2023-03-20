@@ -6,6 +6,8 @@ public class GameSystemsHandler : MonoBehaviour, IGameHandler
 {
     [SerializeField] private List<GameSystem> _gameSystemsList;
 
+    [SerializeField] private GameUIWindow _gameUI;
+
     public Action OnInit;
     public Action OnStart;
     public Action OnRestart;
@@ -38,7 +40,6 @@ public class GameSystemsHandler : MonoBehaviour, IGameHandler
     {
         _levelController = controller;
     }
-    
 
     public void SetStart()
     {
@@ -53,6 +54,8 @@ public class GameSystemsHandler : MonoBehaviour, IGameHandler
     public void SetOver()
     {
         _inputs.TurnOff(false);
+
+        _gameUI.GameUiGameOver();
     }
 
     public void SetLose()
@@ -62,12 +65,13 @@ public class GameSystemsHandler : MonoBehaviour, IGameHandler
         SetStart();
     }
 
-
     public void SetWin()
     {
         _inputs.TurnOff(false);
 
         SetStop();
+
+        _gameUI.GameUiWin();
     }
 
     public void SetRestart()

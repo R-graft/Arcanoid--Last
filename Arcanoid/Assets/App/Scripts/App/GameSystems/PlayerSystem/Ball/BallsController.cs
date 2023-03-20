@@ -7,6 +7,8 @@ public class BallsController : GameSystem
     [Header("config")]
     public Vector2 _startBallPosition = new Vector2(0, -5.5f);
 
+    public Vector2 addedBallSpeed = Vector2.down;
+
     [SerializeField] private BallHandler _ballPrefab;
 
 	private List<BallHandler> _balls;
@@ -38,13 +40,22 @@ public class BallsController : GameSystem
     {
         ClearBalls();
     }
-    private void CreateBall(Vector2 position)
+    public void AddBall(Vector2 position)
+    {
+        var addedBall = CreateBall(position);
+
+        addedBall.SetBallSpeed(_currentBall.GetRb().velocity.magnitude * addedBallSpeed);
+    }
+
+    private BallHandler CreateBall(Vector2 position)
 	{
         var newBall = Instantiate(_ballPrefab, transform);
 
         newBall.transform.position = position;
 
         _balls.Add(newBall);
+
+        return newBall;
     }
 
     public void Fall(BallHandler ball)
@@ -60,21 +71,28 @@ public class BallsController : GameSystem
             else
             {
                 _balls.Remove(ball);
+
                 Destroy(ball.gameObject);
+
+                _currentBall = _balls[0];
             }
         }
     }
 
     private void ClearBalls()
     {
+        _currentBall = _balls[0];
+
         if (_balls.Count > 1)
         {
             for (int i = 1; i < _balls.Count; i++)
             {
                 Destroy(_balls[i].gameObject);
-
-                _balls.Remove(_balls[i]);
             }
+
+            _balls.Clear();
+
+            _balls.Add(_currentBall);
         }
 
         _currentBall.GetRb().velocity = Vector2.zero;
@@ -98,15 +116,15 @@ public class BallsController : GameSystem
                 item.StartBallMove();
         }
     }
-    private void BonusBall(Vector2 position)
-    {
-        CreateBall(position);
 
-        //_balls[_balls.Count - 1].BallRb.velocity = _balls[_balls.Count - 2].BallRb.velocity;
+    public void EditBallsSpeed(bool isSpeedUp, int value)
+    {
+        foreach (var ball in _balls)
+        {
+            ball.EditBallSpeed(isSpeedUp, value);
+        }
     }
 
-    public Rigidbody2D GetBall()
-    {
-        return _currentBall.GetRb();
-    }
+    public Rigidbody2D GetBall() => _currentBall.GetRb();
+
 }

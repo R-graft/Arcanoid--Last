@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7022375679150145137, guid: f177594507ed55b4fab5035e72c0880b, type: 3}
       propertyPath: m_Name
-      value: '[Button]Continue'
+      value: '[Button]Restart'
       objectReference: {fileID: 0}
     - target: {fileID: 8335224188849151596, guid: f177594507ed55b4fab5035e72c0880b, type: 3}
       propertyPath: m_Pivot.x
@@ -332,7 +332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _purchaseContinue: {fileID: 2884072337541400022}
-  _continueButton: {fileID: 7551527074961675223}
+  _restartButton: {fileID: 7551527074961675223}
 --- !u!1001 &5278774786968770123
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -340,6 +340,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3370947062059706403}
     m_Modifications:
+    - target: {fileID: 2259709421154904669, guid: f177594507ed55b4fab5035e72c0880b, type: 3}
+      propertyPath: m_text
+      value: sample
+      objectReference: {fileID: 0}
     - target: {fileID: 5434972644334202978, guid: f177594507ed55b4fab5035e72c0880b, type: 3}
       propertyPath: _key
       value: energycontinue
@@ -350,7 +354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7022375679150145137, guid: f177594507ed55b4fab5035e72c0880b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8335224188849151596, guid: f177594507ed55b4fab5035e72c0880b, type: 3}
       propertyPath: m_Pivot.x
@@ -418,11 +422,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8335224188849151596, guid: f177594507ed55b4fab5035e72c0880b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 0.000000041444
       objectReference: {fileID: 0}
     - target: {fileID: 8335224188849151596, guid: f177594507ed55b4fab5035e72c0880b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -111
+      value: -113
       objectReference: {fileID: 0}
     - target: {fileID: 8335224188849151596, guid: f177594507ed55b4fab5035e72c0880b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

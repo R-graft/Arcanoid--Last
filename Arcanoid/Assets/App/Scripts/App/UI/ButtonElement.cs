@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonElement : Button ,IAnimatedElement
+public class ButtonElement : Button
 {
     protected Action OnDownAction;
 
@@ -19,21 +19,22 @@ public class ButtonElement : Button ,IAnimatedElement
         if (OnDownAction == null)
             return;
 
-        InAnimation();
+        InAnimation(OnDownAction);
     }
 
     public override void OnPointerUp(PointerEventData eventData)
     {
         if (OnUpAction == null)
             return;
-        OnUpAction.Invoke();
+
+        InAnimation(OnUpAction);
     }
 
     public void SetDownAction(Action act, bool add) => OnDownAction = add ? OnDownAction += act : OnDownAction -= act;
 
     public void SetUpAction(Action act, bool add) => OnUpAction = add ? OnUpAction += act : OnUpAction -= act;
 
-    public virtual void InAnimation()
+    public virtual void InAnimation(Action action)
     {
         if (_inputs == null)
         {
@@ -43,13 +44,8 @@ public class ButtonElement : Button ,IAnimatedElement
         _inputs.TurnOff(true);
 
         DOTween.Sequence().
-        AppendCallback(() => OnDownAction.Invoke()).
+        AppendCallback(() => action.Invoke()).
         Append(transform.DOScale(new Vector2(0.8f, 0.8f), animateDuration)).Append(transform.DOScale(Vector2.one, animateDuration)).
         AppendCallback(() => _inputs.TurnOn(true));
-    }
-
-    public void OutAnimation()
-    {
-        
     }
 }

@@ -25,4 +25,14 @@ public class BallHandler : MonoBehaviour
     {
         _ballRb.velocity = _currentVelocity;
     }
+
+    public void EditBallSpeed(bool isSpeedUp, int percentValue)
+    {
+        _speed.EditSpeed(isSpeedUp, percentValue);
+    }
+
+    public void SetBallSpeed(Vector2 speed)
+    {
+        _speed.SetCurrentSpeed(speed);
+    }
 }

@@ -2,25 +2,11 @@ using System.Collections.Generic;
 
 public class VerticalBomb : BombBlock
 {
-    protected override void SetTargetIndexes()
+    protected override void GetTargetIndexes()
     {
-        if (gameObject.activeSelf)
+        for (int i = 0; i <= _grid._linesCount; i++)
         {
-            _damage = -1;
-
-           var linesCount = 0;
-
-            _currentIndexes = new List<(int x, int y)>();
-
-            for (int i = 1; i <= linesCount; i++)
-            {
-                //var newIndex = (i,selfGridIndex.y);
-
-                //if (_blocksSystem._gridIndexes.TryGetValue(newIndex, out Block _))
-                //{
-                //    _currentIndexes.Add(newIndex);
-                //}
-            }
+            _targetIndexes.Add((i, (int)_selfGridIndex.y));
         }
     }
 }

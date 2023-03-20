@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class BallBounce : MonoBehaviour
 {
-    [SerializeField]
-    private Rigidbody2D _objectRb;
+    [Header("config")]
+    public float minBounseAngle = 3;
+
+    public float maxForceIndex = 0.003f;
+
+    public float minForceIndex = 0.001f;
+
+    [SerializeField] private Rigidbody2D _objectRb;
 
     private Vector2 _priviousPosition;
-
-    private const float _minBounseAngle = 3;
-
-    private const float _maxForceIndex = 0.003f;
-
-    private const float _minForceIndex = 0.001f;
 
     public void TryAngleCorrect(Collision2D collision)
     {
@@ -21,9 +21,9 @@ public class BallBounce : MonoBehaviour
 
         var collisionAngle = Vector2.Angle(ballDirection, collisionNormal);
 
-        if (collisionAngle < _minBounseAngle)
+        if (collisionAngle < minBounseAngle)
         {
-            _objectRb.AddForce(new Vector2(collisionNormal.y, collisionNormal.x) * Random.Range(_minForceIndex, _maxForceIndex));
+            _objectRb.AddForce(new Vector2(collisionNormal.y, collisionNormal.x) * Random.Range(minForceIndex, maxForceIndex));
         }
         _priviousPosition = collision.contacts[0].point;
     }

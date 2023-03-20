@@ -10,11 +10,6 @@ public class DeadZone : MonoBehaviour
             _ballsController = LevelContext.Instance.GetSystem<BallsController>();
         }
 
-        if (collision.TryGetComponent(out Bonus bonus))
-        {
-            Destroy(bonus.gameObject);
-        }
-
         if (collision.TryGetComponent(out BallHandler ball))
         {
             _ballsController.Fall(ball);

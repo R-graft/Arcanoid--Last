@@ -2,31 +2,37 @@ using UnityEngine;
 
 public class BonusAttach : MonoBehaviour
 {
-    [SerializeField]
-    private Bonus _bonus;
+    private Bonus _currentBonus;
 
-    [SerializeField]
-    private SpriteRenderer _renderer;
+    private BonusSystem _boosts;
 
-    [SerializeField]
-    private BonusMove _bonusMove;
+    private Transform _boostParent;
+
+    public void Construct(Transform boostParent, Bonus currentBonus, BonusSystem boosts)
+    {
+        _currentBonus= currentBonus;
+        _boosts = boosts;
+        _boostParent= boostParent;
+        _boosts.OnRestart += Deactivate;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("platform"))
         {
-            Attach(collision.gameObject.transform);
-
-            BoostSystem.OnBonusActivation.Invoke(_bonus);
+            _boosts.ActivateBonus(_currentBonus);
         }
+
+        Deactivate();
     }
-    private void Attach(Transform _transform)
+
+    public void Deactivate()
     {
+        transform.parent = _boostParent;
+
         transform.localPosition = Vector3.zero;
 
-        _renderer.enabled = false;
-
-        _bonusMove.enabled = false;
+        gameObject.SetActive(false);
     }
 }
 

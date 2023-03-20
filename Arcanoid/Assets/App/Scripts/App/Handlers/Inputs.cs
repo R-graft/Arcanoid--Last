@@ -6,8 +6,6 @@ public class Inputs : MonoBehaviour, IService
 {
     [SerializeField] private EventSystem _eventSystem;
 
-    private const float _inputConstrainterY = 0;
-
     public Action<float> _inputPositionX;
 
     public Action OnMouseUp, OnMouseDown;
@@ -66,10 +64,7 @@ public class Inputs : MonoBehaviour, IService
         {
             if (Input.GetMouseButton(0))
             {
-                if (_camera.ScreenToWorldPoint(Input.mousePosition).y < _inputConstrainterY)
-                {
-                    _inputPositionX?.Invoke(_camera.ScreenToWorldPoint(Input.mousePosition).x);
-                }
+                _inputPositionX?.Invoke(_camera.ScreenToWorldPoint(Input.mousePosition).x);
             }
 
             if (Input.GetMouseButtonDown(0))

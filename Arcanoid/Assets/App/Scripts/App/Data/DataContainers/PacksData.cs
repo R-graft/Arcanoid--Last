@@ -8,6 +8,12 @@ public class PacksData : ScriptableObject
 [System.Serializable]
 public class Pack
 {
+    [Header("progress")]
+    public int EndedLevel;
+    public bool isOpen;
+    public bool isEnded;
+
+    [Header("components")]
     public string title;
 
     public int packIndex;
@@ -16,13 +22,7 @@ public class Pack
 
     public int finishLevel;
 
-    public int EndedLevel;
-
     public Sprite sprite;
-
-    public bool isOpen;
-
-    public bool isEnded;
 }
 
 

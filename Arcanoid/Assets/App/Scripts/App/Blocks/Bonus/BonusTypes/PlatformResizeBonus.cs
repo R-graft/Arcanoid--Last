@@ -1,19 +1,26 @@
 public class PlatformResizeBonus : Bonus
 {
-    public float resizeValue;
+    private PlatformController _platform;
+
+    public float resizeValue = 2;
+
+    public bool isSizeUp;
+
+    public override void Init()
+    {
+        if (_platform == null)
+        {
+            _platform = LevelContext.Instance.GetSystem<PlatformController>();
+        }
+    }
 
     public override void Apply()
     {
-        Resize();
+        _platform.ResizePlatform(isSizeUp, resizeValue);
     }
 
     public override void Remove()
     {
-        BonusEvents.OnResizePlatform?.Invoke(-resizeValue);
-    }
-
-    private void Resize()
-    {
-        BonusEvents.OnResizePlatform?.Invoke(resizeValue);
+        _platform.ResizePlatform(!isSizeUp, resizeValue);
     }
 }

@@ -18,11 +18,13 @@ public class GameProgressHandler : MonoBehaviour, IGameHandler
         _energy = energy;
 
         _packsData = packs;
+
+        _energy.LoadLevel();
     }
 
     public void SetStart()
     {
-        _energy.LoadLevel();
+        
     }
 
     public void SetWin()
@@ -39,7 +41,7 @@ public class GameProgressHandler : MonoBehaviour, IGameHandler
 
     public void SetOver()
     {
-       
+        _energy.LoadLevel();
     }
 
     public void SetLose()
@@ -49,6 +51,6 @@ public class GameProgressHandler : MonoBehaviour, IGameHandler
 
     public void SetRestart()
     {
-        
+        _energy.LoadLevel();
     }
 }

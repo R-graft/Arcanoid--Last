@@ -14,54 +14,117 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   simpleTypes:
   - type: yellow
-    poolsize: 10
+    poolsize: 12
     healthCount: 1
     sprite: {fileID: 21300000, guid: 2607c6b0dac9b4244b1e9bf3649d2d50, type: 3}
     block: {fileID: -8861276167272084801, guid: bb2d36eb8e5a50640af8a1dddd88f0d5, type: 3}
   - type: green
-    poolsize: 10
-    healthCount: 2
+    poolsize: 12
+    healthCount: 1
     sprite: {fileID: 21300000, guid: 17bd93a1dc923734198ebcba2500996c, type: 3}
     block: {fileID: -8861276167272084801, guid: bb2d36eb8e5a50640af8a1dddd88f0d5, type: 3}
   - type: red
-    poolsize: 10
-    healthCount: 3
+    poolsize: 12
+    healthCount: 2
     sprite: {fileID: 21300000, guid: b62a473d04deed5458bc03febb2d74f9, type: 3}
     block: {fileID: -8861276167272084801, guid: bb2d36eb8e5a50640af8a1dddd88f0d5, type: 3}
   - type: blue
-    poolsize: 10
-    healthCount: 4
+    poolsize: 12
+    healthCount: 2
     sprite: {fileID: 21300000, guid: 4b705db73e82fad40b8a1767385f3ffa, type: 3}
     block: {fileID: -8861276167272084801, guid: bb2d36eb8e5a50640af8a1dddd88f0d5, type: 3}
+  - type: iron
+    poolsize: 12
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: bfab9ffbbbebbe4428fbdedd028a5f21, type: 3}
+    block: {fileID: -5137361578193195587, guid: 388fb3d69d3e2544d9bb6747b5429e30, type: 3}
   boostTypes:
   - type: ballDuplicate
     poolsize: 5
     healthCount: 1
-    sprite: {fileID: 0}
-    block: {fileID: 0}
-    damage: 0
+    sprite: {fileID: 21300000, guid: 9b16422f6b212ba4cae1b4520022efe4, type: 3}
+    block: {fileID: 7060855977652088419, guid: c0d202cbde47b3a4690d0245b9cde0d3, type: 3}
   - type: bombSimple
     poolsize: 5
     healthCount: 1
-    sprite: {fileID: 0}
-    block: {fileID: 0}
-    damage: 0
+    sprite: {fileID: 21300000, guid: 9b8e037920baf49418465f9ac6b34733, type: 3}
+    block: {fileID: -2939520539514125568, guid: 65feadaab73978e44a20e9560605ab70, type: 3}
   - type: bombChain
     poolsize: 5
     healthCount: 1
-    sprite: {fileID: 0}
-    block: {fileID: 0}
-    damage: 0
+    sprite: {fileID: 21300000, guid: 13921c7f66427b44781252ba50d8b1c7, type: 3}
+    block: {fileID: -2867094635234753687, guid: bd5a9b6fab235e3439d96524db15e714, type: 3}
   - type: bombVerical
     poolsize: 5
     healthCount: 1
-    sprite: {fileID: 0}
-    block: {fileID: 0}
-    damage: 0
+    sprite: {fileID: 21300000, guid: 68d5151b5867ec345980cccd36de09b9, type: 3}
+    block: {fileID: 8381743825691691412, guid: 941c4d21976e27a4a913bdf6bc62e887, type: 3}
   - type: bombHorizontal
     poolsize: 5
     healthCount: 1
-    sprite: {fileID: 0}
-    block: {fileID: 0}
-    damage: 0
-  parentBoostTypes: []
+    sprite: {fileID: 21300000, guid: 7a4e50f57410a5048b46df6948b9ab95, type: 3}
+    block: {fileID: 2486361955284216246, guid: 4e398ca5aaa64f147b4522ed0fefafd4, type: 3}
+  parentBoostTypes:
+  - type: ballSpeedDown
+    poolsize: 10
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: 6e7fe64c77e952b4790a3602bc1b48f7, type: 3}
+    block: {fileID: 977924892328777791, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    icon: {fileID: 21300000, guid: 0ba3f09c9e7c0a842a553f51661da03d, type: 3}
+    childBonus: {fileID: 7861551917900245019, guid: 2854de39a14ad7e43a84f2752ac378fe, type: 3}
+  - type: ballSpeedUp
+    poolsize: 10
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: 6e7fe64c77e952b4790a3602bc1b48f7, type: 3}
+    block: {fileID: 977924892328777791, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    icon: {fileID: 21300000, guid: da084010513a13b4e8ca6f841647bdf5, type: 3}
+    childBonus: {fileID: 7861551917900245019, guid: 4f66c66510f735240a24b37e6f32e0b7, type: 3}
+  - type: furyBall
+    poolsize: 10
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: 6e7fe64c77e952b4790a3602bc1b48f7, type: 3}
+    block: {fileID: 977924892328777791, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    icon: {fileID: 21300000, guid: 28ebef9eb40e845419ab5823bbef5a7a, type: 3}
+    childBonus: {fileID: -2084782193407567987, guid: aa5247b4711d0e0459b6be3c3cbe0c3e, type: 3}
+  - type: blackPoint
+    poolsize: 10
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: 6e7fe64c77e952b4790a3602bc1b48f7, type: 3}
+    block: {fileID: 977924892328777791, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    icon: {fileID: 21300000, guid: 8f99a81b5878f984b9fe5a9bcdff329a, type: 3}
+    childBonus: {fileID: 8838195306756102950, guid: adb9b16300c150447b78fca7c277c88d, type: 3}
+  - type: extraLife
+    poolsize: 10
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: 6e7fe64c77e952b4790a3602bc1b48f7, type: 3}
+    block: {fileID: 977924892328777791, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    icon: {fileID: 21300000, guid: 08443990f194c8d40bbe9863ed57dfae, type: 3}
+    childBonus: {fileID: 119769910801393791, guid: 3fb6bcf87ac0e1244b004ebcb5314ecb, type: 3}
+  - type: platformBig
+    poolsize: 10
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: 6e7fe64c77e952b4790a3602bc1b48f7, type: 3}
+    block: {fileID: 977924892328777791, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    icon: {fileID: 21300000, guid: d64b0b1e2597e34409ff2eda665068a4, type: 3}
+    childBonus: {fileID: 7559043464037494097, guid: 46b1f3395509a784bbbc00f6bc58512d, type: 3}
+  - type: platformSmall
+    poolsize: 10
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: 6e7fe64c77e952b4790a3602bc1b48f7, type: 3}
+    block: {fileID: 977924892328777791, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    icon: {fileID: 21300000, guid: f7d0f0189e659cb48a2fc350976b2b96, type: 3}
+    childBonus: {fileID: 7559043464037494097, guid: 20669f3c912664e4597967f8e503ecf2, type: 3}
+  - type: platformSlow
+    poolsize: 10
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: 6e7fe64c77e952b4790a3602bc1b48f7, type: 3}
+    block: {fileID: 977924892328777791, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    icon: {fileID: 21300000, guid: e8fcb79e3c702f8489169bc372767b89, type: 3}
+    childBonus: {fileID: -3331234149839203191, guid: 803332e5c4070ab4db1dd087ccf9cc9c, type: 3}
+  - type: platformFast
+    poolsize: 10
+    healthCount: 1
+    sprite: {fileID: 21300000, guid: 6e7fe64c77e952b4790a3602bc1b48f7, type: 3}
+    block: {fileID: 977924892328777791, guid: ce64ec5bfb1224347a3f7d6e789f2a0f, type: 3}
+    icon: {fileID: 21300000, guid: e8fcb79e3c702f8489169bc372767b89, type: 3}
+    childBonus: {fileID: -3331234149839203191, guid: 9f325b1956bbe67468278b9c5a04372d, type: 3}
