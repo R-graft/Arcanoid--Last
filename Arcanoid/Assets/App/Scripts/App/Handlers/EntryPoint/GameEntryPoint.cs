@@ -1,10 +1,9 @@
+using System;
 using UnityEngine;
 
 public class GameEntryPoint : EntryPoint
 {
     [SerializeField] private LevelContext _levelContext;
-
-    [SerializeField] private GameViewHandler _gameView;
 
     [SerializeField] private GameProgressHandler _gameProgress;
 
@@ -18,11 +17,9 @@ public class GameEntryPoint : EntryPoint
 
         _levelContext.InitContext();
 
-        LevelController controller = new LevelController(_gameProgress, _gameSystems, _gameView);
+        LevelController controller = new LevelController(_gameProgress, _gameSystems);
 
         ProjectContext.Instance.AddService(controller);
-
-        _gameView.InitLevelView(_gameUI);
 
         _gameProgress.InitLevelProgress(context.GetService<EnergyCounter>(), context.GetService<PackDataController>());
 

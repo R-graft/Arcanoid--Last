@@ -21,13 +21,11 @@ public class BallCollision : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out IDamageable dam))
         {
             _blocksDamage.SetDamage(dam, BallDamageValue);
-        }
-        else
-        {
-            _speed.CollisionSpeed();
 
-            _bounce.TryAngleCorrect(collision);
+            _speed.CollisionSpeed();
         }
+
+        _bounce.TryAngleCorrect(collision);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

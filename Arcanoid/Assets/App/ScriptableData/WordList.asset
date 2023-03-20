@@ -16,6 +16,14 @@ MonoBehaviour:
   - eng
   - rus
   words:
+  - key: energycontinue
+    phrases:
+    - langName: eng
+      phrase: CONTINUE WITH ENERGY?
+    - langName: rus
+      phrase: "\u041F\u0420\u041E\u0414\u041E\u041B\u0416\u0418\u0422\u042C \u0417\u0410
+        \u042D\u041D\u0415\u0420\u0413\u0418\u042E?"
+    hide: 0
   - key: next
     phrases:
     - langName: eng

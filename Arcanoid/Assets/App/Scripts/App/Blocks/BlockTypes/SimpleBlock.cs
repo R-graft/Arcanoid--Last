@@ -2,13 +2,30 @@ using UnityEngine;
 
 public class SimpleBlock : Block, IDamageable
 {
-    public Block Current { get => this; set => throw new System.NotImplementedException(); }
+    public Block Current { get => this;}
+    public int CurrentHealth { get; set; }
+
+    public override void Construct(string id, int health, Sprite sprite)
+    {
+        base.Construct(id, health, sprite);
+
+        CurrentHealth = health;
+
+        _damageEffect.CreateEffect(transform.position);
+    }
+
+    public override void RefreshBlock()
+    {
+        CurrentHealth = _startHealth;
+
+        _damageEffect.ClearEffect();
+    }
 
     public void InDamage(int damageValue, out int currentHealth)
     {
-        _healthCount -= damageValue;
+        CurrentHealth -= damageValue;
 
-        currentHealth = _healthCount;
+        currentHealth = CurrentHealth;
 
         _damageEffect.ApplyEffect();
     }
@@ -16,7 +33,5 @@ public class SimpleBlock : Block, IDamageable
     public void InDestroy()
     {
         _damageEffect.ClearEffect();
-
-        //Return();
     }
 }

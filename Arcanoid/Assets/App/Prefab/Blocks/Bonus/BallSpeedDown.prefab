@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7351529518004465186}
   - component: {fileID: 4744518046750105683}
   - component: {fileID: 6140225971966007200}
-  - component: {fileID: 8268413315654985260}
   - component: {fileID: 7861551917900245019}
+  - component: {fileID: 8268413315654985260}
   m_Layer: 7
   m_Name: BallSpeedDown
   m_TagString: Untagged
@@ -98,9 +98,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e55731d09bd98548836800a67bb2ab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bonus: {fileID: 7861551917900245019}
-  _renderer: {fileID: 7351529518004465186}
-  _bonusMove: {fileID: 6140225971966007200}
 --- !u!114 &6140225971966007200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +111,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
+--- !u!114 &7861551917900245019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756265613901539543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07097825620ee54f9be6417a9c93ca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attach: {fileID: 4744518046750105683}
+  bonusParent: {fileID: 0}
+  time: 10
+  isSpeedUp: 0
+  speedPercentValue: 50
 --- !u!61 &8268413315654985260
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -124,7 +138,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.050565735}
@@ -140,18 +154,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.74, y: 0.3430554}
   m_EdgeRadius: 0
---- !u!114 &7861551917900245019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756265613901539543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e07097825620ee54f9be6417a9c93ca5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  time: 10
-  isSpeedUp: 0
-  speedPercentValue: 50

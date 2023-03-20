@@ -3,15 +3,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BlocksData", menuName = "Data/newBlocksData")]
 public class BlocksData : ScriptableObject
 {
-    public SimpleType[] simpleTypes;
+    public BlockType[] simpleTypes;
 
-    public BoostType[] boostTypes;
+    public BlockType[] boostTypes;
 
-    public Bonus[] parentBoostTypes;
+    public BonusType[] parentBoostTypes;
 }
 
 [System.Serializable]
-public class SimpleType
+public class BlockType 
 {
     public string type;
 
@@ -25,14 +25,10 @@ public class SimpleType
 }
 
 [System.Serializable]
-public class BoostType : SimpleType
-{
-    public int damage;
-}
 
-[System.Serializable]
-public class BonusType
+public class BonusType : BlockType
 {
-    public Bonus blockBonus;
-}
+    public Sprite icon;
 
+    public Bonus childBonus;
+}

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class BlocksDamageHandler : GameSystem
 {
     private BlocksSystem _blocks;
@@ -11,13 +9,23 @@ public class BlocksDamageHandler : GameSystem
 
     public void SetDamage(IDamageable dam, int damageValue)
     {
-        dam.InDamage(damageValue, out int currentHealth);
-
-        if (currentHealth == 0)
+        if (damageValue < 0)
         {
             dam.InDestroy();
 
             _blocks.RemoveBlock(dam.Current);
+        }
+
+        else
+        {
+            dam.InDamage(damageValue, out int currentHealth);
+
+            if (currentHealth == 0)
+            {
+                dam.InDestroy();
+
+                _blocks.RemoveBlock(dam.Current);
+            }
         }
     }
 }
@@ -25,6 +33,8 @@ public class BlocksDamageHandler : GameSystem
 public interface IDamageable
 {
     public Block Current {get;}
+
+    public int CurrentHealth { get; set; }
     public void InDestroy();
     public void InDamage(int damageValue, out int health);
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,13 +13,15 @@ public class BlocksArrangeSystem : GameSystem
 
     private FieldGridSystem _grid;
 
-    private BlocksSystem _blocks;
-
     private LevelData _levelData;
 
     private Dictionary<Vector2, Vector2> _gridTiles;
 
+    public Dictionary<Vector2, Block> BlocksGrid { get; private set; }
+
     private Vector2 _startBlockSize;
+
+    public Action<Block> OnAddNewBlock;
 
     public override void InitSystem()
     {
@@ -25,34 +29,32 @@ public class BlocksArrangeSystem : GameSystem
 
         _grid = LevelContext.Instance.GetSystem<FieldGridSystem>();
 
-        _blocks = LevelContext.Instance.GetSystem<BlocksSystem>();
-
         _gridTiles = _grid.GetGrid();
 
         _startBlockSize = _grid.GetCurrentBlockSize();
-
-        GetBlocks();
     }
 
-    public override void StartSystem()
+    private void Start()
     {
-
+        GetBlocks();
     }
 
     public override void ReStartSystem()
     {
-        _blocks.ClearBlocks();
-
         GetBlocks();
     }
     public void GetBlocks()
     {
         _levelData = new LevelDataLoader().GetCurrentLevelData();
 
+        BlocksGrid = new Dictionary<Vector2, Block>();
+
+        //StartCoroutine(ArrangeBlocks(_levelData));
+
         ArrangeBlocks(_levelData);
     }
 
-    private void ArrangeBlocks(LevelData data)
+    private void  ArrangeBlocks(LevelData data)
     {
         if (data == null)
         {
@@ -62,7 +64,7 @@ public class BlocksArrangeSystem : GameSystem
 
         foreach (var block in data.levelBlocks)
         {
-            //yield return new WaitForSeconds(SpawnHold);
+            // yield return new WaitForSeconds(SpawnHold);
 
             var spawnedBlock = _spawner.pools[block.blockTag].GetObject();
 
@@ -72,12 +74,9 @@ public class BlocksArrangeSystem : GameSystem
 
             spawnedBlock.SetGridIndex(block.blockCoordinate);
 
-            if (!spawnedBlock.nonDamageable)
-            {
-                _blocks.AddBlock(spawnedBlock);
-            }
-        }
+            OnAddNewBlock.Invoke(spawnedBlock);
 
-        //yield break;
+            BlocksGrid.Add(block.blockCoordinate, spawnedBlock);
+        }
     }
 }

@@ -49,6 +49,8 @@ public class EnergyCounter : IService
         }
 
         _energy -= value;
+
+        Save();
     }
 
     public void Load()
@@ -93,6 +95,7 @@ public class EnergyCounter : IService
 
 
     public (int current, int max) GetCurrentEnergy() => (_energy, MaxEnergyValue);
+
     public void SetDefaultEnergy()
     {
         PlayerPrefs.SetString(DateKey, DateTime.Now.ToString());

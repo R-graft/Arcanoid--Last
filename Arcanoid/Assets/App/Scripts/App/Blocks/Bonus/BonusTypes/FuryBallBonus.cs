@@ -5,13 +5,18 @@ public class FuryBallBonus : Bonus
         SwitchBallMode();
     }
 
+    public override void Init()
+    {
+       
+    }
+
     public override void Remove()
     {
-        BonusEvents.OnFuryBallBonus?.Invoke(false);
+        
     }
 
     private void SwitchBallMode()
     {
-        BonusEvents.OnFuryBallBonus?.Invoke(true);
+       
     }
 }

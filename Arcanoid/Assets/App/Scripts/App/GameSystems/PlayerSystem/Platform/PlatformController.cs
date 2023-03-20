@@ -3,16 +3,14 @@ using UnityEngine;
 public class PlatformController : GameSystem
 {
     [Header("config")]
-    public Vector2 _startPlatformPosition = new Vector2(0, -3.2f);
+    public Vector2 startPlatformPosition = new Vector2(0, -3.2f);
 
     public float moveSpeed = 0.1f;
 
     [Header("components")]
-    [SerializeField] private GameObject _platform;
-
     [SerializeField] private Camera _mCamera;
 
-    private PlatformMove _mover;
+    [SerializeField] private PlatformTransform _transformer;
 
     private Inputs _inputs;
 
@@ -22,42 +20,50 @@ public class PlatformController : GameSystem
     {
         InitPlatform();
 
-        _inputs._inputPositionX += _mover.Move;
+        _inputs._inputPositionX += _transformer.Move;
     }
 
     public override void StartSystem()
     {
-        _mover.Reset();
+        _transformer.ResetTransform();
     }
 
     public override void StopSystem()
     {
-        _inputs._inputPositionX -= _mover.Move;
+        //_inputs._inputPositionX -= _transformer.Move;
     }
     public override void ReStartSystem()
     {
-        _inputs._inputPositionX += _mover.Move;
-
-        _mover.Reset();
+        _transformer.ResetTransform();
     }
 
     private void InitPlatform()
     {
         _inputs = ProjectContext.Instance.GetService<Inputs>();
 
-        _platform = Instantiate(_platform, transform);
-
         _moveConstrainer = _mCamera.ScreenToWorldPoint(Vector2.zero).x;
 
-        _mover = new PlatformMove(_platform.transform, _startPlatformPosition, _moveConstrainer, moveSpeed);
+        _transformer = Instantiate(_transformer, transform);
 
-        _mover.Reset();
+        _transformer.Construct(startPlatformPosition, _moveConstrainer, moveSpeed);
+
+        _transformer.ResetTransform();
     }
 
-    public Transform GetTransform() => _platform.transform;
+    public Transform GetTransform() => _transformer.transform;
 
     private void OnDisable()
     {
-        _inputs._inputPositionX -= _mover.Move;
+        _inputs._inputPositionX -= _transformer.Move;
+    }
+
+    public void ResizePlatform(bool isSizeup, float value)
+    {
+        _transformer.SetScale(isSizeup, value);
+    }
+
+    public void SetPlatformspeed(bool isSpeedUp, float value)
+    {
+        _transformer.SetSpeed(isSpeedUp, value);
     }
 }

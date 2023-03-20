@@ -20,14 +20,14 @@ public class SpawnSystem : GameSystem
 
         factories = new Dictionary<string, FactoryBlock<Block>>();
 
-        SpawnSimple(_blocksData.simpleTypes);
+        SpawnBlocks(_blocksData.simpleTypes);
 
-        SpawnBoost(_blocksData.boostTypes);
+        SpawnBlocks(_blocksData.boostTypes);
 
-        SpawnParentBoost(_blocksData.boostTypes);
+        SpawnBoost(_blocksData.parentBoostTypes);
     }
 
-    private void SpawnSimple(SimpleType[] datas)
+    private void SpawnBlocks(BlockType[] datas)
     {
         foreach (var blockType in datas)
         {
@@ -48,14 +48,25 @@ public class SpawnSystem : GameSystem
         }
     }
 
-    private void SpawnBoost(SimpleType[] datas)
+    private void SpawnBoost(BonusType[] datas)
     {
+        foreach (var blockType in datas)
+        {
+            var typeFactory = new FactoryBlock<Block>(blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite, blockType.childBonus, blockType.icon);
 
-    }
+            factories.Add(blockType.type, typeFactory);
 
-    private void SpawnParentBoost(SimpleType[] datas)
-    {
+            var TypePool = new BaseMonoPool<Block>(typeFactory, transform);
 
+            pools.Add(blockType.type, TypePool);
+
+            for (int i = 0; i < blockType.poolsize; i++)
+            {
+                var newBlock = typeFactory.ConstructBonus();
+
+                TypePool.ReturnObject(newBlock);
+            }
+        }
     }
 
     public Block GetBlock(string tag)
