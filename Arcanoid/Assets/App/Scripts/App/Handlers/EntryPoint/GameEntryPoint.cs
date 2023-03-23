@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class GameEntryPoint : EntryPoint
@@ -17,9 +16,9 @@ public class GameEntryPoint : EntryPoint
 
         _levelContext.InitContext();
 
-        LevelController controller = new LevelController(_gameProgress, _gameSystems);
+        LevelController controller = ProjectContext.Instance.GetService<LevelController>();
 
-        ProjectContext.Instance.AddService(controller);
+        controller.Construct(_gameProgress, _gameSystems);
 
         _gameProgress.InitLevelProgress(context.GetService<EnergyCounter>(), context.GetService<PackDataController>());
 

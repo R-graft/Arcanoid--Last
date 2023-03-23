@@ -22,6 +22,8 @@ public class BlockType
     public Sprite sprite;
 
     public Block block;
+
+    public Color effectColor;
 }
 
 [System.Serializable]

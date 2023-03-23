@@ -1,33 +1,38 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameWinPopUp : UIPopUp
 {
-    [SerializeField] private Image _levelLogo;
-
-    [SerializeField] private TextMeshProUGUI _level;
-    [SerializeField] private TextMeshProUGUI _levelsInPack;
-
-    [SerializeField] private TextMeshProUGUI _levelName;
-
-    [SerializeField] private TextMeshProUGUI _energyValue;
-    [SerializeField] private TextMeshProUGUI _maxEnergyValue;
-
-    [SerializeField] private Slider _energySlide;
-
     [SerializeField] private ButtonElement _continue;
+
+    [SerializeField] private WinPanelAnimator _panelAnimator;
+
+    private LevelController _levelcontroller;
 
     private PackDataController _packsData;
 
-    private EnergyCounter _energy;
+    [HideInInspector] public Sprite oldSprite;
+    [HideInInspector] public Sprite newSprite;
 
-    private int _oldLevel;
-    private int _newLevel;
+    [HideInInspector] public int oldLevel;
+    [HideInInspector] public int newLevel;
 
+    [HideInInspector] public int oldMaxLevel;
+    [HideInInspector] public int newMaxLevel;
+
+    [HideInInspector] public string oldName;
+    [HideInInspector] public string newName;
     public override void InitPopUp()
     {
-        _continue.SetDownAction(() => ProjectContext.Instance.GetService<LevelController>().Restart(), true);
+        base.InitPopUp();
+
+        _packsData ??= ProjectContext.Instance.GetService<PackDataController>();
+
+        _levelcontroller ??= ProjectContext.Instance.GetService<LevelController>();
+
+        _levelcontroller.OnLevelIsLoaded += GetDataOnLoad;
+
+        _continue.SetDownAction(() => _levelcontroller.Restart(), true);
 
         _continue.SetDownAction(_controller.HidePop, true);
     }
@@ -36,37 +41,43 @@ public class GameWinPopUp : UIPopUp
     {
         base.Show();
 
-        _packsData = ProjectContext.Instance.GetService<PackDataController>();
+        GetDataOnWin();
 
-        _energy = ProjectContext.Instance.GetService<EnergyCounter>();
+        ProgressIncrease();
+    }
 
-        _level.text = _packsData.GetCurrentPackLevel().ToString();
+    public override void Hide()
+    {
+        _panelAnimator.StopAnimate();
 
-        _levelsInPack.text = _packsData.GetCurrentPackLastLevel().ToString();
+        base.Hide();
+    }
+    private void GetDataOnLoad()
+    {
+        oldLevel = _packsData.GetCurrentPackLevel();
 
-        _levelLogo.sprite = _packsData.GetCurrentPack().sprite;
+        oldMaxLevel = _packsData.GetCurrentPackLastLevel();
 
-        _levelName.text = _packsData.GetCurrentPack().title.ToString();
+        oldName = _packsData.GetCurrentPack().title;
 
-        var (current, max) = _energy.GetCurrentEnergy();
+        oldSprite = _packsData.GetCurrentPack().sprite;
+    }
 
-        _energyValue.text = current.ToString();
+    private void GetDataOnWin()
+    {
+        newLevel = _packsData.GetCurrentPackLevel();
 
-        _maxEnergyValue.text = max.ToString();
+        newMaxLevel = _packsData.GetCurrentPackLastLevel();
 
-        _energySlide.value = (float)current/ (float)max;
+        newName = _packsData.GetCurrentPack().title;
 
-        //ProgressIncrease();
+        newSprite = _packsData.GetCurrentPack().sprite;
     }
 
     private void ProgressIncrease()
     {
-        //Pack currentPack = GameProgressController.Instance.PacksController.GetCurrentPack();
+        _panelAnimator.gameObject.SetActive(true);
 
-        //float currentPogress = (float)currentPack.EndedLevel / (float)currentPack.finishLevel;
-
-        //_levelProgress.value = ((float)currentPack.EndedLevel - 1) / (float)currentPack.finishLevel;
-
-       // DOTween.To(() => _levelProgress.value, x => _levelProgress.value = x, currentPogress, 1);
+        _panelAnimator.AnimateProgress(this);
     }
 }

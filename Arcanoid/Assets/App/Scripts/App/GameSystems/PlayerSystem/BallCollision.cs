@@ -30,6 +30,14 @@ public class BallCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-     
+        if (!_blocksDamage)
+        {
+            _blocksDamage = LevelContext.Instance.GetSystem<BlocksDamageHandler>();
+        }
+
+        if (collision.gameObject.TryGetComponent(out IDamageable dam))
+        {
+            _blocksDamage.SetDestroy(dam);
+        }
     }
 }

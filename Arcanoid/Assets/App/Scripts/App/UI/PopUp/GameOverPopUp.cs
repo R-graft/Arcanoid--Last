@@ -6,6 +6,8 @@ public class GameOverPopUp : UIPopUp
 
     [SerializeField] private ButtonElement _restartButton;
 
+    [SerializeField] private ButtonElement _back;
+
     private LevelController _levelController;
 
     private EnergyCounter _energy;
@@ -16,6 +18,8 @@ public class GameOverPopUp : UIPopUp
 
     public override void InitPopUp()
     {
+        base.InitPopUp();
+
         _energy = ProjectContext.Instance.GetService<EnergyCounter>();
 
         _restartButton.SetDownAction(()=> ProjectContext.Instance.GetService<LevelController>().Restart(), true);
@@ -25,6 +29,9 @@ public class GameOverPopUp : UIPopUp
         _purchaseContinue.SetDownAction(() => PurchaseLife(), true);
 
         _purchaseContinue.SetDownAction(_controller.HidePop, true);
+
+        _back.SetDownAction(() => Time.timeScale = 1, true);
+        _back.SetDownAction(()=> ScenesManager.Instance.LoadScene(SCENELIST.PackScene), true);
     }
 
     public override void Show()

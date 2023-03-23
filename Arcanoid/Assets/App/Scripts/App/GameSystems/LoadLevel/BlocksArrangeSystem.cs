@@ -6,7 +6,7 @@ using UnityEngine;
 public class BlocksArrangeSystem : GameSystem
 {
     [Header("config")]
-    public float SpawnHold = 0.02f;
+    public float SpawnHold = 0.03f;
 
     [Header("components")]
     private SpawnSystem _spawner;
@@ -49,22 +49,21 @@ public class BlocksArrangeSystem : GameSystem
 
         BlocksGrid = new Dictionary<Vector2, Block>();
 
-        //StartCoroutine(ArrangeBlocks(_levelData));
-
-        ArrangeBlocks(_levelData);
+        StartCoroutine(ArrangeBlocks(_levelData));
     }
 
-    private void  ArrangeBlocks(LevelData data)
+    private IEnumerator ArrangeBlocks(LevelData data)
     {
         if (data == null)
         {
             Debug.Log("Level data is null");
-            //yield break;
+
+            yield break;
         }
 
         foreach (var block in data.levelBlocks)
         {
-            // yield return new WaitForSeconds(SpawnHold);
+             yield return new WaitForSeconds(SpawnHold);
 
             var spawnedBlock = _spawner.pools[block.blockTag].GetObject();
 
@@ -78,5 +77,7 @@ public class BlocksArrangeSystem : GameSystem
 
             BlocksGrid.Add(block.blockCoordinate, spawnedBlock);
         }
+
+        _controller.LevelIsLoaded();
     }
 }

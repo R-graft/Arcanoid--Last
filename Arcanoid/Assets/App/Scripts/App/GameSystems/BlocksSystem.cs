@@ -73,5 +73,13 @@ public class BlocksSystem : GameSystem
 
         _currentCount = 0;
     }
+
+    public void SetBlocksCollider(bool isTrigger)
+    {
+        foreach (var block in _allBlocks)
+        {
+            block.GetCollider().isTrigger = isTrigger;
+        }
+    }
 }
 

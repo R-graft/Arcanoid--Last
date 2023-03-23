@@ -11,6 +11,8 @@ public class GameMenuPopUp : UIPopUp
 
     public override void InitPopUp()
     {
+        base.InitPopUp();
+
         _energy ??= ProjectContext.Instance.GetService<EnergyCounter>();
 
         _restartButton.SetUpAction(()=> RestartAccess(), true);

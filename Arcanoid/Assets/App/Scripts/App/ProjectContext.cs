@@ -25,6 +25,12 @@ public class ProjectContext : MonoBehaviour
         var energyCounter = new EnergyCounter();
         _locator.Regiser(energyCounter).InitService();
 
+        var animator = new AnimateHandler();
+        _locator.Regiser(animator).InitService();
+
+        var levelController = new LevelController();
+        _locator.Regiser(levelController).InitService();
+
         _langHandler = Instantiate(_langHandler);
         _locator.Regiser(_langHandler).InitService();
 
@@ -37,7 +43,7 @@ public class ProjectContext : MonoBehaviour
         _popUpHandler = Instantiate(_popUpHandler);
         _locator.Regiser(_popUpHandler).InitService();
 
-        _inputHandler= Instantiate(_inputHandler);
+        _inputHandler = Instantiate(_inputHandler);
         _locator.Regiser(_inputHandler).InitService();
     }
 

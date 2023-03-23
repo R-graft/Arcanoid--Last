@@ -124,10 +124,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attach: {fileID: 4744518046750105683}
-  bonusParent: {fileID: 0}
   time: 10
-  resizeValue: 1.5
-  isSizeUp: 0
+  scaleValue: 0.75
 --- !u!61 &8268413315654985260
 BoxCollider2D:
   m_ObjectHideFlags: 0

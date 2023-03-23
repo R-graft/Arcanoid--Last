@@ -1,7 +1,11 @@
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PackViewManager : MonoBehaviour
 {
+    [SerializeField] private VerticalLayoutGroup _packsList;
+
     [SerializeField] private PacksData _packs;
 
     [SerializeField] private PackView[] _packViews;
@@ -13,9 +17,6 @@ public class PackViewManager : MonoBehaviour
     [SerializeField] private string _closedPackTitle;
 
 
-
-    [SerializeField] private RectTransform _content;
-
     [SerializeField] private Color _openColor;
     [SerializeField] private Color _closeColor;
     [SerializeField] private Color _endedColor;
@@ -24,13 +25,19 @@ public class PackViewManager : MonoBehaviour
 
     private PackDataController _packsDataController;
 
+    private AnimateHandler _animator;
+
     public void Init()
     {
         _energy = ProjectContext.Instance.GetService<EnergyCounter>();
 
+        _animator = ProjectContext.Instance.GetService<AnimateHandler>();
+
         _packsDataController = ProjectContext.Instance.GetService<PackDataController>();
 
         SetPacksView();
+
+        EnterAnimation();
     }
 
     public void SetPacksView()
@@ -84,8 +91,19 @@ public class PackViewManager : MonoBehaviour
         {
             _packsDataController.SetLevelFrowView(index);
 
+            ExitAnimation();
+
             ScenesManager.Instance.LoadScene(SCENELIST.GameScene);
         }
+    }
+
+    public void EnterAnimation()
+    {
+        _animator.AnimateEnterPacksList(_packsList);
+    }
+    public void ExitAnimation()
+    {
+        _animator.AnimateExitPacksList(_packsList);
     }
 }
 

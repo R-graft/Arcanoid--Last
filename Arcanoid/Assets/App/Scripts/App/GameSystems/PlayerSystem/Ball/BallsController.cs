@@ -108,14 +108,6 @@ public class BallsController : GameSystem
                 item.StopBallMove();
         }
     }
-    private void StartBalls()
-    {
-        if (_balls.Count != 0)
-        {
-            foreach (var item in _balls)
-                item.StartBallMove();
-        }
-    }
 
     public void EditBallsSpeed(bool isSpeedUp, int value)
     {
@@ -125,6 +117,13 @@ public class BallsController : GameSystem
         }
     }
 
+    public void EditBallView(bool isFuriView)
+    {
+        foreach (var ball in _balls)
+        {
+            ball.SetFury(isFuriView);
+        }
+    }
     public Rigidbody2D GetBall() => _currentBall.GetRb();
 
 }

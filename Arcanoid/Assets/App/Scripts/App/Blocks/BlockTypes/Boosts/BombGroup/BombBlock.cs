@@ -17,6 +17,8 @@ public abstract class BombBlock : BoostBlock
 
     public int bombDamage;
 
+    protected float _damagingHold = 0.1f;
+
     protected override void InitBoost()
     {
         _damage = LevelContext.Instance.GetSystem<BlocksDamageHandler>();
@@ -25,26 +27,24 @@ public abstract class BombBlock : BoostBlock
 
         _grid = LevelContext.Instance.GetSystem<FieldGridSystem>();
 
-        _currentLevelsBlocks = _arranger.BlocksGrid;
-
         _targetIndexes = new List<(int, int)>();
 
         GetTargetIndexes();
-
-        SetTargetBlocks();
     }
 
     protected abstract void GetTargetIndexes();
 
     protected virtual void SetTargetBlocks()
     {
+        _currentLevelsBlocks = _arranger.BlocksGrid;
+
         _currentTargets = new List<IDamageable>();
 
         foreach (var (x, y) in _targetIndexes)
         {
             var current = new Vector2(x, y);
 
-            if (_currentLevelsBlocks.ContainsKey(current) && _selfGridIndex != current)
+            if (_currentLevelsBlocks.ContainsKey(current) && _currentLevelsBlocks[current].gameObject.activeSelf && _selfGridIndex != current)
             {
                 if (_currentLevelsBlocks[current].TryGetComponent(out IDamageable dam))
                 {
@@ -56,9 +56,8 @@ public abstract class BombBlock : BoostBlock
 
     public override void BoostEffect()
     {
-        foreach (var target in _currentTargets)
-        {
-            _damage.SetDamage(target, bombDamage);
-        }
+        SetTargetBlocks();
+
+        _damage.SetArrayDamage(_currentTargets, bombDamage, _damagingHold);
     }
 }

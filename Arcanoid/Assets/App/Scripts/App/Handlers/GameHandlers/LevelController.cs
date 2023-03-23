@@ -7,14 +7,14 @@ public class LevelController : IService
     public Action OnGameOver;
     public Action OnWinGame;
     public Action OnLoseGame;
+    public Action OnLevelIsLoaded;
 
-    public LevelController(params IGameHandler[] handlers)
+    public void Construct(params IGameHandler[] handlers)
     {
         SubscribeOnGameEvents(handlers);
 
         SetController(handlers);
     }
-
     private void SetController(IGameHandler[] handlers)
     {
         foreach (var handler in handlers)
@@ -39,6 +39,7 @@ public class LevelController : IService
     public void GameOver()=> OnGameOver.Invoke();
     public void Win() => OnWinGame.Invoke();
     public void Lose() => OnLoseGame.Invoke();
+    public void LevelIsLoaded() => OnLevelIsLoaded.Invoke();
 
     public void InitService()
     {

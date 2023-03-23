@@ -8,6 +8,8 @@ public class GamePanelController : GameSystem
 
     [SerializeField] private GamePanelView _interface;
 
+    [SerializeField] private ButtonElement _passLevel;
+
     private PackDataController _packsData;
 
     private BlocksSystem _blocks;
@@ -29,6 +31,8 @@ public class GamePanelController : GameSystem
         _interface.Init(_packsData);
 
         _interface.RefreshPanel();
+
+        _passLevel.SetDownAction(() => FastWin(), true);
 
         ReStartSystem();
     }
@@ -97,5 +101,10 @@ public class GamePanelController : GameSystem
 
             _interface.RemoveLife();
         }
+    }
+
+    private void FastWin()
+    {
+        _controller.Win();
     }
 }

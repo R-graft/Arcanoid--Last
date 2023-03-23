@@ -1,64 +1,94 @@
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class BombChainBlock : BombBlock
 {
+    private Dictionary<string, List<Vector2>> _startList;
+    
+    private List<(int x, int y)> _startIndexes = new List<(int, int )> { (0, 1), (0, -1), (-1, 0), (1, 0) };
+
     protected override void GetTargetIndexes()
     {
-        throw new System.NotImplementedException();
+        _targetIndexes = new List<(int, int)>();
+
+        for (int i = 0; i < _startIndexes.Count; i++)
+        {
+            _targetIndexes.Add(((int)_selfGridIndex.x + _startIndexes[i].x, (int)_selfGridIndex.y + _startIndexes[i].y));
+        }
     }
 
     protected override void SetTargetBlocks()
     {
-        if (gameObject.activeSelf)
+        _currentLevelsBlocks = _arranger.BlocksGrid;
+
+        _currentTargets = new List<IDamageable>();
+
+        _startList = new Dictionary<string, List<Vector2>>();
+
+        foreach (var (x, y) in _targetIndexes)
         {
-            //_damage = -1;
+            var current = new Vector2(x, y);
 
-            //_targetIndexes = new (int, int)[] { (0, 1), (0, -1), (-1, 0), (1, 0) };
+            if (_currentLevelsBlocks.ContainsKey(current) && _selfGridIndex != current)
+            {
+                string currentTag = _currentLevelsBlocks[current].GetId();
 
-            //_currentIndexes = new List<(int x, int y)>();
+                _startList.Add(currentTag, new List<Vector2>());
 
-            //var NeightboursTypes = new Dictionary<BlocksList, List<Block>>();
+                _startList[currentTag].Add(current);
 
-            //var maxId = 0;
+            }
+        }
 
-            //BlocksList current = default;
+        if (_startList.Count > 0)
+        {
+            FindMaxPath();
+        }
+    }
 
-            //foreach (var (x, y) in _targetIndexes)
-            //{
-            //    var newIndex = (selfGridIndex.x + x, selfGridIndex.y + y);
+    private void FindMaxPath()
+    {
+        foreach (var vertex in _startList)
+        {
+            Queue<Vector2> currentQueue = new Queue<Vector2>();
 
-            //    if (_blocksSystem._gridIndexes.TryGetValue(newIndex, out Block block))
-            //    {
-            //        if (!NeightboursTypes.ContainsKey(block.blockId))
-            //        {
-            //            NeightboursTypes.Add(block.blockId, new List<Block>());
+            string currentTag = vertex.Key;
 
-            //            NeightboursTypes[block.blockId].Add(block);
+            Vector2 currentPosition = vertex.Value[0];
 
-            //            current = block.blockId;
-            //        }
+            currentQueue.Enqueue(currentPosition);
 
-            //        else
-            //        {
-            //            NeightboursTypes[block.blockId].Add(block);
+            while (currentQueue.Count != 0)
+            {
+                var newPos = currentQueue.Dequeue();
 
-            //            if (NeightboursTypes[block.blockId].Count > maxId)
-            //            {
-            //                maxId = NeightboursTypes[block.blockId].Count;
+                foreach (var (x, y) in _startIndexes)
+                {
+                    var newIndex = new Vector2(x + newPos.x, y + newPos.y);
 
-            //                current = block.blockId;
-            //            }
-            //        }
-            //    }
-            //}
+                    if (!vertex.Value.Contains(newIndex) && _currentLevelsBlocks.ContainsKey(newIndex) && _currentLevelsBlocks[newIndex].GetId() == currentTag)
+                    {
+                        vertex.Value.Add(newIndex);
 
-            //foreach (var item in NeightboursTypes[current])
-            //{
-            //    if (_blocksSystem._gridIndexes.TryGetValue(item.selfGridIndex, out Block _))
-            //    {
-            //        _currentIndexes.Add(item.selfGridIndex);
-            //    }
-            //}
+                        currentQueue.Enqueue(newIndex);
+                    }
+                }
+            }
+        }
+        var finalList = _startList.Aggregate((l, r) => l.Value.Count > r.Value.Count ? l : r).Value;
+
+        finalList.Reverse();
+
+        foreach (var index in finalList)
+        {
+            if (_currentLevelsBlocks[index].gameObject.activeSelf && _selfGridIndex != index)
+            {
+                if (_currentLevelsBlocks[index].TryGetComponent(out IDamageable dam))
+                {
+                    _currentTargets.Add(dam);
+                }
+            }
         }
     }
 }

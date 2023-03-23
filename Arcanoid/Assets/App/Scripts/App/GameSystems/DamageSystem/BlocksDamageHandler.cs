@@ -1,7 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class BlocksDamageHandler : GameSystem
 {
     private BlocksSystem _blocks;
-
     public override void InitSystem()
     {
         _blocks = LevelContext.Instance.GetSystem<BlocksSystem>();
@@ -22,10 +25,34 @@ public class BlocksDamageHandler : GameSystem
 
             if (currentHealth == 0)
             {
-                dam.InDestroy();
-
-                _blocks.RemoveBlock(dam.Current);
+                SetDestroy(dam);
             }
+        }
+    }
+
+    public void SetDestroy(IDamageable dam)
+    {
+        dam.InDestroy();
+
+        _blocks.RemoveBlock(dam.Current);
+    }
+
+    public void SetArrayDamage(List<IDamageable> damagingArray, int damage, float damagingHold)
+    {
+        StartCoroutine(ArrayDestroy(damagingArray, damage, damagingHold));
+    }
+
+    private IEnumerator ArrayDestroy(List<IDamageable> damagingArray, int damage, float damagingHold)
+    {
+        int count = damagingArray.Count-1;
+
+        while (count >= 0)
+        {
+            yield return new WaitForSeconds(damagingHold);
+
+            SetDamage(damagingArray[count], damage);
+
+            count--;
         }
     }
 }

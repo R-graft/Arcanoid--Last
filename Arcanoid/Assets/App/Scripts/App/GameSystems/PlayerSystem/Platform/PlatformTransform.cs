@@ -6,6 +6,8 @@ public class PlatformTransform : MonoBehaviour
 
     [SerializeField] private Transform _centerPlatform;
 
+    private AnimateHandler _animator;
+
     private Vector2 _startPlatformPosition;
 
     private float _moveConstrainterX;
@@ -14,10 +16,7 @@ public class PlatformTransform : MonoBehaviour
 
     private float _defaultSpeed;
 
-    //private void Update()
-    //{
-    //    print(_moveSpeed);
-    //}
+   
     public void Construct(Vector2 startPlatformPosition, float moveConstrainer, float moveSpeed)
     {
         _startPlatformPosition = startPlatformPosition;
@@ -25,6 +24,8 @@ public class PlatformTransform : MonoBehaviour
         _moveConstrainterX = moveConstrainer;
 
         _defaultSpeed = moveSpeed;
+
+        _animator = ProjectContext.Instance.GetService<AnimateHandler>();
     }
 
     public void ResetTransform()
@@ -50,10 +51,8 @@ public class PlatformTransform : MonoBehaviour
         _moveSpeed = isSpeedUp ? _moveSpeed *= value : _moveSpeed /= value;
     }
 
-    public void SetScale(bool isSizeUp, float value)
+    public void SetScale(float scaleValue)
     {
-        float sizeX = isSizeUp? _basePlatform.localScale.x * value: _basePlatform.localScale.x / value;
-
-        _basePlatform.localScale = new Vector2(sizeX, _basePlatform.localScale.y);
+        _animator.AnimatePlatformSize(_basePlatform, scaleValue);
     } 
 }

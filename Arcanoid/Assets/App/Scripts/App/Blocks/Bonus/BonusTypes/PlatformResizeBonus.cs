@@ -2,9 +2,7 @@ public class PlatformResizeBonus : Bonus
 {
     private PlatformController _platform;
 
-    public float resizeValue = 2;
-
-    public bool isSizeUp;
+    public float scaleValue;
 
     public override void Init()
     {
@@ -16,11 +14,11 @@ public class PlatformResizeBonus : Bonus
 
     public override void Apply()
     {
-        _platform.ResizePlatform(isSizeUp, resizeValue);
+        _platform.ResizePlatform(scaleValue);
     }
 
     public override void Remove()
     {
-        _platform.ResizePlatform(!isSizeUp, resizeValue);
+        _platform.ResizePlatform(1);
     }
 }
