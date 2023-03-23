@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class BonusAttach : MonoBehaviour
 {
-    private Bonus _currentBonus;
+    protected Bonus _currentBonus;
 
-    private BonusSystem _boosts;
+    protected BonusSystem _boosts;
 
-    private Transform _boostParent;
+    protected Transform _boostParent;
 
     public void Construct(Transform boostParent, Bonus currentBonus, BonusSystem boosts)
     {
@@ -16,7 +16,7 @@ public class BonusAttach : MonoBehaviour
         _boosts.OnRestart += Deactivate;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("platform"))
         {
@@ -26,7 +26,7 @@ public class BonusAttach : MonoBehaviour
         Deactivate();
     }
 
-    public void Deactivate()
+    public virtual void Deactivate()
     {
         transform.parent = _boostParent;
 

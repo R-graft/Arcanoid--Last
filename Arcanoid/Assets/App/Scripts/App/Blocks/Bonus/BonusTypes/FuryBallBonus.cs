@@ -1,22 +1,24 @@
 public class FuryBallBonus : Bonus
 {
-    public override void Apply()
-    {
-        SwitchBallMode();
-    }
+    private BlocksSystem _blocks;
 
+    private BallsController _balls;
     public override void Init()
     {
-       
+       _blocks = LevelContext.Instance.GetSystem<BlocksSystem>();
+
+       _balls = LevelContext.Instance.GetSystem<BallsController>();
+    }
+
+    public override void Apply()
+    {
+        _blocks.SetBlocksCollider(true);
+        _balls.EditBallView(true);
     }
 
     public override void Remove()
     {
-        
-    }
-
-    private void SwitchBallMode()
-    {
-       
+        _blocks.SetBlocksCollider(false);
+        _balls.EditBallView(false);
     }
 }

@@ -31,7 +31,7 @@ public class SpawnSystem : GameSystem
     {
         foreach (var blockType in datas)
         {
-            var typeFactory = new FactoryBlock<Block>(blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite);
+            var typeFactory = new FactoryBlock<Block>(blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite, blockType.effectColor);
 
             factories.Add(blockType.type, typeFactory);
 
@@ -52,7 +52,7 @@ public class SpawnSystem : GameSystem
     {
         foreach (var blockType in datas)
         {
-            var typeFactory = new FactoryBlock<Block>(blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite, blockType.childBonus, blockType.icon);
+            var typeFactory = new FactoryBlock<Block>(blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite, blockType.childBonus, blockType.icon, blockType.effectColor);
 
             factories.Add(blockType.type, typeFactory);
 

@@ -84,12 +84,6 @@ public class PackDataController: MonoBehaviour, IService
         Save();
     }
 
-    public Pack GetCurrentPack() => _currentPack;
-
-    public int GetCurrentPackLevel() => _currentPack.EndedLevel;
-    public int GetCurrentPackLastLevel() => _currentPack.finishLevel - _currentPack.startLevel+1;
-    public int GetGlobalLevel() => _currentLevel;
-
     public void LevelPass()
     {
         _currentLevel++;
@@ -111,6 +105,13 @@ public class PackDataController: MonoBehaviour, IService
 
         Save();
     }
+    public Pack GetCurrentPack() => _currentPack;
+
+    public int GetCurrentPackLevel() => _currentPack.EndedLevel;
+    public int GetCurrentPackLastLevel() => _currentPack.finishLevel - _currentPack.startLevel+1;
+    public int GetGlobalLevel() => _currentLevel;
+
+    
     public void SetPackDataToDefault()
 	{
         ClearPacks();

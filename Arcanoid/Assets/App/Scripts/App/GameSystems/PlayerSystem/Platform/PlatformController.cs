@@ -28,10 +28,6 @@ public class PlatformController : GameSystem
         _transformer.ResetTransform();
     }
 
-    public override void StopSystem()
-    {
-        //_inputs._inputPositionX -= _transformer.Move;
-    }
     public override void ReStartSystem()
     {
         _transformer.ResetTransform();
@@ -57,9 +53,9 @@ public class PlatformController : GameSystem
         _inputs._inputPositionX -= _transformer.Move;
     }
 
-    public void ResizePlatform(bool isSizeup, float value)
+    public void ResizePlatform(float value)
     {
-        _transformer.SetScale(isSizeup, value);
+        _transformer.SetScale(value);
     }
 
     public void SetPlatformspeed(bool isSpeedUp, float value)

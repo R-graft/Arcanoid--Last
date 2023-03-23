@@ -12,16 +12,20 @@ public class FactoryBlock<T> : BaseMonoFactory<Block>
 
     protected Bonus _childBonus;
 
-    public FactoryBlock(Block prefab, Transform container, string type, int healthCount, Sprite sprite) : base(prefab, container)
+    protected Color _effectColor;
+
+    public FactoryBlock(Block prefab, Transform container, string type, int healthCount, Sprite sprite, Color effectColor) : base(prefab, container)
     {
         _type = type;
 
         _healthCount = healthCount;
 
         _sprite = sprite;
+
+        _effectColor= effectColor;
     }
 
-    public FactoryBlock(Block prefab, Transform container, string type, int healthCount, Sprite sprite, Bonus childBonus, Sprite icon) : base(prefab, container)
+    public FactoryBlock(Block prefab, Transform container, string type, int healthCount, Sprite sprite, Bonus childBonus, Sprite icon, Color effectColor) : base(prefab, container)
     {
         _type = type;
 
@@ -31,14 +35,16 @@ public class FactoryBlock<T> : BaseMonoFactory<Block>
 
         _icon = icon;
 
-        _childBonus= childBonus;
+        _childBonus = childBonus;
+
+        _effectColor = effectColor;
     }
 
     public Block ConstructObject()
     {
         Block newBlock = CreateObject();
 
-        newBlock.Construct(_type, _healthCount, _sprite);
+        newBlock.Construct(_type, _healthCount, _sprite, _effectColor);
 
         return newBlock;
     }

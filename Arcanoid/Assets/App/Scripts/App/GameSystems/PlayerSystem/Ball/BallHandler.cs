@@ -10,6 +10,10 @@ public class BallHandler : MonoBehaviour
 
     [SerializeField] private BallBounce _bounce;
 
+    [SerializeField] private SpriteRenderer _renderer;
+
+    [SerializeField] private TrailRenderer _trail;
+
     private Vector2 _currentVelocity;
 
     public Rigidbody2D GetRb() => _ballRb;
@@ -34,5 +38,12 @@ public class BallHandler : MonoBehaviour
     public void SetBallSpeed(Vector2 speed)
     {
         _speed.SetCurrentSpeed(speed);
+    }
+
+    public void SetFury(bool isFury)
+    {
+        _renderer.color = isFury ? Color.red : Color.white;
+
+        _trail.emitting = isFury;
     }
 }

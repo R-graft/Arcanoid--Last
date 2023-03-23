@@ -3,14 +3,20 @@ using UnityEngine;
 public class GameUIWindow : UIWindow
 {
     [SerializeField] private ButtonElement _pauseButton;
+
+    private Inputs _inputs;
     public override void InitWindow()
     {
         _pauseButton.SetDownAction(() => GameUiPause(), true);
+
+        _inputs ??= ProjectContext.Instance.GetService<Inputs>();
     }
 
     public void GameUiWin()
     {
-        _popUpHandler.ShowPop("win");
+        _inputs.TurnOff(true);
+
+        Invoke(nameof(WinUnHold), 1);
     }
 
     public void GameUiPause()
@@ -22,16 +28,10 @@ public class GameUIWindow : UIWindow
         _popUpHandler.ShowPop("lose");
     }
 
-    public void SetPause()
+    private void WinUnHold()
     {
-        if (Time.timeScale == 0)
-        {
-            Time.timeScale = 1;
-        }
+        _popUpHandler.ShowPop("win");
 
-        else
-        {
-            Time.timeScale = 0;
-        }
+        _inputs.TurnOn(true);
     }
 }

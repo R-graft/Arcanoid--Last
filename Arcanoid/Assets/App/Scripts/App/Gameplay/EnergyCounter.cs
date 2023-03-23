@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class EnergyCounter : IService
@@ -6,7 +7,7 @@ public class EnergyCounter : IService
     private int _energy;
 
     [Header("config") ]
-    private const int DefaultEnergy = 50;
+    private const int DefaultEnergy = 25;
 
     private const int MaxEnergyValue = 100;
 
@@ -18,10 +19,29 @@ public class EnergyCounter : IService
 
     private const string DateKey = "SavigDateValue";
 
+    private const string MinutesKey = "RemainingMinutes";
+
 
     public void InitService()
     {
         Load();
+    }
+
+    public void Load()
+    {
+        int loadedEnergy = GetSavedEnergy();
+
+        _energy = loadedEnergy > MaxEnergyValue ? MaxEnergyValue : loadedEnergy;
+
+        Save();
+    }
+    private void Save()
+    {
+        string lastData = DateTime.Now.ToFileTime().ToString();
+
+        PlayerPrefs.SetString(DateKey, lastData);
+
+        PlayerPrefs.SetInt(EnergyKey, _energy);
     }
 
     public void SetEnergy(int value)
@@ -53,46 +73,40 @@ public class EnergyCounter : IService
         Save();
     }
 
-    public void Load()
+    private int GetSavedEnergy()
     {
+        if (!PlayerPrefs.HasKey(EnergyKey))
+        {
+            SetDefaultEnergy();
+
+            return _energy;
+        }
+
         int lastEnergy = PlayerPrefs.GetInt(EnergyKey);
 
         string lastDateStr = PlayerPrefs.GetString(DateKey);
 
         if (long.TryParse(lastDateStr, out long lastDateLong))
         {
-            int loadedEnergy = GetSavedEnergy(lastEnergy, lastDateLong);
+            var savingDate = DateTime.FromFileTime(lastDateLong);
 
-            _energy = loadedEnergy > MaxEnergyValue? MaxEnergyValue : loadedEnergy;
+            int loadedMinutesValue = DateTime.Now.Subtract(savingDate).Minutes;
+
+            int savedMinutes = PlayerPrefs.GetInt(MinutesKey);
+
+            int loadedMinutes = loadedMinutesValue + savedMinutes;
+
+            lastEnergy += loadedMinutes / 60;
+
+            PlayerPrefs.SetInt(MinutesKey, loadedMinutes % 60);
+
         }
-        else
-        {
-            SetDefaultEnergy();
-        }
 
-        Save();
-    }
-    public void Save()
-    {
-        string lastData = DateTime.Now.ToFileTime().ToString();
-
-        PlayerPrefs.SetString(DateKey, lastData);
-
-        PlayerPrefs.SetInt(EnergyKey, _energy);
-    }
-
-    private int GetSavedEnergy(int lastEnergyValue, long lastSavingDate)
-    {
-        var savingDate = DateTime.FromFileTime(lastSavingDate);
-
-        lastEnergyValue += DateTime.Now.Subtract(savingDate).Hours;
-
-        return _energy = lastEnergyValue;
+        return lastEnergy;
     }
 
     public void LoadLevel() => DecreaseEnergy(EnergyDecreaseValue);
     public void LevelPass() => IncreaseEnergy(EnergyIncreaseValue);
-
 
     public (int current, int max) GetCurrentEnergy() => (_energy, MaxEnergyValue);
 
@@ -100,7 +114,12 @@ public class EnergyCounter : IService
     {
         PlayerPrefs.SetString(DateKey, DateTime.Now.ToString());
 
+        PlayerPrefs.SetString(EnergyKey, DateTime.Now.ToString());
+
+        PlayerPrefs.SetInt(MinutesKey, 0);
+
         _energy = DefaultEnergy;
     } 
+
     public bool GetGameAsses() => _energy >= EnergyDecreaseValue;
 }

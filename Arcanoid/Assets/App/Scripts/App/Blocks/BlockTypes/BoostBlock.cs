@@ -6,9 +6,9 @@ public class BoostBlock : Block, IDamageable
 
     public int CurrentHealth { get; set; }
 
-    public override void Construct(string id, int health, Sprite sprite)
+    public override void Construct(string id, int health, Sprite sprite, Color effectColor)
     {
-        base.Construct(id, health, sprite);
+        base.Construct(id, health, sprite, effectColor);
 
         CurrentHealth = health;
     }
@@ -29,6 +29,8 @@ public class BoostBlock : Block, IDamageable
     public override void RefreshBlock()
     {
         CurrentHealth = _startHealth;
+
+        _collider.isTrigger = false;
     }
 
     public void InDamage(int damageValue, out int currentHealth)
@@ -36,16 +38,12 @@ public class BoostBlock : Block, IDamageable
         CurrentHealth -= damageValue;
 
         currentHealth = CurrentHealth;
-
-        if (CurrentHealth != 0)
-        {
-            BoostEffect();
-        }
     }
 
     public void InDestroy()
     {
-
         BoostEffect();
+
+        _destroyEffect.ApplyDestroy();
     }
 }
