@@ -14,9 +14,10 @@ public class BonusSystem : GameSystem
     {
         _activeBonuses = new Dictionary<Type, BonusEntity>();
     }
-    public override void StartSystem() => StopAllBonuses();
 
     public override void ReStartSystem() => StopAllBonuses();
+
+    public override void StopSystem()=> StopAllBonuses();
 
     public void ActivateBonus(Bonus bonus)
     {

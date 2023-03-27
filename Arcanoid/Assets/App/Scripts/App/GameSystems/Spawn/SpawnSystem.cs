@@ -6,8 +6,6 @@ public class SpawnSystem : GameSystem
     [SerializeField] private BlocksData _blocksData;
 
     public Dictionary<string, BaseMonoPool<Block>> pools;
-    
-    public Dictionary<string, FactoryBlock<Block>> factories;
 
     public override void InitSystem()
     {
@@ -17,8 +15,6 @@ public class SpawnSystem : GameSystem
     private void SpawnBlocks()
     {
         pools = new Dictionary<string, BaseMonoPool<Block>>();
-
-        factories = new Dictionary<string, FactoryBlock<Block>>();
 
         SpawnBlocks(_blocksData.simpleTypes);
 
@@ -33,16 +29,13 @@ public class SpawnSystem : GameSystem
         {
             var typeFactory = new FactoryBlock<Block>(blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite, blockType.effectColor);
 
-            factories.Add(blockType.type, typeFactory);
-
             var TypePool = new BaseMonoPool<Block>(typeFactory, transform);
 
             pools.Add(blockType.type, TypePool);
 
             for (int i = 0; i < blockType.poolsize; i++)
             {
-                var newBlock = typeFactory.ConstructObject();
-
+                var newBlock = TypePool.GetObject();
                 TypePool.ReturnObject(newBlock);
             }
         }
@@ -52,9 +45,7 @@ public class SpawnSystem : GameSystem
     {
         foreach (var blockType in datas)
         {
-            var typeFactory = new FactoryBlock<Block>(blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite, blockType.childBonus, blockType.icon, blockType.effectColor);
-
-            factories.Add(blockType.type, typeFactory);
+            var typeFactory = new BoostFactory<ParentBonusBlock>((ParentBonusBlock)blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite, blockType.childBonus, blockType.icon, blockType.effectColor);
 
             var TypePool = new BaseMonoPool<Block>(typeFactory, transform);
 
@@ -62,8 +53,7 @@ public class SpawnSystem : GameSystem
 
             for (int i = 0; i < blockType.poolsize; i++)
             {
-                var newBlock = typeFactory.ConstructBonus();
-
+                var newBlock = TypePool.GetObject();
                 TypePool.ReturnObject(newBlock);
             }
         }

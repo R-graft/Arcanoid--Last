@@ -19,6 +19,8 @@ public class UIPopUpController : MonoBehaviour, IService
         {
             var newPopUp = Instantiate(pop.popUp, _parentTranform);
 
+            newPopUp.gameObject.SetActive(false);
+
             newPopUp.Construct(this);
 
             newPopUp.Hide();
@@ -75,7 +77,11 @@ public class UIPopUpController : MonoBehaviour, IService
 
     public void HidePop()
     {
+        if (_currentPopUp)
+        {
         _currentPopUp.Hide();
+        }
+        _currentPopUp= null;
     }
 }
 

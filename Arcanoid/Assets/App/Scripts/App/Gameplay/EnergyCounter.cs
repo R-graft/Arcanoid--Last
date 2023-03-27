@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class EnergyCounter : IService
@@ -7,7 +6,7 @@ public class EnergyCounter : IService
     private int _energy;
 
     [Header("config") ]
-    private const int DefaultEnergy = 25;
+    private const int DefaultEnergy = 75;
 
     private const int MaxEnergyValue = 100;
 
@@ -15,12 +14,11 @@ public class EnergyCounter : IService
 
     private const int EnergyDecreaseValue = 3;
 
-    private const string EnergyKey = "SaveEnergyValue";
+    private const int EnergyRecoveryTime = 70;
 
-    private const string DateKey = "SavigDateValue";
+    private const string FileDataDirectory = "/EnergyData.json";
 
-    private const string MinutesKey = "RemainingMinutes";
-
+    private EnergyData _currentData;
 
     public void InitService()
     {
@@ -29,34 +27,59 @@ public class EnergyCounter : IService
 
     public void Load()
     {
-        int loadedEnergy = GetSavedEnergy();
+        _currentData = new DataReader<EnergyData>(FileDataDirectory).ReadFileFromSystem();
 
-        _energy = loadedEnergy > MaxEnergyValue ? MaxEnergyValue : loadedEnergy;
+        if (_currentData == null)
+        {
+            SetDefaultEnergy();
+        }
+
+        else
+        {
+            int lastEnergy = _currentData.energyValue;
+
+            int timeGap = GetTimeGap(_currentData);
+
+            _energy = lastEnergy + timeGap;
+
+            _energy = _energy > MaxEnergyValue ? MaxEnergyValue : _energy;
+        }
 
         Save();
     }
-    private void Save()
+    public void Save()
     {
-        string lastData = DateTime.Now.ToFileTime().ToString();
+        int timeGap = GetTimeGap(_currentData);
 
-        PlayerPrefs.SetString(DateKey, lastData);
+        _energy += timeGap;
 
-        PlayerPrefs.SetInt(EnergyKey, _energy);
+        _energy = _energy > MaxEnergyValue ? MaxEnergyValue : _energy;
+
+        _currentData.energyValue = _energy;
+
+        _currentData.lastDate = DateTime.Now.ToFileTime();
+
+        new DataWriter<EnergyData>(_currentData, FileDataDirectory).SaveFileToSystem();
     }
 
-    public void SetEnergy(int value)
+    private int GetTimeGap(EnergyData data)
     {
-        if (value < 0)
-        {
-            return;
-        }
+        var fileTime = DateTime.FromFileTime(data.lastDate);
 
-        _energy = value;
+        var timeGap = DateTime.Now.Subtract(fileTime).Seconds;
+
+        timeGap += data.remainingSeconds;
+
+        data.remainingSeconds = timeGap % EnergyRecoveryTime;
+
+        timeGap /= EnergyRecoveryTime;
+
+        return timeGap;
     }
 
     public void IncreaseEnergy(int value)
     {
-        _energy = _energy + value > MaxEnergyValue ? MaxEnergyValue : _energy + value;
+        _energy += value;
 
         Save();
     }
@@ -73,53 +96,33 @@ public class EnergyCounter : IService
         Save();
     }
 
-    private int GetSavedEnergy()
-    {
-        if (!PlayerPrefs.HasKey(EnergyKey))
-        {
-            SetDefaultEnergy();
-
-            return _energy;
-        }
-
-        int lastEnergy = PlayerPrefs.GetInt(EnergyKey);
-
-        string lastDateStr = PlayerPrefs.GetString(DateKey);
-
-        if (long.TryParse(lastDateStr, out long lastDateLong))
-        {
-            var savingDate = DateTime.FromFileTime(lastDateLong);
-
-            int loadedMinutesValue = DateTime.Now.Subtract(savingDate).Minutes;
-
-            int savedMinutes = PlayerPrefs.GetInt(MinutesKey);
-
-            int loadedMinutes = loadedMinutesValue + savedMinutes;
-
-            lastEnergy += loadedMinutes / 60;
-
-            PlayerPrefs.SetInt(MinutesKey, loadedMinutes % 60);
-
-        }
-
-        return lastEnergy;
-    }
-
     public void LoadLevel() => DecreaseEnergy(EnergyDecreaseValue);
     public void LevelPass() => IncreaseEnergy(EnergyIncreaseValue);
 
     public (int current, int max) GetCurrentEnergy() => (_energy, MaxEnergyValue);
 
+    public int GetRemainingTime() => _currentData.remainingSeconds;
+
     public void SetDefaultEnergy()
     {
-        PlayerPrefs.SetString(DateKey, DateTime.Now.ToString());
-
-        PlayerPrefs.SetString(EnergyKey, DateTime.Now.ToString());
-
-        PlayerPrefs.SetInt(MinutesKey, 0);
+        _currentData = new EnergyData(_energy, DateTime.Now.ToFileTime());
 
         _energy = DefaultEnergy;
     } 
 
     public bool GetGameAsses() => _energy >= EnergyDecreaseValue;
+}
+
+[System.Serializable]
+public class EnergyData
+{
+    public int energyValue;
+    public long lastDate;
+    public int remainingSeconds;
+
+    public EnergyData(int energyValue, long lastDate)
+    {
+        this.energyValue = energyValue;
+        this.lastDate = lastDate;
+    }
 }

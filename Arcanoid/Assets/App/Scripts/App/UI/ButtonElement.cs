@@ -1,6 +1,4 @@
-using DG.Tweening;
 using System;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -10,9 +8,11 @@ public class ButtonElement : Button
 
     protected Action OnUpAction;
 
-    private Inputs _inputs;
+    private AnimateHandler _animator;
 
     protected const float animateDuration = 0.12f;
+
+    protected static bool _pushAcces = true;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
@@ -36,16 +36,13 @@ public class ButtonElement : Button
 
     public virtual void InAnimation(Action action)
     {
-        if (_inputs == null)
+        _animator ??= ProjectContext.Instance.GetService<AnimateHandler>();
+
+        if (_pushAcces)
         {
-            _inputs = ProjectContext.Instance.GetService<Inputs>();
+            _pushAcces = false;
+
+            _animator.AnimateButtonelement(transform, action, ()=>_pushAcces = true);
         }
-
-        _inputs.TurnOff(true);
-
-        DOTween.Sequence().
-        AppendCallback(() => action.Invoke()).
-        Append(transform.DOScale(new Vector2(0.8f, 0.8f), animateDuration)).Append(transform.DOScale(Vector2.one, animateDuration)).
-        AppendCallback(() => _inputs.TurnOn(true));
     }
 }

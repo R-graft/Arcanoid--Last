@@ -19,6 +19,6 @@ public class PackUIWindow : UIWindow
 
         _homeButton.SetDownAction(() => _viewManager.ExitAnimation(), true);
 
-        _homeButton.SetDownAction(() => ScenesManager.Instance.LoadScene(SCENELIST.StartScene), true);
+        _homeButton.SetDownAction(() => ScenesManager.Instance.LoadScene(0), true);
     }
 }

@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2298893385353981698}
   - component: {fileID: 2298893386894366171}
+  - component: {fileID: 1463631767749272191}
   m_Layer: 5
   m_Name: BarEnergy
   m_TagString: Untagged
@@ -132,8 +133,21 @@ MonoBehaviour:
   _energyValue: {fileID: 2298893385808656087}
   _maxEnergyValue: {fileID: 2298893385715632591}
   _energySlide: {fileID: 2298893386544101638}
-  _hours: {fileID: 2298893386744721461}
-  _minutes: {fileID: 2298893387030407723}
+  _bigValue: {fileID: 2298893386744721461}
+  _littleValue: {fileID: 2298893387030407723}
+--- !u!114 &1463631767749272191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2298893385353981699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23fe8cf0a451aa49a144f0e50eb2cf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _barView: {fileID: 2298893386894366171}
 --- !u!1 &2298893385440954764
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,7 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.49056602, g: 0.48362404, b: 0.48362404, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -626,7 +640,7 @@ GameObject:
   - component: {fileID: 2298893386744721460}
   - component: {fileID: 2298893386744721461}
   m_Layer: 5
-  m_Name: '[Text]Hours'
+  m_Name: '[Text]BigValue'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -648,8 +662,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -24.8, y: 0.0015399}
-  m_SizeDelta: {x: 36.945, y: 16.6}
+  m_AnchoredPosition: {x: -0.8697, y: -0.000046492}
+  m_SizeDelta: {x: 101.74, y: 19.31}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2298893386744721460
 CanvasRenderer:
@@ -679,7 +693,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5b117cabae25e1b49a96a0dc9443411e, type: 2}
   m_sharedMaterial: {fileID: 999194118009899694, guid: 5b117cabae25e1b49a96a0dc9443411e, type: 2}
@@ -713,7 +727,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -782,7 +796,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000019073, y: 1.3535}
+  m_AnchoredPosition: {x: -0.00049019, y: 1.3535}
   m_SizeDelta: {x: 29.59, y: 16.603}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2298893386996903061
@@ -894,12 +908,12 @@ GameObject:
   - component: {fileID: 2298893387030407722}
   - component: {fileID: 2298893387030407723}
   m_Layer: 5
-  m_Name: '[Text]Minutes'
+  m_Name: '[Text]LittleValue'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2298893387030407716
 RectTransform:
   m_ObjectHideFlags: 0
@@ -916,8 +930,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 36.3, y: 0.0015077}
-  m_SizeDelta: {x: 56.14, y: 17.35}
+  m_AnchoredPosition: {x: 27.182, y: 0.49077}
+  m_SizeDelta: {x: 45.637, y: 18.329}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2298893387030407722
 CanvasRenderer:
@@ -947,7 +961,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 40
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5b117cabae25e1b49a96a0dc9443411e, type: 2}
   m_sharedMaterial: {fileID: 999194118009899694, guid: 5b117cabae25e1b49a96a0dc9443411e, type: 2}

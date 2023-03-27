@@ -18,8 +18,9 @@ public class BonusAttach : MonoBehaviour
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("platform"))
+        if (!collision.isTrigger)
         {
+            print(1);
             _boosts.ActivateBonus(_currentBonus);
         }
 

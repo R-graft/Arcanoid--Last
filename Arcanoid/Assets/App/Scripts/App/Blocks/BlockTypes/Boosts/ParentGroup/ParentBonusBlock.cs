@@ -8,9 +8,11 @@ public class ParentBonusBlock : BoostBlock ,IDamageable
 
     protected Bonus _childBonus;
 
-    public void BoostConstruct(Sprite sprite, Bonus bonus, BonusSystem boosts)
+    public void BoostConstruct(string id, int health, Sprite sprite, Color effectColor, Sprite icon, Bonus bonus, BonusSystem boosts)
     {
-        _icon.sprite = sprite;
+        base.Construct(id, health, sprite, effectColor);
+
+        _icon.sprite = icon;
 
         _childBonus = bonus;
 

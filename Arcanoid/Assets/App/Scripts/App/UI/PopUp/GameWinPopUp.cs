@@ -5,7 +5,7 @@ public class GameWinPopUp : UIPopUp
 {
     [SerializeField] private ButtonElement _continue;
 
-    [SerializeField] private WinPanelAnimator _panelAnimator;
+    [SerializeField] private WinPopUpAnimator _panelAnimator;
 
     private LevelController _levelcontroller;
 
@@ -24,8 +24,6 @@ public class GameWinPopUp : UIPopUp
     [HideInInspector] public string newName;
     public override void InitPopUp()
     {
-        base.InitPopUp();
-
         _packsData ??= ProjectContext.Instance.GetService<PackDataController>();
 
         _levelcontroller ??= ProjectContext.Instance.GetService<LevelController>();
@@ -39,6 +37,8 @@ public class GameWinPopUp : UIPopUp
 
     public override void Show()
     {
+        _enterAnimHold = 1;
+
         base.Show();
 
         GetDataOnWin();

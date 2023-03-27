@@ -24,9 +24,11 @@ public class GunAttach : BonusAttach
     {
         transform.SetParent(_platform);
 
+        transform.localPosition = new Vector2(0, transform.localPosition.y);
+
         _renderer.enabled = false;
 
-        _move.enabled= false;
+        _move.enabled = false;
     }
     public override void Deactivate()
     {

@@ -28,13 +28,13 @@ public class UIMenuWindow : UIWindow
         {
             if (PlayerPrefs.HasKey("FirstIn"))
             {
-                ScenesManager.Instance.LoadScene(SCENELIST.PackScene);
+                ScenesManager.Instance.LoadScene(1);
             }
             else
             {
                 PlayerPrefs.SetInt("FirstIn", default);
 
-                ScenesManager.Instance.LoadScene(SCENELIST.GameScene);
+                ScenesManager.Instance.LoadScene(2);
             }
         }
 

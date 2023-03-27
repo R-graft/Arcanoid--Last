@@ -3,8 +3,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WinPanelAnimator : MonoBehaviour
+public class WinPopUpAnimator : MonoBehaviour
 {
+    [SerializeField] private ButtonElement _continue;
+
     [SerializeField] private ParticleSystem _emitter;
 
     [SerializeField] private TextMeshProUGUI _level;
@@ -20,10 +22,6 @@ public class WinPanelAnimator : MonoBehaviour
     [SerializeField] private Transform _iconTransform;
 
     [SerializeField] private Image _icon;
-
-    private TextMeshProUGUI _currentLevel;
-
-    private AnimateHandler _animator;
 
     private Sequence _rotator;
 
@@ -50,6 +48,8 @@ public class WinPanelAnimator : MonoBehaviour
     }
     private void SetOldProgress(GameWinPopUp popUp)
     {
+        _continue.transform.localScale= Vector3.zero;
+
         _level.text = popUp.oldLevel.ToString();
         _levelsInPack.text = popUp.oldMaxLevel.ToString();
 
@@ -62,15 +62,19 @@ public class WinPanelAnimator : MonoBehaviour
     {
         if (popUp.oldSprite.name != popUp.newSprite.name)
         {
-            DOTween.Sequence().Append(_icon.DOFade(0.2f, 1)).AppendCallback(() => _icon.sprite = popUp.newSprite).Append(_icon.DOFade(1, 1));
+            DOTween.Sequence().AppendInterval(1).Append(_icon.DOFade(0.2f, 1)).AppendCallback(() => _icon.sprite = popUp.newSprite).Append(_icon.DOFade(1, 1));
         }
     }
 
     private void AnimateLevelCount(GameWinPopUp popUp)
     {
-        _level.text = popUp.newLevel.ToString();
-
-        _levelsInPack.text = popUp.newMaxLevel.ToString();
+        DOTween.Sequence().AppendInterval(1).Append(_levelCountParent.DOScale(new Vector2(2, 2), 1f)).
+            Insert(1, _levelCountParent.DOAnchorPosY(-200, 1)).
+        AppendCallback(() => _level.text = popUp.newLevel.ToString()).
+        AppendCallback(() => _levelsInPack.text = popUp.newMaxLevel.ToString()).
+        Append(_levelCountParent.DOScale(Vector2.one, 1f)).
+        Insert(2, _levelCountParent.DOAnchorPosY(-175, 1)).
+        Append(_continue.transform.DOScale(Vector2.one, 0.3f));
     }
     private void AnimateRays()
     {

@@ -4,19 +4,21 @@ public class GameUIWindow : UIWindow
 {
     [SerializeField] private ButtonElement _pauseButton;
 
+    [SerializeField] private ButtonElement _passLevel;
+
     private Inputs _inputs;
     public override void InitWindow()
     {
         _pauseButton.SetDownAction(() => GameUiPause(), true);
 
         _inputs ??= ProjectContext.Instance.GetService<Inputs>();
+
+        _passLevel.SetDownAction(() => FastWin(), true);
     }
 
     public void GameUiWin()
     {
-        _inputs.TurnOff(true);
-
-        Invoke(nameof(WinUnHold), 1);
+        _popUpHandler.ShowPop("win");
     }
 
     public void GameUiPause()
@@ -28,10 +30,17 @@ public class GameUIWindow : UIWindow
         _popUpHandler.ShowPop("lose");
     }
 
-    private void WinUnHold()
+    private void FastWin()
     {
-        _popUpHandler.ShowPop("win");
+        var blocks = LevelContext.Instance.GetSystem<BlocksSystem>();
 
-        _inputs.TurnOn(true);
+        var damage = LevelContext.Instance.GetSystem<BlocksDamageHandler>();
+
+        var blockList = blocks.GetBlocksList();
+
+        while (blockList.Count > 0)
+        {
+            damage.SetDestroy(blockList[0].GetComponent<IDamageable>());
+        }
     }
 }

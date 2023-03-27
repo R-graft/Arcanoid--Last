@@ -5,13 +5,15 @@ public class DataWriter<T>
 {
     private T _dataFile;
 
-    private string _savingFile;
+    private string _savingFilePath;
+
+    private string _resourcesPath = Application.dataPath + $"/App/Resources";
 
     public DataWriter(T dataFile, string savingFile)
     {
         _dataFile = dataFile;
 
-        _savingFile = savingFile;
+        _savingFilePath = savingFile;
     }
 
     public void SaveFileToSystem()
@@ -22,7 +24,7 @@ public class DataWriter<T>
         {
             string savingData = JsonUtility.ToJson(_dataFile);
 
-            string saveFilePath = Application.persistentDataPath + _savingFile;
+            string saveFilePath = Application.persistentDataPath + _savingFilePath;
 
             File.WriteAllText(saveFilePath, savingData);
         }
@@ -34,15 +36,13 @@ public class DataWriter<T>
 
     public void SaveFileToResources()
     {
-        var savePath = Application.dataPath;
+        var savePath = _resourcesPath + _savingFilePath;
 
-        if (Directory.Exists(savePath) && _dataFile != null)
+        if (_dataFile != null)
         {
             string savingData = JsonUtility.ToJson(_dataFile);
 
-            string saveFilePath = Application.persistentDataPath + _savingFile;
-
-            File.WriteAllText(saveFilePath, savingData);
+            File.WriteAllText(savePath, savingData);
         }
         else
         {

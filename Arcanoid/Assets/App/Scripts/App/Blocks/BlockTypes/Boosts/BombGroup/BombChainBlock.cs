@@ -30,7 +30,7 @@ public class BombChainBlock : BombBlock
         {
             var current = new Vector2(x, y);
 
-            if (_currentLevelsBlocks.ContainsKey(current) && _selfGridIndex != current)
+            if (_currentLevelsBlocks.ContainsKey(current) && _selfGridIndex != current && _currentLevelsBlocks[current].gameObject.activeSelf)
             {
                 string currentTag = _currentLevelsBlocks[current].GetId();
 
@@ -69,6 +69,10 @@ public class BombChainBlock : BombBlock
 
                     if (!vertex.Value.Contains(newIndex) && _currentLevelsBlocks.ContainsKey(newIndex) && _currentLevelsBlocks[newIndex].GetId() == currentTag)
                     {
+                        if (!_currentLevelsBlocks[newIndex].gameObject.activeSelf)
+                        {
+                            break;
+                        }
                         vertex.Value.Add(newIndex);
 
                         currentQueue.Enqueue(newIndex);
@@ -77,8 +81,6 @@ public class BombChainBlock : BombBlock
             }
         }
         var finalList = _startList.Aggregate((l, r) => l.Value.Count > r.Value.Count ? l : r).Value;
-
-        finalList.Reverse();
 
         foreach (var index in finalList)
         {

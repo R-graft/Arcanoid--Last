@@ -70,14 +70,6 @@ public class GamePanelView :MonoBehaviour
 
     public void SetProgress(int value)
     {
-        _levelProgressCounter.text = value.ToString();
-    }
-    public void AddProgress(float value)
-    {
-        float currentProgrress = float.Parse(_levelProgressCounter.text);
-
-        currentProgrress += value;
-
-        _levelProgressCounter.text = currentProgrress.ToString();
+        _levelProgressCounter.text = value.ToString() + "%";
     }
 }

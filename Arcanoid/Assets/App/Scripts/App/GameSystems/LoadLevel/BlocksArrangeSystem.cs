@@ -15,6 +15,8 @@ public class BlocksArrangeSystem : GameSystem
 
     private LevelData _levelData;
 
+    private Inputs _inputs;
+
     private Dictionary<Vector2, Vector2> _gridTiles;
 
     public Dictionary<Vector2, Block> BlocksGrid { get; private set; }
@@ -29,6 +31,8 @@ public class BlocksArrangeSystem : GameSystem
 
         _grid = LevelContext.Instance.GetSystem<FieldGridSystem>();
 
+        _inputs = ProjectContext.Instance.GetService<Inputs>();
+
         _gridTiles = _grid.GetGrid();
 
         _startBlockSize = _grid.GetCurrentBlockSize();
@@ -41,6 +45,8 @@ public class BlocksArrangeSystem : GameSystem
 
     public override void ReStartSystem()
     {
+        _inputs.TurnOff(true);
+
         GetBlocks();
     }
     public void GetBlocks()
@@ -77,7 +83,8 @@ public class BlocksArrangeSystem : GameSystem
 
             BlocksGrid.Add(block.blockCoordinate, spawnedBlock);
         }
+        _controller.OnLevelIsLoaded.Invoke();
 
-        _controller.LevelIsLoaded();
+        _inputs.TurnOn(true);
     }
 }

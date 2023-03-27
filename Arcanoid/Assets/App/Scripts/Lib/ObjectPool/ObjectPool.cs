@@ -57,7 +57,7 @@ public class BaseMonoPool<T> : ObjectPool<T> where T : BasePoolObject
 
 public abstract class BasePoolObject : MonoBehaviour, IPoolObject
 {
-    private IPool<IPoolObject> _pool;
+    protected IPool<IPoolObject> _pool;
     public virtual void Initialize(IPool<IPoolObject> pool)
     {
         _pool = pool;

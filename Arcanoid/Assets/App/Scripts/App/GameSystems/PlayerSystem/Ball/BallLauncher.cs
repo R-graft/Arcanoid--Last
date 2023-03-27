@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -22,7 +21,7 @@ public class BallLauncher : GameSystem, IPointerUpHandler, IPointerDownHandler
 
     public override void InitSystem()
     {
-        _inputs =ProjectContext.Instance.GetService<Inputs>();
+        _inputs = ProjectContext.Instance.GetService<Inputs>();
 
         _ballsController = LevelContext.Instance.GetSystem<BallsController>();
 
@@ -37,36 +36,29 @@ public class BallLauncher : GameSystem, IPointerUpHandler, IPointerDownHandler
     }
     public override void ReStartSystem()
     {
+        _inputs.TurnOff(false);
+
         _ballRb = _ballsController.GetBall();
 
         _platformTransform = _platformController.GetTransform();
+
+        _ballRb.transform.parent = _platformTransform;
 
         gameObject.SetActive(true);
     }
     private void Launch()
     {
-        var startDirection = _ballRb.position.normalized;
+        _ballRb.transform.parent = _ballsController.transform;
 
-        _ballRb.AddForce(new Vector2(startDirection.x, - startDirection.y) * StartForceIndex);
+        _ballRb.AddForce(Vector2.up * StartForceIndex);
 
         gameObject.SetActive(false);
     }
-    private IEnumerator FollowPlatform()
+    private void FollowPlatform()
     {
         _inputs.TurnOn(false);
-
-        while (true)
-        {
-            _ballRb.position = new Vector2(_platformTransform.position.x, _platformTransform.position.y + BallOffset);
-
-            yield return null;
-        }
     }
     public void OnPointerUp(PointerEventData eventData) => Launch();
 
-    public void OnPointerDown(PointerEventData eventData) => StartCoroutine(FollowPlatform());
-
-  
-
-    
+    public void OnPointerDown(PointerEventData eventData) => FollowPlatform();
 }

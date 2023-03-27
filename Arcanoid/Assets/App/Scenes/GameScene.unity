@@ -508,7 +508,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 52, y: 0.00024414062}
+  m_AnchoredPosition: {x: 52, y: 0}
   m_SizeDelta: {x: -385.01, y: -430.55}
   m_Pivot: {x: 0.5, y: 0.49999914}
 --- !u!114 &670327063
@@ -523,7 +523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75021c7be3655154e8da06d87d718c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BallOffset: 0.35
+  BallOffset: 0.5
   StartForceIndex: 0.05
 --- !u!114 &670327064
 MonoBehaviour:
@@ -595,7 +595,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startLivesCount: 3
   _interface: {fileID: 722172674}
-  _passLevel: {fileID: 1332843189}
 --- !u!4 &722172673
 Transform:
   m_ObjectHideFlags: 0
@@ -667,7 +666,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.91326797}
-  m_AnchoredPosition: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 11, y: -0.5012207}
   m_SizeDelta: {x: 0, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &825316837
@@ -777,6 +776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pauseButton: {fileID: 1614468344}
+  _passLevel: {fileID: 1332843189}
 --- !u!4 &880992294
 Transform:
   m_ObjectHideFlags: 0
@@ -1237,8 +1237,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4e98f166df1a594a9454a1c046e61ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPlatformPosition: {x: 0, y: -8}
+  startPlatformPosition: {x: 0, y: -7}
   moveSpeed: 10
+  constrainerCoefficient: 0.96
   _mCamera: {fileID: 1287284841}
   _transformer: {fileID: 84197336314752552, guid: 11b16396ec299e14887034b49647587f, type: 3}
 --- !u!1 &1159181025
@@ -1328,7 +1329,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 30, y: -10.013}
+  m_AnchoredPosition: {x: 30, y: -10.013672}
   m_SizeDelta: {x: 0, y: -20.025}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1239041731
@@ -1428,7 +1429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 3
-  m_AspectRatio: 1.13
+  m_AspectRatio: 0.85
 --- !u!1 &1287284839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1464,8 +1465,8 @@ Camera:
   m_GameObject: {fileID: 1287284839}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 4
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1978,7 +1979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9b984ff84bca2b478760ccb31ccc711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startBallPosition: {x: 0, y: -7.6}
+  _startBallPosition: {x: 0, y: -6.45}
   addedBallSpeed: {x: 0, y: -1}
   _ballPrefab: {fileID: -5115706995574021814, guid: 6d8755e966efa29449944084d3732734, type: 3}
 --- !u!1 &1415445186
@@ -2291,6 +2292,14 @@ PrefabInstance:
     - target: {fileID: 1978747163916874930, guid: 0a0d31ed1d574794687baa99c6369e1f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -41.200195
+      objectReference: {fileID: 0}
+    - target: {fileID: 1978747163990100095, guid: 0a0d31ed1d574794687baa99c6369e1f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 5.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1978747163990100095, guid: 0a0d31ed1d574794687baa99c6369e1f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -109.8
       objectReference: {fileID: 0}
     - target: {fileID: 1978747164330293772, guid: 0a0d31ed1d574794687baa99c6369e1f, type: 3}
       propertyPath: m_Type

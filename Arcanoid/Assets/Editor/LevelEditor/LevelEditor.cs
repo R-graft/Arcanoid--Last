@@ -1,4 +1,3 @@
-using Codice.Client.Common;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,7 +30,14 @@ public class LevelEditor : EditorWindow
 
     private bool _isEditing;
 
-    [MenuItem("Editors/ClearData",false,0)]
+    [MenuItem("Editors/Clear/ClearAllData", false, 0)]
+    public static void ClearAllData()
+    {
+        ClearData();
+        ClearEnergy();
+    }
+
+    [MenuItem("Editors/Clear/ClearLevelData", false,0)]
     public static void ClearData()
     {
         var saveData = Application.persistentDataPath + "/PacksData.json";
@@ -40,10 +46,13 @@ public class LevelEditor : EditorWindow
             File.Delete(saveData);
     }
 
-    [MenuItem("Editors/ClearPrefs", false, 0)]
-    public static void ClearPrefs()
+    [MenuItem("Editors/Clear/ClearEnergy", false, 0)]
+    public static void ClearEnergy()
     {
-        PlayerPrefs.DeleteKey("SaveEnergyValue");
+        var saveData = Application.persistentDataPath + "/EnergyData.json";
+
+        if (File.Exists(saveData))
+            File.Delete(saveData);
     }
 
     [MenuItem("Editors/LevelEditor")]

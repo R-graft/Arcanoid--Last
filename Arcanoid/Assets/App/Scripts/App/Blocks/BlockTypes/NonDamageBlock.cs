@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class NonDamageBlock : Block, IDamageable
 {
-    public int health = 1;
     public Block Current => this;
 
     public int CurrentHealth { get ; set;}

@@ -11,18 +11,29 @@ public class GameMenuPopUp : UIPopUp
 
     public override void InitPopUp()
     {
-        base.InitPopUp();
-
         _energy ??= ProjectContext.Instance.GetService<EnergyCounter>();
 
         _restartButton.SetUpAction(()=> RestartAccess(), true);
 
         _backButton.SetDownAction(()=> Time.timeScale = 1, true);
-        _backButton.SetDownAction(()=> ScenesManager.Instance.LoadScene(SCENELIST.PackScene), true);
+        _backButton.SetDownAction(()=> ScenesManager.Instance.LoadScene(1), true);
 
         _continueButton.SetDownAction(_controller.HidePop, true);
     }
 
+    public override void Show()
+    {
+        Time.timeScale = 0;
+
+        base.Show();
+    }
+
+    public override void Hide()
+    {
+        Time.timeScale = 1;
+
+        base.Hide();
+    }
     private void RestartAccess()
     {
         if (_energy.GetGameAsses())

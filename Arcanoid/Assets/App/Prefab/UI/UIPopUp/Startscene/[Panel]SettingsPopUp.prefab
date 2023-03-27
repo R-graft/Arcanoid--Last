@@ -67,13 +67,17 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 70
       objectReference: {fileID: 0}
+    - target: {fileID: 6855132398130109411, guid: 098bd720949e8114290746e5dd8f4fa4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6855132398130109420, guid: 098bd720949e8114290746e5dd8f4fa4, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6855132399043441721, guid: 098bd720949e8114290746e5dd8f4fa4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 163170.02
+      value: 588.0001
       objectReference: {fileID: 0}
     - target: {fileID: 6855132399839477824, guid: 098bd720949e8114290746e5dd8f4fa4, type: 3}
       propertyPath: m_CaptionText
@@ -391,6 +395,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8051567104895490465, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8051567104895490465, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8257627766226567445, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -418,6 +430,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7596222675510380093, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
   m_PrefabInstance: {fileID: 1505812924157427057}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4007476241782876468 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2556024272637219909, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
+  m_PrefabInstance: {fileID: 1505812924157427057}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8888224946268693712 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8051567104895490465, guid: cacbe373c02bd2d419f3b9c10857a9d6, type: 3}
@@ -435,6 +458,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2274157e4cb38b84390ee7149e479c4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bg: {fileID: 4007476241782876468}
+  _content: {fileID: 8888224946268693712}
   _langSwitcher: {fileID: 5076358913688895878}
   _homeButton: {fileID: 2153383093995271109}
 --- !u!1001 &8981844182231097432
