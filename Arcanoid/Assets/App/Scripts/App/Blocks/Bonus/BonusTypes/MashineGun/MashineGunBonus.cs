@@ -1,17 +1,16 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MashineGunBonus :Bonus
 {
     [Header("config")]
-    public int bulletsPoolSize = 20;
+    public int bulletsPoolSize = 40;
 
-    public int bulletsCount = 10;
+    public int bulletsCount = 20;
 
-    public float offsetX = 0.5f;
-
-    public float offsetY = 0f;
+    public float offsetX = 1f;
 
     public float reloadTime = 0.3f;
 
@@ -24,17 +23,13 @@ public class MashineGunBonus :Bonus
 
     private BulletPool<Bullet> _bulletPool;
 
-    //private PlatformController _platform;
-
     public Action OnRemove;
 
     public override void Init()
     {
         _damageHandler = LevelContext.Instance.GetSystem<BlocksDamageHandler>();
 
-        _bulletPool = new BulletPool<Bullet>(null, _boostParent);
-
-        //_platform = LevelContext.Instance.GetSystem<PlatformController>();
+        _bulletPool = new BulletPool<Bullet>(new BulletFactory<Bullet>(_bulletPrefab, _boostParent, _damageHandler, OnRemove), _boostParent);
 
         CreateBullets(bulletsPoolSize);
     }
@@ -61,19 +56,19 @@ public class MashineGunBonus :Bonus
 
         while (count > 0)
         {
-            //var position = _platform.GetTransform().position;
-
             var bullet1 = _bulletPool.GetObject();
 
-            bullet1.transform.position = new Vector2(transform.position.x + offsetX, transform.position.y + offsetY);
+            bullet1.transform.position = new Vector2(transform.position.x + offsetX, transform.position.y);
 
             var bullet2 = _bulletPool.GetObject();
 
-            bullet2.transform.position = new Vector2(transform.position.x - offsetX, transform.position.y + offsetY);
+            bullet2.transform.position = new Vector2(transform.position.x - offsetX, transform.position.y);
 
             count--;
 
             yield return new WaitForSeconds(reloadTime);
+
+            print(count);
         }
 
         yield return new WaitForSeconds(disableHold);
@@ -83,13 +78,18 @@ public class MashineGunBonus :Bonus
 
     private void CreateBullets(int poolCount)
     {
+        var startPool = new List<Bullet>();
+
         for (int i = 0; i < poolCount; i++)
         {
-            var newBullet = Instantiate(_bulletPrefab);
+            var newBullet = _bulletPool.GetObject();
 
-            newBullet.Construct(_damageHandler, _bulletPool, OnRemove);
+            startPool.Add(newBullet);
+        }
 
-            _bulletPool.ReturnObject(newBullet);
+        foreach (var item in startPool)
+        {
+            _bulletPool.ReturnObject(item);
         }
     }
 }

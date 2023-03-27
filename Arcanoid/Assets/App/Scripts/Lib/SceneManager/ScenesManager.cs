@@ -9,11 +9,7 @@ public class ScenesManager : Singleton<ScenesManager>, IService
 
     private AsyncOperation _loadingScene;
 
-    private SCENELIST currentScene;
-
     private float _minLoadingTime;
-
-    public Action<SCENELIST> OnLoadScene;
 
     public Action OnSceneIsLoaded;
 
@@ -23,18 +19,16 @@ public class ScenesManager : Singleton<ScenesManager>, IService
 
         _loadPanel.gameObject.SetActive(false);
     }
-    public void LoadScene(SCENELIST targetScene)
+    public void LoadScene(int targetScene)
     {
-        currentScene = targetScene;
-
         StartCoroutine(SceneLoadCoroutine(targetScene));
     }
 
-    private IEnumerator SceneLoadCoroutine(SCENELIST targetScene)
+    private IEnumerator SceneLoadCoroutine(int targetScene)
     {
         _minLoadingTime = 0.8f;
 
-        _loadingScene = SceneManager.LoadSceneAsync(targetScene.ToString());
+        _loadingScene = SceneManager.LoadSceneAsync(targetScene);
 
         _loadPanel.InAnimation();
 
@@ -55,13 +49,5 @@ public class ScenesManager : Singleton<ScenesManager>, IService
         }
 
         _loadPanel.OutAnimation();
-
-        OnLoadScene?.Invoke(currentScene);
     }
-}
-public enum SCENELIST
-{
-    StartScene,
-    PackScene,
-    GameScene,
 }

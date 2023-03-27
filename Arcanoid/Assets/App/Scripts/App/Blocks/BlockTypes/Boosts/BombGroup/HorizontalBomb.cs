@@ -1,12 +1,31 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HorizontalBomb : BombBlock
 {
     protected override void GetTargetIndexes()
     {
-        for (int i = 0; i <= _grid._rowsCount; i++)
+        base.GetTargetIndexes();
+
+        _targetIndexes = new List<(int, int)>();
+
+        int i = (int)_selfGridIndex.y;
+        int j = (int)_selfGridIndex.y;
+
+        for (int k = 0; k <= _grid._rowsCount; k++)
         {
-            _targetIndexes.Add(((int)_selfGridIndex.x, i));
+            i--;
+            j++;
+
+            if (i > 0)
+            {
+                _targetIndexes.Add(((int)_selfGridIndex.x, i));
+            }
+            if (j <= _grid._rowsCount)
+            {
+                _targetIndexes.Add(((int)_selfGridIndex.x, j));
+            }
+            
         }
     }
 }

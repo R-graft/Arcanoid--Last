@@ -8,8 +8,6 @@ public class SettingsPopUp : UIPopUp
 
     public override void InitPopUp()
     {
-        base.InitPopUp();
-
         _langSwitcher.Init(_langHandler);
 
         _homeButton.SetDownAction(_controller.HidePop, true);

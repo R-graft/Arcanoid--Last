@@ -44,16 +44,21 @@ public class BlocksDamageHandler : GameSystem
 
     private IEnumerator ArrayDestroy(List<IDamageable> damagingArray, int damage, float damagingHold)
     {
-        int count = damagingArray.Count-1;
+        int count = 0;
 
-        while (count >= 0)
+        while (count < damagingArray.Count)
         {
             yield return new WaitForSeconds(damagingHold);
 
             SetDamage(damagingArray[count], damage);
 
-            count--;
+            count++;
         }
+    }
+
+    public override void ReStartSystem()
+    {
+        StopAllCoroutines();
     }
 }
 

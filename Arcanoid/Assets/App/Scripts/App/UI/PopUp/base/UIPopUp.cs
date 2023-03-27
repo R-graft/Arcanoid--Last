@@ -1,30 +1,33 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class UIPopUp : MonoBehaviour
 {
+    [SerializeField] private Image _bg;
+
+    [SerializeField] private Transform _content;
+
     protected UIPopUpController _controller;
 
     protected LangHandler _langHandler;
 
     protected AnimateHandler _animator;
 
-    public virtual void InitPopUp()
-    {
-    }
+    protected float _enterAnimHold = 0f;
+
+    protected float _exitAnimHold;
+
+    public abstract void InitPopUp();
 
     public virtual void Show()
     {
-        gameObject.SetActive(true);
-
-        _animator.AnimateEnterPopUp(transform, () => Time.timeScale = 0);
+        _animator.AnimateEnterPopUp(_content, _bg, _enterAnimHold, ()=> gameObject.SetActive(true));
     }
 
     public virtual void Hide()
     {
-        Time.timeScale = 1;
-
-        _animator.AnimateExitPopUp(transform);
+        _animator.AnimateExitPopUp(_content, _bg, _exitAnimHold, () => gameObject.SetActive(false));
     }
 
     public void Construct(UIPopUpController controller)

@@ -4,8 +4,6 @@ public class PlatformTransform : MonoBehaviour
 {
     [SerializeField] private Transform _basePlatform;
 
-    [SerializeField] private Transform _centerPlatform;
-
     private AnimateHandler _animator;
 
     private Vector2 _startPlatformPosition;
@@ -39,7 +37,7 @@ public class PlatformTransform : MonoBehaviour
 
     public void Move(float _inputX)
     {
-        var _direction = Mathf.Clamp(_inputX, _moveConstrainterX + _basePlatform.localScale.x / 1.2f, -_moveConstrainterX - _basePlatform.localScale.x / 1.2f);
+        var _direction = Mathf.Clamp(_inputX, _moveConstrainterX + _basePlatform.localScale.x, -_moveConstrainterX - _basePlatform.localScale.x);
 
         var moveDirection = new Vector2(_direction, _startPlatformPosition.y);
 

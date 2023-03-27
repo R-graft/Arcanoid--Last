@@ -2,6 +2,8 @@ using System;
 
 public class LevelController : IService
 {
+    private Inputs _inputs;
+
     public Action OnStartGame;
     public Action OnRestartGame;
     public Action OnGameOver;
@@ -9,8 +11,10 @@ public class LevelController : IService
     public Action OnLoseGame;
     public Action OnLevelIsLoaded;
 
-    public void Construct(params IGameHandler[] handlers)
+    public void Construct(Inputs inputs, params IGameHandler[] handlers)
     {
+        _inputs = inputs;
+
         SubscribeOnGameEvents(handlers);
 
         SetController(handlers);
@@ -39,7 +43,14 @@ public class LevelController : IService
     public void GameOver()=> OnGameOver.Invoke();
     public void Win() => OnWinGame.Invoke();
     public void Lose() => OnLoseGame.Invoke();
-    public void LevelIsLoaded() => OnLevelIsLoaded.Invoke();
+
+    public void LevelIsLoaded()
+    {
+        OnLevelIsLoaded.Invoke();
+
+        _inputs.TurnOn(true);
+    }
+
 
     public void InitService()
     {

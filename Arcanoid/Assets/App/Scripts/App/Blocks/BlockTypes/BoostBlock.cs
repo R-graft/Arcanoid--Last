@@ -38,12 +38,15 @@ public class BoostBlock : Block, IDamageable
         CurrentHealth -= damageValue;
 
         currentHealth = CurrentHealth;
+
+        if (currentHealth == 0)
+        {
+            BoostEffect();
+        }
     }
 
     public void InDestroy()
     {
-        BoostEffect();
-
         _destroyEffect.ApplyDestroy();
     }
 }

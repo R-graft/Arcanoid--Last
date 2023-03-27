@@ -2,30 +2,31 @@ using UnityEngine;
 
 public class BallSpeed: MonoBehaviour
 {
+    [Header("config")]
+    public float accelerationIndex = 1.02f;
+
+    public float maxVelocityValue = 15;
+
+    public float minVelocityValue = 2;
+
     [SerializeField] private Rigidbody2D _objectRb;
-
-    private const float _accelerationIndex = 1.02f;
-
-    private const float _maxVelocityValue = 15;
-
-    private const float _minVelocityValue = 2;
 
     public void CollisionSpeed()
     {
-        if (_objectRb.velocity.magnitude < _maxVelocityValue)
+        if (_objectRb.velocity.magnitude < maxVelocityValue)
         {
-            _objectRb.velocity *= _accelerationIndex;
+            _objectRb.velocity *= accelerationIndex;
         }
     }
 
     public void EditSpeed(bool isSpeedUp, int percentValue)
     {
-        if (isSpeedUp && _objectRb.velocity.magnitude < _maxVelocityValue)
+        if (isSpeedUp && _objectRb.velocity.magnitude < maxVelocityValue)
         {
             _objectRb.velocity *= (100/percentValue);
         }
 
-        else if (!isSpeedUp && _objectRb.velocity.magnitude > _minVelocityValue)
+        else if (!isSpeedUp && _objectRb.velocity.magnitude > minVelocityValue)
         {
             _objectRb.velocity /= (100 / percentValue);
         }

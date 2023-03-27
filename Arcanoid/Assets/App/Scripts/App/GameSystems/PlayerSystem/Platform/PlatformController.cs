@@ -7,6 +7,8 @@ public class PlatformController : GameSystem
 
     public float moveSpeed = 0.1f;
 
+    public float constrainerCoefficient = 1.2f;
+
     [Header("components")]
     [SerializeField] private Camera _mCamera;
 
@@ -39,6 +41,8 @@ public class PlatformController : GameSystem
 
         _moveConstrainer = _mCamera.ScreenToWorldPoint(Vector2.zero).x;
 
+        _moveConstrainer *= constrainerCoefficient;
+
         _transformer = Instantiate(_transformer, transform);
 
         _transformer.Construct(startPlatformPosition, _moveConstrainer, moveSpeed);
@@ -48,11 +52,6 @@ public class PlatformController : GameSystem
 
     public Transform GetTransform() => _transformer.transform;
 
-    private void OnDisable()
-    {
-        _inputs._inputPositionX -= _transformer.Move;
-    }
-
     public void ResizePlatform(float value)
     {
         _transformer.SetScale(value);
@@ -61,5 +60,9 @@ public class PlatformController : GameSystem
     public void SetPlatformspeed(bool isSpeedUp, float value)
     {
         _transformer.SetSpeed(isSpeedUp, value);
+    }
+    private void OnDisable()
+    {
+        _inputs._inputPositionX -= _transformer.Move;
     }
 }

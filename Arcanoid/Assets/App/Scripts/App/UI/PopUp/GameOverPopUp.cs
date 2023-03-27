@@ -18,8 +18,6 @@ public class GameOverPopUp : UIPopUp
 
     public override void InitPopUp()
     {
-        base.InitPopUp();
-
         _energy = ProjectContext.Instance.GetService<EnergyCounter>();
 
         _restartButton.SetDownAction(()=> ProjectContext.Instance.GetService<LevelController>().Restart(), true);
@@ -31,16 +29,24 @@ public class GameOverPopUp : UIPopUp
         _purchaseContinue.SetDownAction(_controller.HidePop, true);
 
         _back.SetDownAction(() => Time.timeScale = 1, true);
-        _back.SetDownAction(()=> ScenesManager.Instance.LoadScene(SCENELIST.PackScene), true);
+        _back.SetDownAction(()=> ScenesManager.Instance.LoadScene(1), true);
     }
 
     public override void Show()
     {
+        Time.timeScale = 0;
+
         base.Show();
 
         _purchaseContinue.gameObject.SetActive(_energy.GetCurrentEnergy().current >= EnergyForContinue);
     }
 
+    public override void Hide()
+    {
+        Time.timeScale = 1;
+
+        base.Hide();
+    }
 
     public void PurchaseLife()
     {

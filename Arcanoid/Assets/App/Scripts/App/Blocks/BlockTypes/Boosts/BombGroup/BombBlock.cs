@@ -26,13 +26,12 @@ public abstract class BombBlock : BoostBlock
         _arranger = LevelContext.Instance.GetSystem<BlocksArrangeSystem>();
 
         _grid = LevelContext.Instance.GetSystem<FieldGridSystem>();
-
-        _targetIndexes = new List<(int, int)>();
-
-        GetTargetIndexes();
     }
 
-    protected abstract void GetTargetIndexes();
+    protected virtual void GetTargetIndexes()
+    {
+        _targetIndexes = new List<(int x, int y)>();
+    }
 
     protected virtual void SetTargetBlocks()
     {
@@ -56,6 +55,8 @@ public abstract class BombBlock : BoostBlock
 
     public override void BoostEffect()
     {
+        GetTargetIndexes();
+
         SetTargetBlocks();
 
         _damage.SetArrayDamage(_currentTargets, bombDamage, _damagingHold);

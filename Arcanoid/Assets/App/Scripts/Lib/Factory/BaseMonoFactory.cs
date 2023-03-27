@@ -11,7 +11,7 @@ public class BaseMonoFactory<T> : IPoolFactory<T> where T : BasePoolObject
         _prefab = prefab;
         _container = container;
     }
-    public T CreateObject()
+    public virtual T CreateObject()
     {
         return Object.Instantiate(_prefab, _container);
     }

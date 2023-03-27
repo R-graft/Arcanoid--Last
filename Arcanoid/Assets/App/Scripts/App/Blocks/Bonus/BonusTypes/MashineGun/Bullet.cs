@@ -11,13 +11,11 @@ public class Bullet : BasePoolObject
     [Header("components")]
     private BlocksDamageHandler _damage;
 
-    private ObjectPool<Bullet> _pool;
+    public Action<Bullet> OnRemove;
 
-    public void Construct(BlocksDamageHandler damage, ObjectPool<Bullet> pool, Action onRemove)
+    public void Construct(BlocksDamageHandler damage, Action onRemove)
     {
         _damage = damage;
-
-        _pool = pool;
 
         onRemove += Remove;
     }
@@ -33,10 +31,15 @@ public class Bullet : BasePoolObject
 
     private void Remove()
     {
-        _pool.ReturnObject(this);
+        OnRemove(this);
     }
     private void FixedUpdate()
     {
         transform.Translate(Vector2.up * _bulletSpeed * Time.fixedDeltaTime);
+    }
+
+    public override void Initialize(IPool<IPoolObject> pool)
+    {
+        base.Initialize(pool);
     }
 }

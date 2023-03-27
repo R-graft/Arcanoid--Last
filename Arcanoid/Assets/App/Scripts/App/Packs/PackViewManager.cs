@@ -93,7 +93,7 @@ public class PackViewManager : MonoBehaviour
 
             ExitAnimation();
 
-            ScenesManager.Instance.LoadScene(SCENELIST.GameScene);
+            ScenesManager.Instance.LoadScene(2);
         }
     }
 

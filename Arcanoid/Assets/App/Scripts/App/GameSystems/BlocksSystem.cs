@@ -81,5 +81,7 @@ public class BlocksSystem : GameSystem
             block.GetCollider().isTrigger = isTrigger;
         }
     }
+
+    public List<Block> GetBlocksList() => _allBlocks;
 }
 

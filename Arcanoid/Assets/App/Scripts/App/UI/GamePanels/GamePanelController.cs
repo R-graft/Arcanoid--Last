@@ -8,8 +8,6 @@ public class GamePanelController : GameSystem
 
     [SerializeField] private GamePanelView _interface;
 
-    [SerializeField] private ButtonElement _passLevel;
-
     private PackDataController _packsData;
 
     private BlocksSystem _blocks;
@@ -18,7 +16,7 @@ public class GamePanelController : GameSystem
 
     private int _currentProgress;
 
-    private int _progressStep;
+    private float _progressStep;
 
     public override void InitSystem()
     {
@@ -31,8 +29,6 @@ public class GamePanelController : GameSystem
         _interface.Init(_packsData);
 
         _interface.RefreshPanel();
-
-        _passLevel.SetDownAction(() => FastWin(), true);
 
         ReStartSystem();
     }
@@ -55,23 +51,27 @@ public class GamePanelController : GameSystem
 
         _interface.SetStartLives(_livesCount);
 
-        RefreshLevelProgress();
-    }
-    public override void StopSystem()
-    {
         _interface.RefreshPanel();
 
         RefreshLevelProgress();
     }
 
+
     private void LevelProgressCounter(int remainingBlocks)
     {
         if (_progressStep == 0)
         {
-            _progressStep = (100 + remainingBlocks - 1) / remainingBlocks;
+            _progressStep = 100 / remainingBlocks;
         }
 
-        _currentProgress = _progressStep + _currentProgress > 100 ? 100 : _progressStep + _currentProgress;
+        if (_currentProgress > 100 || remainingBlocks == 1)
+        {
+            _currentProgress = 100;
+        }
+        else
+        {
+            _currentProgress += (int)_progressStep;
+        }
 
         _interface.SetProgress(_currentProgress);
     }
@@ -101,10 +101,5 @@ public class GamePanelController : GameSystem
 
             _interface.RemoveLife();
         }
-    }
-
-    private void FastWin()
-    {
-        _controller.Win();
     }
 }
