@@ -65,7 +65,7 @@ public class PackDataController: MonoBehaviour, IService
 
             if (_currentPack.isEnded)
             {
-                _currentPack.EndedLevel = 1;
+                _currentPack.EndedLevel = 0;
                 _currentPack.isEnded = false;
                 _currentLevel = _currentPack.startLevel;
             }
@@ -85,6 +85,13 @@ public class PackDataController: MonoBehaviour, IService
 
         if (_currentLevel > _currentPack.finishLevel)
         {
+            if (_currentPackIndex + 1 >= _packsModels.Length)
+            {
+                SetPackDataToDefault();
+
+                return;
+            }
+
             _currentPackIndex++;
 
             _currentPack.EndedLevel++;
@@ -99,7 +106,7 @@ public class PackDataController: MonoBehaviour, IService
         {
             _currentPack.EndedLevel++;
         }
-        print(_currentLevel);
+
         Save();
     }
     public Pack GetCurrentPack() => _currentPack;
@@ -132,7 +139,7 @@ public class PackDataController: MonoBehaviour, IService
         {
             model.isEnded= false;
             model.isOpen= false;
-            model.EndedLevel = 1;
+            model.EndedLevel = 0;
         }
     }
 }

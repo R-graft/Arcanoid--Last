@@ -13,27 +13,27 @@ MonoBehaviour:
   m_Name: PackData
   m_EditorClassIdentifier: 
   packsModels:
-  - EndedLevel: 5
+  - EndedLevel: 1
     isOpen: 1
-    isEnded: 1
+    isEnded: 0
     title: sigar
     packIndex: 0
     startLevel: 1
-    finishLevel: 5
+    finishLevel: 4
     sprite: {fileID: 21300000, guid: 462d3c730b3c3c04fb7f1ad1e4341dc2, type: 3}
-  - EndedLevel: 0
-    isOpen: 1
+  - EndedLevel: 1
+    isOpen: 0
     isEnded: 0
     title: sombrero
     packIndex: 1
-    startLevel: 6
-    finishLevel: 10
+    startLevel: 5
+    finishLevel: 9
     sprite: {fileID: 21300000, guid: ce4dba1cde0be4d45a2bce67c7245165, type: 3}
-  - EndedLevel: 4
-    isOpen: 1
+  - EndedLevel: 1
+    isOpen: 0
     isEnded: 0
     title: milkyway
     packIndex: 2
-    startLevel: 11
-    finishLevel: 15
+    startLevel: 10
+    finishLevel: 13
     sprite: {fileID: 21300000, guid: 48ed91e2165d9014fa9d16f4098c9878, type: 3}

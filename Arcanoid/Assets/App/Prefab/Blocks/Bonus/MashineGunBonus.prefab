@@ -138,14 +138,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attach: {fileID: -8896955819510639519}
-  time: 12
-  bulletsPoolSize: 40
+  time: 10
   bulletsCount: 20
   offsetX: 1
-  offsetY: 0
-  reloadTime: 0.3
+  reloadTime: 0.5
   disableHold: 2
-  _bulletPrefab: {fileID: 1743200064378417043, guid: 86024f8522c123243a22b702d7f0cce9, type: 3}
 --- !u!114 &-8896955819510639519
 MonoBehaviour:
   m_ObjectHideFlags: 0

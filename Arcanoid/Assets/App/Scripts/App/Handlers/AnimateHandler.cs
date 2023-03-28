@@ -24,13 +24,20 @@ public class AnimateHandler : IService
         popUpSequence = DOTween.Sequence().Append(bg.DOFade(0, fadeTime)).Insert(0, content.DOMove(Vector2.up * 15, 0.3f)).Insert(0, content.DOScale(Vector3.zero, 0.3f)).AppendCallback(callback.Invoke).SetAutoKill();
     }
 
-    public void AnimateEnterLoadPanel(Action inCallback)
+    public void AnimateEnterLoadPanel(Image bg, RectTransform line1, RectTransform line2, RectTransform line3)
     {
-
+        DOTween.Sequence().Append(bg.DOFade(1, 0.5f))
+            .Insert(0, line1.DOAnchorPos(new Vector2(0, 700f), 0.5f))
+            .Insert(0, line2.DOAnchorPos(new Vector2(0, 0), 0.5f))
+            .Insert(0, line3.DOAnchorPos(new Vector2(0, -700f), 0.5f));
     }
-    public void AnimateExitLoadPanel(Action inCallback)
+    public void AnimateExitLoadPanel(Image bg, RectTransform line1, RectTransform line2, RectTransform line3, Action outCallback)
     {
-
+        DOTween.Sequence().Append(bg.DOFade(0, 0.5f))
+            .Insert(0, line1.DOAnchorPos(new Vector2(1000f, 1700f), 0.5f))
+            .Insert(0, line2.DOAnchorPos(new Vector2(-1300, -1300), 0.5f))
+            .Insert(0, line3.DOAnchorPos(new Vector2(1300, 600), 0.5f))
+            .AppendCallback(outCallback.Invoke);
     }
 
     public void AnimateEnterPacksList(VerticalLayoutGroup packsList)
@@ -55,5 +62,20 @@ public class AnimateHandler : IService
         AppendCallback(inCallback.Invoke).
         Append(button.DOScale(new Vector2(0.8f, 0.8f), 0.12f)).Append(button.DOScale(Vector2.one, 0.12f)).
         AppendCallback(outCallback.Invoke);
+    }
+
+    public void AnimateEnergyChange(Image image, Action hide)
+    {
+        var currentSequence = DOTween.Sequence().Append(image.DOFade(0.7f, 0.2f)).Append(image.DOFade(0, 0.5f));
+
+        if (hide!= null)
+        {
+            currentSequence.AppendCallback(hide.Invoke);
+        }
+    }
+
+    public void AnimateNotEnergy()
+    {
+
     }
 }

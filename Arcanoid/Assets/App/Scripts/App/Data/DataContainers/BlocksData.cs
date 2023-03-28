@@ -15,8 +15,6 @@ public class BlockType
 {
     public string type;
 
-    public int poolsize;
-
     public int healthCount;
 
     public Sprite sprite;
@@ -27,7 +25,6 @@ public class BlockType
 }
 
 [System.Serializable]
-
 public class BonusType : BlockType
 {
     public Sprite icon;

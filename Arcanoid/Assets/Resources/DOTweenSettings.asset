@@ -17,7 +17,7 @@ MonoBehaviour:
     logBehaviour: 2
     nestedTweenFailureBehaviour: 0
   timeScale: 1
-  unscaledTimeScale: 1
+  unscaledTimeScale: 0.7
   useSmoothDeltaTime: 0
   maxSmoothUnscaledTime: 0.15
   rewindCallbackMode: 0
@@ -28,9 +28,9 @@ MonoBehaviour:
   defaultAutoPlay: 3
   defaultUpdateType: 0
   defaultTimeScaleIndependent: 1
-  defaultEaseType: 1
-  defaultEaseOvershootOrAmplitude: 1.70158
-  defaultEasePeriod: 0
+  defaultEaseType: 9
+  defaultEaseOvershootOrAmplitude: 1.7
+  defaultEasePeriod: 5
   defaultAutoKill: 1
   defaultLoopType: 0
   debugMode: 0

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BulletPool<T> : BaseMonoPool<Bullet> 
@@ -10,11 +11,14 @@ public class BulletPool<T> : BaseMonoPool<Bullet>
     {
         var obj = base.GetObject();
 
-        obj.OnRemove += ReturnObject;
-
         obj.gameObject.transform.parent = null;
 
         return obj;
+    }
+
+    public override void ReturnObject(Bullet obj)
+    {
+        base.ReturnObject(obj);
     }
 }
 

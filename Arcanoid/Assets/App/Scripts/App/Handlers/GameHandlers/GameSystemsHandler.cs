@@ -12,6 +12,7 @@ public class GameSystemsHandler : MonoBehaviour, IGameHandler
     public Action OnStart;
     public Action OnRestart;
     public Action OnStop;
+    public Action OnLoad;
 
     private Inputs _inputs;
 
@@ -29,6 +30,7 @@ public class GameSystemsHandler : MonoBehaviour, IGameHandler
             OnStart += system.StartSystem;
             OnRestart += system.ReStartSystem;
             OnStop += system.StopSystem;
+            OnLoad += system.SystemsLoaded;
 
             system.SetHandler(_levelController);
         }
@@ -78,6 +80,11 @@ public class GameSystemsHandler : MonoBehaviour, IGameHandler
     {
         OnRestart.Invoke();
     }
+
+    public void SystemLoaded()
+    {
+        OnLoad.Invoke();
+    }
 }
 
 public abstract class GameSystem : MonoBehaviour
@@ -91,6 +98,9 @@ public abstract class GameSystem : MonoBehaviour
     {
     }
     public virtual void StopSystem()
+    {
+    }
+    public virtual void SystemsLoaded()
     {
     }
     public void SetHandler(LevelController controller)

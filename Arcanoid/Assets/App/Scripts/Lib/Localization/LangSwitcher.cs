@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using System.Linq;
 
 public class LangSwitcher : MonoBehaviour
 {
@@ -16,22 +17,11 @@ public class LangSwitcher : MonoBehaviour
 
     private int _currentIndex;
 
-    public void SetLang(TMP_Dropdown drop)
-    {
-        _currentIndex = drop.value;
-
-        _langHandler.SetLang(_langsValues[_currentIndex]);
-
-        _switcher.value = _currentIndex;
-
-        SetCurrentIndex();
-    }
-
     public void Init(LangHandler langHandler)
     {
         _langHandler = langHandler;
 
-        _avaliableLangs = _langHandler.AvaliableLangs;
+        _avaliableLangs = _langHandler.Langs.Keys.ToList();
 
         SetDropDownValues();
 
@@ -40,6 +30,16 @@ public class LangSwitcher : MonoBehaviour
         _switcher.value = _currentIndex;
     }
 
+    public void SetLang(TMP_Dropdown drop)
+    {
+        _currentIndex = drop.value;
+
+        _langHandler.SwitchLang(_langsValues[_currentIndex]);
+
+        _switcher.value = _currentIndex;
+
+        SetCurrentIndex();
+    }
 
     private void SetDropDownValues()
     {

@@ -18,6 +18,8 @@ public class GamePanelController : GameSystem
 
     private float _progressStep;
 
+    private float _floatProgress;
+
     public override void InitSystem()
     {
         _packsData = ProjectContext.Instance.GetService<PackDataController>();
@@ -59,19 +61,11 @@ public class GamePanelController : GameSystem
 
     private void LevelProgressCounter(int remainingBlocks)
     {
-        if (_progressStep == 0)
-        {
-            _progressStep = 100 / remainingBlocks;
-        }
+        _progressStep = _progressStep == 0 ? 100f / remainingBlocks : _progressStep;
 
-        if (_currentProgress > 100 || remainingBlocks == 1)
-        {
-            _currentProgress = 100;
-        }
-        else
-        {
-            _currentProgress += (int)_progressStep;
-        }
+        _floatProgress += _progressStep;
+
+        _currentProgress = remainingBlocks == 1 ? 100 : (int)_floatProgress;
 
         _interface.SetProgress(_currentProgress);
     }
@@ -80,6 +74,7 @@ public class GamePanelController : GameSystem
     {
         _progressStep = 0;
         _currentProgress = 0;
+        _floatProgress = 0;
         _interface.SetProgress(_currentProgress);
     }
 

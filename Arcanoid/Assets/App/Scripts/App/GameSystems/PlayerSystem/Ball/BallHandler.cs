@@ -6,10 +6,6 @@ public class BallHandler : MonoBehaviour
 
     [SerializeField] private BallSpeed _speed;
 
-    [SerializeField] private BallCollision _collision;
-
-    [SerializeField] private BallBounce _bounce;
-
     [SerializeField] private SpriteRenderer _renderer;
 
     [SerializeField] private TrailRenderer _trail;
@@ -20,14 +16,12 @@ public class BallHandler : MonoBehaviour
 
     public void StopBallMove()
     {
-        _currentVelocity = _ballRb.velocity;
-
         _ballRb.velocity = Vector2.zero;
     }
 
-    public void StartBallMove()
+    public void StartBallMove(bool firstStart)
     {
-        _ballRb.velocity = _currentVelocity;
+        _speed.StartMove(firstStart);
     }
 
     public void EditBallSpeed(bool isSpeedUp, int percentValue)

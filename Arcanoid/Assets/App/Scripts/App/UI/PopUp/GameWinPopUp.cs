@@ -43,7 +43,7 @@ public class GameWinPopUp : UIPopUp
 
         GetDataOnWin();
 
-        ProgressIncrease();
+        Invoke("ProgressIncrease", 1);
     }
 
     public override void Hide()

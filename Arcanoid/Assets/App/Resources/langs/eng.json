@@ -1,0 +1,20 @@
+﻿{
+  "words": [
+    "play : PLAY",
+    "exit : EXIT",
+    "settings : SETTINGS",
+    "back : BACK",
+    "lang : LANGUAGE",
+    "galactic : GALACTIC",
+    "menu : MENU",
+    "youwin : YOU WIN!",
+    "restart : RESTART",
+    "continue : CONTINUE",
+    "lose : YOU LOSE",
+    "sigar : CIGAR",
+    "sombrero : SOMBRERO",
+    "milkyway : MILKY WAY",
+    "next : NEXT",
+    "energycontinue : CONTINUE WITH ENERGY?"
+  ]
+}

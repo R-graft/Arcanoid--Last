@@ -162,9 +162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818fe9b287b749a4db5e31a3bdcc8d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accelerationIndex: 1.07
-  maxVelocityValue: 25
+  maxVelocityValue: 20
   minVelocityValue: 2
+  StartForceIndex: 0.04
   _objectRb: {fileID: 6485567664704144400}
 --- !u!114 &-6396730700093071376
 MonoBehaviour:
@@ -196,8 +196,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ballRb: {fileID: 6485567664704144400}
   _speed: {fileID: 8953294609221123785}
-  _collision: {fileID: -9066686093225011570}
-  _bounce: {fileID: -6396730700093071376}
   _renderer: {fileID: 6485567664704144412}
   _trail: {fileID: 4423399629481657793}
 --- !u!96 &4423399629481657793

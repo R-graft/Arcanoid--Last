@@ -40,6 +40,7 @@ public class BallsController : GameSystem
     {
         ClearBalls();
     }
+
     public void AddBall(Vector2 position)
     {
         var addedBall = CreateBall(position);
@@ -124,6 +125,6 @@ public class BallsController : GameSystem
             ball.SetFury(isFuriView);
         }
     }
-    public Rigidbody2D GetBall() => _currentBall.GetRb();
 
+    public BallHandler GetBall() => _currentBall;
 }

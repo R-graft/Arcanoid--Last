@@ -64,7 +64,7 @@ public class BonusSystem : GameSystem
             BonusStop(item.Key);
         }
 
-        OnRestart.Invoke();
+        OnRestart?.Invoke();
     }
 }
 
