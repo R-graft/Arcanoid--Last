@@ -5,14 +5,25 @@ public class SpawnSystem : GameSystem
 {
     [SerializeField] private BlocksData _blocksData;
 
+    [SerializeField] private Transform _simpleParent;
+
+    [SerializeField] private Transform _boostParent;
+
+    [SerializeField] private Transform _bulletParent;
+    [SerializeField] private Bullet _bulletPefab;
+
+    public BulletPool<Bullet> BulletPool { get; private set; }
+
+    private int _bulletPoolsize = 40;
+
     public Dictionary<string, BaseMonoPool<Block>> pools;
 
     public override void InitSystem()
     {
-        SpawnBlocks();
+        SpawnAllBlocks();
     }
 
-    private void SpawnBlocks()
+    private void SpawnAllBlocks()
     {
         pools = new Dictionary<string, BaseMonoPool<Block>>();
 
@@ -21,23 +32,19 @@ public class SpawnSystem : GameSystem
         SpawnBlocks(_blocksData.boostTypes);
 
         SpawnBoost(_blocksData.parentBoostTypes);
+
+        SpawnBullets();
     }
 
     private void SpawnBlocks(BlockType[] datas)
     {
         foreach (var blockType in datas)
         {
-            var typeFactory = new FactoryBlock<Block>(blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite, blockType.effectColor);
+            var typeFactory = new FactoryBlock<Block>(blockType.block, _simpleParent, blockType.type, blockType.healthCount, blockType.sprite, blockType.effectColor);
 
-            var TypePool = new BaseMonoPool<Block>(typeFactory, transform);
+            var TypePool = new BaseMonoPool<Block>(typeFactory, _simpleParent);
 
             pools.Add(blockType.type, TypePool);
-
-            for (int i = 0; i < blockType.poolsize; i++)
-            {
-                var newBlock = TypePool.GetObject();
-                TypePool.ReturnObject(newBlock);
-            }
         }
     }
 
@@ -45,18 +52,19 @@ public class SpawnSystem : GameSystem
     {
         foreach (var blockType in datas)
         {
-            var typeFactory = new BoostFactory<ParentBonusBlock>((ParentBonusBlock)blockType.block, transform, blockType.type, blockType.healthCount, blockType.sprite, blockType.childBonus, blockType.icon, blockType.effectColor);
+            var typeFactory = new BoostFactory<ParentBonusBlock>((ParentBonusBlock)blockType.block, _boostParent, blockType.type, blockType.healthCount, blockType.sprite, blockType.childBonus, blockType.icon, blockType.effectColor);
 
-            var TypePool = new BaseMonoPool<Block>(typeFactory, transform);
+            var TypePool = new BaseMonoPool<Block>(typeFactory, _boostParent);
 
             pools.Add(blockType.type, TypePool);
-
-            for (int i = 0; i < blockType.poolsize; i++)
-            {
-                var newBlock = TypePool.GetObject();
-                TypePool.ReturnObject(newBlock);
-            }
         }
+    }
+
+    private void SpawnBullets()
+    {
+        var bulletFactory = new BulletFactory<Bullet>(_bulletPefab, _bulletParent);
+
+        BulletPool = new BulletPool<Bullet>(bulletFactory, _bulletParent);
     }
 
     public Block GetBlock(string tag)

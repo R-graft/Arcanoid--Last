@@ -8,17 +8,26 @@ public class EnergyBarView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _energyValue;
     [SerializeField] private TextMeshProUGUI _maxEnergyValue;
 
+    [SerializeField] private Image _increaseEffect;
+    [SerializeField] private Image _decreaseEffect;
+
+    [SerializeField] private Image _disableEffect;
+
     [SerializeField] private Slider _energySlide;
 
     [SerializeField] private TextMeshProUGUI _bigValue;
 
     [SerializeField] private TextMeshProUGUI _littleValue;
 
+    private AnimateHandler _animator;
+
     private int _energyRecoveryTime;
 
     private TimeSpan timer;
     public void Init(int recoveryTime)
     {
+        _animator ??= ProjectContext.Instance.GetService<AnimateHandler>();
+
         _energyRecoveryTime = recoveryTime;
 
         timer = new TimeSpan().Add(TimeSpan.FromSeconds(_energyRecoveryTime));
@@ -34,5 +43,20 @@ public class EnergyBarView : MonoBehaviour
         TimeSpan time = TimeSpan.FromSeconds(remaining);
 
         _bigValue.text = (timer - time).ToString(@"mm\:ss");
+    }
+
+    public void IncreaseEffect(Action hide)
+    {
+        _animator.AnimateEnergyChange(_increaseEffect, hide);
+    }
+
+    public void DecreaseEffect(Action hide)
+    {
+        _animator.AnimateEnergyChange(_decreaseEffect, hide);
+    }
+
+    public void DisableEffect()
+    {
+        _animator.AnimateEnergyChange(_disableEffect, null);
     }
 }

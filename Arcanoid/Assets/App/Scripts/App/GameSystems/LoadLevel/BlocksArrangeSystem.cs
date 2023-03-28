@@ -83,6 +83,7 @@ public class BlocksArrangeSystem : GameSystem
 
             BlocksGrid.Add(block.blockCoordinate, spawnedBlock);
         }
+
         _controller.OnLevelIsLoaded.Invoke();
 
         _inputs.TurnOn(true);

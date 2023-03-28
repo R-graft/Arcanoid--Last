@@ -6,6 +6,10 @@ public class LoadPanel : MonoBehaviour
 {
     [SerializeField] private Image _bgFont;
 
+    [SerializeField] private RectTransform _line1; 
+    [SerializeField] private RectTransform _line2; 
+    [SerializeField] private RectTransform _line3;
+
     private AnimateHandler _animator;
 
     private void InitAnimator()
@@ -14,18 +18,21 @@ public class LoadPanel : MonoBehaviour
     }
     public void InAnimation()
     {
+        _line1.anchoredPosition = new Vector2(1000, 1700);
+        _line2.anchoredPosition = new Vector2(-1300, -1300);
+        _line3.anchoredPosition = new Vector2(1300, 600);
+
         InitAnimator();
 
         gameObject.SetActive(true);
 
-        DOTween.Sequence().Append(_bgFont.DOFade(1, 0.5f));
+        _animator.AnimateEnterLoadPanel(_bgFont, _line1, _line2, _line3);
     }  
 
     public void OutAnimation()
     {
         InitAnimator();
 
-        DOTween.Sequence().Append(_bgFont.DOFade(0, 0.5f)).
-           AppendCallback(()=> gameObject.SetActive(false));
+        _animator.AnimateExitLoadPanel(_bgFont, _line1, _line2, _line3, ()=> gameObject.SetActive(false));
     }
 }

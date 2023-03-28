@@ -10,8 +10,6 @@ public class ProjectContext : MonoBehaviour
 
     [SerializeField] private PackDataController _packDataController;
 
-    [SerializeField] private LangHandler _langHandler;
-
     public static ProjectContext Instance { get; private set; }
 
     private IServiceLocator<IService> _locator;
@@ -22,6 +20,9 @@ public class ProjectContext : MonoBehaviour
 
         _locator = new ServiceLocator<IService>();
 
+        var langHandler = new LangHandler();
+        _locator.Regiser(langHandler).InitService();
+
         var energyCounter = new EnergyCounter();
         _locator.Regiser(energyCounter).InitService();
 
@@ -30,9 +31,6 @@ public class ProjectContext : MonoBehaviour
 
         var levelController = new LevelController();
         _locator.Regiser(levelController).InitService();
-
-        _langHandler = Instantiate(_langHandler);
-        _locator.Regiser(_langHandler).InitService();
 
         _packDataController = Instantiate(_packDataController);
         _locator.Regiser(_packDataController).InitService();

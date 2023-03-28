@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnergyBarCounter : MonoBehaviour
@@ -26,6 +26,8 @@ public class EnergyBarCounter : MonoBehaviour
 
         GetEnergyValues();
 
+        _barView.UpdateBar(_currentEnergy, _maxEnergy, _currentRemainingTime);
+
         StartCoroutine(EnergyTimeCounter());
     }
 
@@ -40,11 +42,34 @@ public class EnergyBarCounter : MonoBehaviour
 
         _currentRemainingTime = _energy.GetRemainingTime();
     }
+
+    public void IncreaseEffect(Action hide)
+    {
+        _barView.UpdateBar(_currentEnergy, _maxEnergy, _currentRemainingTime);
+
+        GetEnergyValues();
+
+        _barView.IncreaseEffect(hide);
+    }
+
+    public void DecreaseEffect(Action hide)
+    {
+        _barView.DecreaseEffect(hide);
+
+        GetEnergyValues();
+
+        _barView.UpdateBar(_currentEnergy, _maxEnergy, _currentRemainingTime);
+    }
+
+    public void DisableEffect()
+    {
+        _barView.DisableEffect();
+    }
     private IEnumerator EnergyTimeCounter()
     {
         while (true)
         {
-            yield return new WaitForSeconds(RequestTime);
+            yield return new WaitForSecondsRealtime(RequestTime);
 
             GetEnergyValues();
 

@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class PackViewManager : MonoBehaviour
 {
+    [SerializeField] private EnergyBarCounter _bar;
+
     [SerializeField] private VerticalLayoutGroup _packsList;
 
     [SerializeField] private PacksData _packs;
@@ -94,6 +96,11 @@ public class PackViewManager : MonoBehaviour
             ExitAnimation();
 
             ScenesManager.Instance.LoadScene(2);
+        }
+
+        else
+        {
+            _bar.DisableEffect();
         }
     }
 

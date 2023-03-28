@@ -1,0 +1,20 @@
+﻿{
+  "words": [
+    "play : ИГРАТЬ",
+    "exit : ВЫХОД",
+    "settings : НАСТРОЙКИ",
+    "back : НАЗАД",
+    "lang : ЯЗЫК",
+    "galactic : ГАЛАКТИКА",
+    "menu : МЕНЮ",
+    "youwin : ВЫ ВЫИГРАЛИ!",
+    "restart : РЕСТАРТ",
+    "continue : ПРОДОЛЖИТЬ",
+    "lose : ВЫ ПРОИГРАЛИ!",
+    "sigar : СИГАРА",
+    "sombrero : СОМБРЕРО",
+    "milkyway : МЛЕЧНЫЙ ПУТЬ",
+    "next : ДАЛЕЕ",
+    "energycontinue : ПРОДОЛЖИТЬ ЗА ЭНЕРГИЮ?"
+  ]
+}

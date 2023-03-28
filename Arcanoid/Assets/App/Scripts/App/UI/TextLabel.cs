@@ -19,13 +19,11 @@ public class TextLabel: MonoBehaviour
         _tMPro.text = _langHandler.GetPhrase(_key);
     }
 
-    private void ReTranslateText(Dictionary<string, string> wordsDict)
+    private void ReTranslateText()
     {
         if (_tMPro.text != null)
         {
-            _tMPro.text = wordsDict[_key];
-
-            //print(_tMPro.text);
+            _tMPro.text = _langHandler.CurrentLangDict[_key];
         }
     }
 

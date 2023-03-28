@@ -15,9 +15,14 @@ public class BallLauncher : GameSystem, IPointerUpHandler, IPointerDownHandler
 
     private Inputs _inputs;
 
-    private Rigidbody2D _ballRb;
+    private BallHandler _startedBall;
 
     private Transform _platformTransform;
+
+    private BlocksSystem _blocks;
+
+    private bool _firstStart;
+
 
     public override void InitSystem()
     {
@@ -32,25 +37,40 @@ public class BallLauncher : GameSystem, IPointerUpHandler, IPointerDownHandler
 
     public override void StartSystem()
     {
-        ReStartSystem();
+        _firstStart = false;
+
+        InitLauncher();
+    }
+    public override void StopSystem()
+    {
+        
     }
     public override void ReStartSystem()
     {
+        _firstStart = true;
+
+        InitLauncher();
+    }
+
+    private void InitLauncher()
+    {
+        _blocks ??= LevelContext.Instance.GetSystem<BlocksSystem>();
+
         _inputs.TurnOff(false);
 
-        _ballRb = _ballsController.GetBall();
+        _startedBall = _ballsController.GetBall();
 
         _platformTransform = _platformController.GetTransform();
 
-        _ballRb.transform.parent = _platformTransform;
+        _startedBall.transform.parent = _platformTransform;
 
         gameObject.SetActive(true);
     }
     private void Launch()
     {
-        _ballRb.transform.parent = _ballsController.transform;
+        _startedBall.transform.parent = _ballsController.transform;
 
-        _ballRb.AddForce(Vector2.up * StartForceIndex);
+        _startedBall.StartBallMove(_firstStart);
 
         gameObject.SetActive(false);
     }
@@ -62,3 +82,4 @@ public class BallLauncher : GameSystem, IPointerUpHandler, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData) => FollowPlatform();
 }
+

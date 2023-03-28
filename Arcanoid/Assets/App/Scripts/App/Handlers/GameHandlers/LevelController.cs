@@ -35,6 +35,7 @@ public class LevelController : IService
             OnGameOver += handler.SetOver;
             OnLoseGame += handler.SetLose;
             OnWinGame += handler.SetWin;
+            OnLevelIsLoaded += handler.SystemLoaded;
         }
     }
 
@@ -65,4 +66,5 @@ public interface IGameHandler
     public void SetOver();
     public void SetWin();
     public void SetLose();
+    public void SystemLoaded();
 }
