@@ -29,6 +29,8 @@ public class WinPopUpAnimator : MonoBehaviour
 
     [SerializeField] private EnergyBarCounter _bar;
 
+    [SerializeField] private RectTransform _barTransform;
+
     private EnergyCounter _energy;
 
     private Sequence _rotator;
@@ -70,7 +72,7 @@ public class WinPopUpAnimator : MonoBehaviour
     
     private void SetStartState()
     {
-        _bar.transform.localPosition = new Vector2(0, 800);
+        _barTransform.localPosition = new Vector2(0, 1000);
 
         _iconParent.localPosition = new Vector2(-1500,0);
 
@@ -131,7 +133,7 @@ public class WinPopUpAnimator : MonoBehaviour
     private void AnimateBar()
     {
         DOTween.Sequence().AppendCallback(() => _energy.LevelPass()).
-            Append(_bar.transform.DOMoveY(5, 0.1f)).
+            Append(_barTransform.DOAnchorPosY(-130, 0.1f)).
             
             InsertCallback(0, () => _bar.IncreaseEffect(null)).
             Insert(0, _bar.transform.DOScale(new Vector2(1.3f, 1.3f), 0.3f)).

@@ -141,6 +141,7 @@ MonoBehaviour:
   time: 10
   bulletsCount: 20
   offsetX: 1
+  offsetY: 0.5
   reloadTime: 0.5
   disableHold: 2
 --- !u!114 &-8896955819510639519

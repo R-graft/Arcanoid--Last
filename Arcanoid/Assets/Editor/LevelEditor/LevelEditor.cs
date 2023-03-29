@@ -30,6 +30,7 @@ public class LevelEditor : EditorWindow
 
     private bool _isEditing;
 
+
     [MenuItem("Editors/Clear/ClearAllData", false, 0)]
     public static void ClearAllData()
     {

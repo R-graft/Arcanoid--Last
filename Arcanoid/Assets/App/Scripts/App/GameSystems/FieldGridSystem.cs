@@ -4,8 +4,8 @@ using UnityEngine;
 public class FieldGridSystem : GameSystem
 {
     [Header("config")]
-    public int _rowsCount = 7;
-    public int _linesCount = 7;
+    public int _rowsCount = 15;
+    public int _linesCount = 15;
 
     public int cameraHeight = 10;
 
