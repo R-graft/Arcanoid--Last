@@ -24,21 +24,17 @@ public class UIMenuWindow : UIWindow
 
     private void StartGame()
     {
-        if (_energy.GetGameAsses())
+        if (!PlayerPrefs.HasKey("FirstIn") && _energy.GetGameAsses())
         {
-            if (PlayerPrefs.HasKey("FirstIn"))
-            {
-                ScenesManager.Instance.LoadScene(1);
-            }
-            else
-            {
-                PlayerPrefs.SetInt("FirstIn", default);
+            PlayerPrefs.SetInt("FirstIn", default);
 
-                ScenesManager.Instance.LoadScene(2);
-            }
+            ScenesManager.Instance.LoadScene(2);
         }
 
-        return;
+        else
+        {
+            ScenesManager.Instance.LoadScene(1);
+        }
     }
 
     private void ExitApplication()

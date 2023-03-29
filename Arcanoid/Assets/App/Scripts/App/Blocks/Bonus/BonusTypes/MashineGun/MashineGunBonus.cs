@@ -7,9 +7,11 @@ public class MashineGunBonus :Bonus
 {
     [Header("config")]
 
-    public int bulletsCount = 10;
+    public int bulletsCount = 20;
 
     public float offsetX = 1f;
+
+    public float offsetY = 0.5f;
 
     public float reloadTime = 0.3f;
 
@@ -62,8 +64,8 @@ public class MashineGunBonus :Bonus
             _bullets.Add(bullet1);
             _bullets.Add(bullet2);
 
-            bullet1.transform.position = new Vector2(transform.position.x + offsetX, transform.position.y);
-            bullet2.transform.position = new Vector2(transform.position.x - offsetX, transform.position.y);
+            bullet1.transform.position = new Vector2(transform.position.x + offsetX, transform.position.y + offsetY);
+            bullet2.transform.position = new Vector2(transform.position.x - offsetX, transform.position.y + offsetY);
 
             count--;
 
