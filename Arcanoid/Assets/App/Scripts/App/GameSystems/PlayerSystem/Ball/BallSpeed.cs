@@ -73,6 +73,6 @@ public class BallSpeed: MonoBehaviour
 
         var blocksCount = _blocks.GetBlocksList().Count;
 
-        _accelerationIndex = 1  + 1f / blocksCount;
+        _accelerationIndex = 1  + 0.6f / blocksCount;
     }
 }
