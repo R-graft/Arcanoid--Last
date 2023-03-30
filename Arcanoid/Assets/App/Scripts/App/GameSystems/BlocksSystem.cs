@@ -11,6 +11,8 @@ public class BlocksSystem : GameSystem
 
     public Action<int> OnBlockDestroyed;
 
+    private bool _isWin;
+
     private int _currentCount;
     public override void InitSystem()
     {
@@ -23,6 +25,8 @@ public class BlocksSystem : GameSystem
 
     public override void ReStartSystem()
     {
+        _isWin = false;
+
         ClearBlocks();
     }
 
@@ -53,9 +57,11 @@ public class BlocksSystem : GameSystem
 
             block.RefreshBlock();
 
-            if (_currentCount == 0)
+            if (_currentCount == 0 && !_isWin)
             {
                 _controller.Win();
+
+                _isWin = true;
             }
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class BallSpeed: MonoBehaviour
 {
     [Header("config")]
-    public float maxVelocityValue = 15;
+    public float maxVelocityValue = 20;
 
     public float minVelocityValue = 2;
 
@@ -27,7 +27,7 @@ public class BallSpeed: MonoBehaviour
 
             _objectRb.AddForce(Vector2.up * StartForceIndex);
 
-            currentVelocityMagnitude = 8;
+            currentVelocityMagnitude = 10;
         }
         else
         {
@@ -73,6 +73,6 @@ public class BallSpeed: MonoBehaviour
 
         var blocksCount = _blocks.GetBlocksList().Count;
 
-        _accelerationIndex = 1 + 0.5f / blocksCount;
+        _accelerationIndex = 1  + 1f / blocksCount;
     }
 }

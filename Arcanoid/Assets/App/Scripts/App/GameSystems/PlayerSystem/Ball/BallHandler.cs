@@ -17,6 +17,8 @@ public class BallHandler : MonoBehaviour
     public void StopBallMove()
     {
         _ballRb.velocity = Vector2.zero;
+
+        _ballRb.transform.position = transform.position;
     }
 
     public void StartBallMove(bool firstStart)

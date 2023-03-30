@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 public class GameWinPopUp : UIPopUp
@@ -30,9 +29,7 @@ public class GameWinPopUp : UIPopUp
 
         _levelcontroller.OnLevelIsLoaded += GetDataOnLoad;
 
-        _continue.SetDownAction(() => _levelcontroller.Restart(), true);
-
-        _continue.SetDownAction(_controller.HidePop, true);
+        _continue.SetDownAction(() => PassLevel(), true);
     }
 
     public override void Show()
@@ -79,5 +76,14 @@ public class GameWinPopUp : UIPopUp
         _panelAnimator.gameObject.SetActive(true);
 
         _panelAnimator.AnimateProgress(this);
+    }
+
+    private void PassLevel()
+    {
+        _panelAnimator.StopAnimate();
+
+        _controller.HidePop();
+
+        _levelcontroller.Restart();
     }
 }

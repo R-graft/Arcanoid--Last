@@ -164,7 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVelocityValue: 20
   minVelocityValue: 2
-  StartForceIndex: 0.04
+  StartForceIndex: 0.05
   _objectRb: {fileID: 6485567664704144400}
 --- !u!114 &-6396730700093071376
 MonoBehaviour:

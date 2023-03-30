@@ -20,7 +20,6 @@ public class BonusAttach : MonoBehaviour
     {
         if (!collision.isTrigger)
         {
-            print(1);
             _boosts.ActivateBonus(_currentBonus);
         }
 

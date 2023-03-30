@@ -12,6 +12,17 @@ public class LevelDataLoader
 
         string _levelsFilesPath = $"Levels/{_currentLevel}";
 
-        return new DataReader<LevelData>(_levelsFilesPath).ReadFileFromResources();
+        var newlevelFile = new DataReader<LevelData>(_levelsFilesPath).ReadFileFromResources();
+
+        if (newlevelFile == default)
+        {
+            ScenesManager.Instance.LoadScene(1);
+
+            return new DataReader<LevelData>($"Levels/{1}").ReadFileFromResources();
+        }
+        else
+        {
+            return newlevelFile;
+        }
     }
 }

@@ -55,6 +55,8 @@ public class BlocksArrangeSystem : GameSystem
 
         BlocksGrid = new Dictionary<Vector2, Block>();
 
+        SpawnHold = 1 / _levelData.levelBlocks.Count;
+
         StartCoroutine(ArrangeBlocks(_levelData));
     }
 

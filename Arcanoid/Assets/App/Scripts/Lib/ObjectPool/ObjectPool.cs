@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,6 +45,10 @@ public class BaseMonoPool<T> : ObjectPool<T> where T : BasePoolObject
 
         obj.gameObject.SetActive(true);
 
+        if (!obj.gameObject.TryGetComponent(out Bullet _))
+        {
+            obj.gameObject.transform.DOShakeScale(0.4f, 0.6f, 8, 70);
+        }
         return obj;
     }
 
