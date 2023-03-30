@@ -66,7 +66,7 @@ public class AnimateHandler : IService
 
     public void AnimateEnergyChange(Image image, Action hide)
     {
-        var currentSequence = DOTween.Sequence().Append(image.DOFade(0.7f, 0.2f)).Append(image.DOFade(0, 0.5f));
+        var currentSequence = DOTween.Sequence().Append(image.DOFade(0.7f, 0.3f)).Append(image.DOFade(0, 0.3f));
 
         if (hide!= null)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BombChainBlock : BombBlock
 {
-    private Dictionary<string, List<Vector2>> _startList;
+    private Dictionary<Block, List<Vector2>> _startList;
     
     private List<(int x, int y)> _startIndexes = new List<(int, int )> { (0, 1), (0, -1), (-1, 0), (1, 0) };
 
@@ -24,7 +24,7 @@ public class BombChainBlock : BombBlock
 
         _currentTargets = new List<IDamageable>();
 
-        _startList = new Dictionary<string, List<Vector2>>();
+        _startList = new Dictionary<Block, List<Vector2>>();
 
         foreach (var (x, y) in _targetIndexes)
         {
@@ -32,12 +32,11 @@ public class BombChainBlock : BombBlock
 
             if (_currentLevelsBlocks.ContainsKey(current) && _selfGridIndex != current && _currentLevelsBlocks[current].gameObject.activeSelf)
             {
-                string currentTag = _currentLevelsBlocks[current].GetId();
+                var currentBlock = _currentLevelsBlocks[current];
 
-                _startList.Add(currentTag, new List<Vector2>());
+                _startList.Add(currentBlock, new List<Vector2>());
 
-                _startList[currentTag].Add(current);
-
+                _startList[currentBlock].Add(current);
             }
         }
 
@@ -53,7 +52,7 @@ public class BombChainBlock : BombBlock
         {
             Queue<Vector2> currentQueue = new Queue<Vector2>();
 
-            string currentTag = vertex.Key;
+            Block currentBlock = vertex.Key;
 
             Vector2 currentPosition = vertex.Value[0];
 
@@ -67,7 +66,7 @@ public class BombChainBlock : BombBlock
                 {
                     var newIndex = new Vector2(x + newPos.x, y + newPos.y);
 
-                    if (!vertex.Value.Contains(newIndex) && _currentLevelsBlocks.ContainsKey(newIndex) && _currentLevelsBlocks[newIndex].GetId() == currentTag)
+                    if (!vertex.Value.Contains(newIndex) && _currentLevelsBlocks.ContainsKey(newIndex) && _currentLevelsBlocks[newIndex].GetId() == currentBlock.GetId())
                     {
                         if (!_currentLevelsBlocks[newIndex].gameObject.activeSelf)
                         {

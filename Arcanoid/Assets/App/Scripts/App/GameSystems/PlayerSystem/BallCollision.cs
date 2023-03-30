@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class BallCollision : MonoBehaviour
@@ -38,6 +37,8 @@ public class BallCollision : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out IDamageable dam))
         {
             _blocksDamage.SetDestroy(dam);
+
+            _speed.CollisionSpeed();
         }
     }
 }

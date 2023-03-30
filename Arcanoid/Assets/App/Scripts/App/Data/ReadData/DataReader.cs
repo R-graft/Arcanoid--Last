@@ -10,10 +10,12 @@ public class DataReader<T>
     }
     public T ReadFileFromResources()
     {
-        var dataFile = Resources.Load<TextAsset>(_directory).ToString();
+        var dataAsset = Resources.Load<TextAsset>(_directory);
 
-        if (dataFile != null)
+        if (dataAsset != null)
         {
+            var dataFile = Resources.Load<TextAsset>(_directory).ToString();
+
             return JsonUtility.FromJson<T>(dataFile);
         }
 

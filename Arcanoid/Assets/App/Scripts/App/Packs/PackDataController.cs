@@ -85,26 +85,42 @@ public class PackDataController: MonoBehaviour, IService
 
         if (_currentLevel > _currentPack.finishLevel)
         {
-            if (_currentPackIndex + 1 >= _packsModels.Length)
-            {
-                SetPackDataToDefault();
-
-                return;
-            }
-
             _currentPackIndex++;
 
-            _currentPack.EndedLevel++;
+            if (_currentLevel - _currentPack.startLevel > _currentPack.EndedLevel)
+            {
+                _currentPack.EndedLevel++;
+            }
 
             _currentPack.isEnded = true;
 
+            if (_currentPackIndex + 1 > _packsModels.Length)
+            {
+                return;
+            }
+
             _currentPack = _packsModels[_currentPackIndex];
+
+            if (_currentPack.isEnded)
+            {
+                _currentPack.EndedLevel = 0;
+                _currentPack.isEnded = false;
+                _currentLevel = _currentPack.startLevel;
+            }
+
+            if (_currentPack.isOpen)
+            {
+                _currentLevel = _currentPack.startLevel + _currentPack.EndedLevel;
+            }
 
             _currentPack.isOpen = true;
         }
         else
         {
-            _currentPack.EndedLevel++;
+            if (_currentLevel - _currentPack.startLevel > _currentPack.EndedLevel)
+            {
+                _currentPack.EndedLevel++;
+            }
         }
 
         Save();
